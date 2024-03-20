@@ -114,7 +114,7 @@
             else {
                 //Prepare statement
                 //Bind and execute query statement
-                $stmt = $conn->prepare("INSERT INTO world_of_pets_members (fname, lname, email, password) VALUES (?,?,?,?)");
+                $stmt = $conn->prepare("INSERT INTO userTable (fname, lname, email, password) VALUES (?,?,?,?)");
                 $stmt->bind_param("ssss", $fname, $lname, $email, $pwd);
                 
                 //$stmt = $conn->prepare("INSERT INTO world_of_pets_members (fname, lname, email, password) VALUES ('jane','doe','jane@abc.com','123')");

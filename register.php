@@ -36,6 +36,11 @@
     <input required type="password" id="pwd_confirm" name="pwd_confirm"  class="form-control"placeholder="Confirm password">
     <!-- <input id="pwd_confirm" name="pwd_confirm"  class="form-control"placeholder="Confirm password"> -->
 </div>
+<div class="mb-3">
+    <label for="DOB" class="form-label">Date of Birth</label>
+    <input required type="date" id="DOB" name="DOB"  class="form-control" placeholder="Date of Birth">
+    <!-- <input id="pwd_confirm" name="pwd_confirm"  class="form-control"placeholder="Confirm password"> -->
+</div>
 <div class="mb-3 form-check">
     <input required type="checkbox" name="agree" class="form-check-input"> 
     <label class="form-check-label" for="agree">
