@@ -1,4 +1,4 @@
-  GNU nano 6.2                                                             sendOtp.php                                                                      <?php
+<?php
 
 $config = parse_ini_file('/var/www/private/db-config.ini');
 
@@ -8,7 +8,11 @@ use PHPMailer\PHPMailer\Exception;
 require_once "vendor/autoload.php";
 
 $mail = new PHPMailer(true);
-
+// Usage example
+$senderName = isset($senderName) ? $senderName : "admin"; // Set default value if not provided
+$customerName = isset($customerName) ? $customerName : "Customer"; 
+$subject = isset($subject) ? $subject : "Book Information";
+$body = isset($body) ? $body : "<b>Please Ignore This Message</b>";
 try {
     $mail->isSMTP();
     $mail->Host = 'in-v3.mailjet.com'; // host
@@ -18,12 +22,12 @@ try {
     $mail->SMTPSecure = 'tls';
     $mail->Port = 587; //smtp port
 
-    $mail->setFrom('test@thedaniel.life', 'SENDER_NAME');
-    $mail->addAddress('bull.daniel.3@gmail.com', 'RECIPIENT_NAME');
+    $mail->setFrom('test@thedaniel.life', $senderName);
+    $mail->addAddress('bull.daniel.3@gmail.com', $customerName);
 
     $mail->isHTML(true);
-    $mail->Subject = 'Email Subject';
-    $mail->Body    = '<b>Email Body</b>';
+    $mail->Subject = $subject;
+    $mail->Body    = $body;
 
     $mail->send();
     echo 'Email sent successfully.';
