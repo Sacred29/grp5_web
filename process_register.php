@@ -61,6 +61,7 @@
             echo "<p>First name: " . $fname;
             echo "<p>Last name: " . $lname;
             echo "<p>Hashed password: " .$pwd;
+            $userPrivilege = 'user';
             saveMemberToDB();
 
         }
@@ -90,21 +91,22 @@
 */
 
     function saveMemberToDB() {
-        global $fname, $lname, $email, $pwd, $errorMsg, $success;
+        global $fname, $lname, $email, $pwd, $errorMsg, $success, $userPrivilege;
 
         //create db connection
-        $config = parse_ini_file('/var/www/private/db-config.ini');
+        $config = true; //parse_ini_file('/var/www/private/db-config.ini');
         if (!$config) {
             $errorMsg =  "Failed to read database config file.";
             $success = false;
         }
         else {
-            $conn = new mysqli(
-                $config['servername'],
-                $config['username'],
-                $config['password'],
-                $config['dbname']
-            );
+            $conn = new mysqli('35.212.243.22', 'inf1005-sqldev', 'p1_5', 'bookStore');
+            // $conn = new mysqli(
+            //     $config['servername'],
+            //     $config['username'],
+            //     $config['password'],
+            //     $config['dbname']
+            // );
 
             //check connection
             if ($conn->connect_error){
@@ -114,8 +116,8 @@
             else {
                 //Prepare statement
                 //Bind and execute query statement
-                $stmt = $conn->prepare("INSERT INTO world_of_pets_members (fname, lname, email, password) VALUES (?,?,?,?)");
-                $stmt->bind_param("ssss", $fname, $lname, $email, $pwd);
+                $stmt = $conn->prepare("INSERT INTO bookStore.userTable (fName, lName, email, password, userPrivilege) VALUES (?,?,?,?,?)");
+                $stmt->bind_param("sssss", $fname, $lname, $email, $pwd, $userPrivilege);
                 
                 //$stmt = $conn->prepare("INSERT INTO world_of_pets_members (fname, lname, email, password) VALUES ('jane','doe','jane@abc.com','123')");
 
