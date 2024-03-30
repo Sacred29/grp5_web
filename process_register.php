@@ -93,28 +93,40 @@
         global $fname, $lname, $email, $pwd, $errorMsg, $success;
 
         //create db connection
-        $config = parse_ini_file('/var/www/private/db-config.ini');
-        if (!$config) {
-            $errorMsg =  "Failed to read database config file.";
+        $config_file = '/var/www/private/db-config.ini';
+
+        if (file_exists($config_file)) {
+         // Parse the INI file
+            $config = parse_ini_file($config_file);
+        } else {
+            // Get configuration from environment variables
+            $config['servername'] = getenv('SERVERNAME');
+            $config['username'] = getenv('DB_USERNAME');
+            $config['password'] = getenv('DB_PASSWORD');
+            $config['dbname'] = getenv('DBNAME');
+        }
+        
+        $conn = new mysqli(
+            getenv('SERVERNAME'),
+            getenv('DB_USERNAME'), 
+            getenv('DB_PASSWORD'), 
+            getenv('DBNAME')
+        ); 
+
+        if ($conn->connect_error) {
+            $errorMsg = "Connection failed: " .$conn->connect_error;
             $success = false;
         }
         else {
-            $conn = new mysqli(
-                $config['servername'],
-                $config['username'],
-                $config['password'],
-                $config['dbname']
-            );
-
+        
             //check connection
             if ($conn->connect_error){
-                $errorMsg = "Connection failed: " .$conn->connect_error;
-                $success = false;
+               
             }
             else {
                 //Prepare statement
                 //Bind and execute query statement
-                $stmt = $conn->prepare("INSERT INTO world_of_pets_members (fname, lname, email, password) VALUES (?,?,?,?)");
+                $stmt = $conn->prepare("INSERT INTO userTable (fName, lName, email, password, userPrivilege) VALUES (?,?,?,?, 'user')");
                 $stmt->bind_param("ssss", $fname, $lname, $email, $pwd);
                 
                 //$stmt = $conn->prepare("INSERT INTO world_of_pets_members (fname, lname, email, password) VALUES ('jane','doe','jane@abc.com','123')");
