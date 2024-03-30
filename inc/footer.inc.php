@@ -9,7 +9,7 @@
                 <div class="col-md-5">
                     <div class="about-veno">
                         <div class="logo">
-                            <img src="images/logo3.png" alt="Venue Logo">
+                            <img src="/images/logo3.png" alt="Venue Logo">
                         </div>
                         <p>Mauris sit amet quam congue, pulvinar urna et, congue diam. Suspendisse eu lorem massa. Integer sit amet posuere tellustea dictumst.</p>
                         <ul class="social-icons">
@@ -29,16 +29,16 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <ul>
-                                    <li><a href="index.php"><i class="fa fa-stop"></i>Home</a></li>
-                                    <li><a href="about.php"><i class="fa fa-stop"></i>About</a></li>
-                                    <li><a href="contact.php"><i class="fa fa-stop"></i>Contact Us</a></li>
+                                    <li><a href="/index.php"><i class="fa fa-stop"></i>Home</a></li>
+                                    <li><a href="/about.php"><i class="fa fa-stop"></i>About</a></li>
+                                    <li><a href="/contact.php"><i class="fa fa-stop"></i>Contact Us</a></li>
                                 </ul>
                             </div>
                             <div class="col-md-6">
                                 <ul>
-                                    <li><a href="products.php"><i class="fa fa-stop"></i>Products</a></li>
-                                    <li><a href="testimonials.php"><i class="fa fa-stop"></i>Testimonials</a></li>
-                                    <li><a href="blog.html"><i class="fa fa-stop"></i>Blog</a></li>
+                                    <li><a href="/products.php"><i class="fa fa-stop"></i>Products</a></li>
+                                    <li><a href="/testimonials.php"><i class="fa fa-stop"></i>Testimonials</a></li>
+                                    <li><a href="/blog.html"><i class="fa fa-stop"></i>Blog</a></li>
                                 </ul>
                             </div>
                         </div>
