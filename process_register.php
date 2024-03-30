@@ -107,10 +107,10 @@
         }
         
         $conn = new mysqli(
-            getenv('SERVERNAME'),
-            getenv('DB_USERNAME'), 
-            getenv('DB_PASSWORD'), 
-            getenv('DBNAME')
+            $config['servername'] ,
+            $config['username'] , 
+            $config['password'] , 
+            $config['dbname'] 
         ); 
 
         if ($conn->connect_error) {
@@ -118,25 +118,20 @@
             $success = false;
         }
         else {
-        
-            //check connection
-            if ($conn->connect_error){
-               
-            }
-            else {
+            
                 //Prepare statement
                 //Bind and execute query statement
+                // hardcoded privilege first
                 $stmt = $conn->prepare("INSERT INTO userTable (fName, lName, email, password, userPrivilege) VALUES (?,?,?,?, 'user')");
                 $stmt->bind_param("ssss", $fname, $lname, $email, $pwd);
                 
-                //$stmt = $conn->prepare("INSERT INTO world_of_pets_members (fname, lname, email, password) VALUES ('jane','doe','jane@abc.com','123')");
-
+               
                 if (!$stmt->execute()){
                     $errorMsg = "Execute failed: (" .$stmt->errno .") " . $stmt->error;
                     $success = false;
                 }
                 $stmt->close();
-            }
+            
             $conn->close();
         }
      }
