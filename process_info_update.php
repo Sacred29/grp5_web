@@ -4,9 +4,9 @@ include "inc/head.inc.php";
 ?>
 
 <body>
-
     <?php
     include "inc/nav.inc.php";
+    include "inc/header.inc.php";
 
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
@@ -20,13 +20,9 @@ include "inc/head.inc.php";
         "fname" => "First name",
         "lname" => "Last name",
         "email" => "Email",
-        "pwd" => "Password",
-        "pwd_confirm" => "Password Confirmation"
     );
     $errorMsg = "";
     $success = true;
-    $pwd = $_POST['pwd'];
-    $pwd_confirm = $_POST['pwd_confirm'];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['recaptcha_response'])) {
         // Build POST request:
@@ -52,6 +48,11 @@ include "inc/head.inc.php";
         }
     }
 
+    // session userid not set means not logged in
+    if (!isset($_SESSION["userID"])) {
+        $success = false;
+    }
+
     if ($is_bot == false) {
         foreach ($fields as $field => $fieldname) {
             if (empty($_POST[$field])) {
@@ -74,12 +75,6 @@ include "inc/head.inc.php";
                 }
             }
         }
-        if ($pwd !== $pwd_confirm) {
-            $errorMsg .= "Passwords do not match.";
-            $success = false;
-        } else {
-            $pwd = password_hash($_POST["pwd"], PASSWORD_DEFAULT);
-        }
 
         if (!preg_match('/^[a-zA-Z\-\' ]+$/', $lname)) {
             $errorMsg .= "Invalid last name format.";
@@ -89,12 +84,11 @@ include "inc/head.inc.php";
 
     if ($success) {
         //$hashedPassword = password_hash($pwd, PASSWORD_DEFAULT);
-        echo "<h4>Registration successful!</h4>";
+        echo "<h4>User details update successful!</h4>";
         echo "<p>Email: " . $email;
         echo "<p>First name: " . $fname;
         echo "<p>Last name: " . $lname;
-        echo "<p>Hashed password: " . $pwd;
-        saveMemberToDB();
+        updateMemberInDB();
     } else {
         echo "<h4>The following errors were detected:</h4>";
         echo "<p>" . $errorMsg2 . "</p>";
@@ -118,7 +112,7 @@ include "inc/head.inc.php";
     --> how to write to dabase using PHP oo MySSQLi
 */
 
-    function saveMemberToDB()
+    function updateMemberInDB()
     {
         global $fname, $lname, $email, $pwd, $userPrivilege, $errorMsg, $success;
         //create db connection
@@ -152,8 +146,8 @@ include "inc/head.inc.php";
             } else {
                 //Prepare statement
                 //Bind and execute query statement
-                $stmt = $conn->prepare("INSERT INTO userTable (fName, lName, email, password, userPrivilege) VALUES (?,?,?,?, 'user')");
-                $stmt->bind_param("ssss", $fname, $lname, $email, $pwd);
+                $stmt = $conn->prepare("UPDATE userTable SET fName = ?, lName = ?, email = ? WHERE userID = ?");
+                $stmt->bind_param("ssss", $fname, $lname, $email, $_SESSION["userID"]);
 
                 //$stmt = $conn->prepare("INSERT INTO world_of_pets_members (fname, lname, email, password) VALUES ('jane','doe','jane@abc.com','123')");
 
@@ -167,7 +161,6 @@ include "inc/head.inc.php";
         }
     }
     ?>
-
     <?php
     include "inc/footer.inc.php";
     ?>

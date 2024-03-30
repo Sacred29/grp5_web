@@ -1,6 +1,19 @@
 <?php
 include "inc/head.inc.php";
 ?>
+<script>
+    grecaptcha.ready(() => {
+        document.getElementById('register-form').addEventListener("submit", function(event) {
+            event.preventDefault();
+            grecaptcha.execute('6Le0e7MZAAAAAJDAnFTrhlM8DJ1u-Fvi3N702bD7', {
+                action: 'signup'
+            }).then(token => {
+                document.querySelector('#recaptchaResponse').value = token;
+                document.getElementById('register-form').submit();
+            });
+        }, false);
+    });
+</script>
 
 <body>
     <?php
@@ -52,16 +65,3 @@ include "inc/head.inc.php";
     include "inc/footer.inc.php";
     ?>
 </body>
-<script>
-    grecaptcha.ready(() => {
-        document.getElementById('register-form').addEventListener("submit", function(event) {
-            event.preventDefault();
-            grecaptcha.execute('6Le0e7MZAAAAAJDAnFTrhlM8DJ1u-Fvi3N702bD7', {
-                action: 'signup'
-            }).then(token => {
-                document.querySelector('#recaptchaResponse').value = token;
-                document.getElementById('register-form').submit();
-            });
-        }, false);
-    });
-</script>

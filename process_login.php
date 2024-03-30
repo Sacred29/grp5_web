@@ -1,9 +1,13 @@
 <?php
+session_start();
 include "inc/head.inc.php";
 ?>
 
 <body>
+
     <?php
+    include "inc/nav.inc.php";
+
     //query database for given user
     //validate user input - check if user input or if password doesn't match
     //notify the user if the above happens
@@ -33,7 +37,8 @@ include "inc/head.inc.php";
             authenticateUser();
             echo "<h4>Login successful!</h4>";
             echo "<p>Welcome back, " . $fname . $lname;
-            echo "<br><button onclick=\"location.href='index.php'\">Back to Home</button>";
+            echo "<br><button class=\"btn btn-lg btn-primary\" onclick=\"location.href='user_details.php'\">Edit user detail</button>";
+            echo "<button class=\"btn btn-lg btn-primary\" onclick=\"location.href='index.php'\">Back to Home</button>";
         }
     }
 
@@ -80,14 +85,16 @@ include "inc/head.inc.php";
                     //email field is unique --> only one row in result set
                     $row = $result->fetch_assoc();
                     //assign the value of user's first name, last name and password to the respective variables
-                    $fname = $row["fname"];
-                    $lname = $row["lname"];
+                    $fname = $row["fName"];
+                    $lname = $row["lName"];
                     $pwd = $row["password"];
 
                     //check if password matches
                     if (!password_verify($_POST["pwd"], $pwd)) {
                         $errorMsg = "Email not found or password does not match...";
                         $success = false;
+                    } else {
+                        $_SESSION["userID"] = $row["userID"];
                     }
                 } else {
                     $errorMsg = "Email not found or password does not match...";
