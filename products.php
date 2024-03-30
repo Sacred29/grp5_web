@@ -3,17 +3,32 @@
 <?php
 include "inc/head.inc.php";
 //create db connection
-$config = parse_ini_file('/var/www/private/db-config.ini');
-if (!$config) {
-    $errorMsg =  "Failed to read database config file.";
+$config_file = parse_ini_file('/var/www/private/db-config.ini');
+if (file_exists($config_file)) {
+    // Parse the INI file
+    echo ("hellooo");
+    $config = parse_ini_file($config_file);
+} else {
+    // Get configuration from environment variables
+    echo ("hello");
+    $config['servername'] = getenv('SERVERNAME');
+    $config['username'] = getenv('DB_USERNAME');
+    $config['password'] = getenv('DB_PASSWORD');
+    $config['dbname'] = getenv('DBNAME');
+}
+
+$conn = new mysqli(
+    $config['servername'],
+    $config['username'],
+    $config['password'],
+    $config['dbname']
+);
+if ($conn->connect_error) {
+    $errorMsg = "Connection failed: " . $conn->connect_error;
     $success = false;
 } else {
-    $conn = new mysqli(
-        $config['servername'],
-        $config['username'],
-        $config['password'],
-        $config['dbname']
-    );
+
+
 
     //check connection
     if ($conn->connect_error) {
@@ -22,17 +37,23 @@ if (!$config) {
     } else {
         //Prepare statement
         //Bind and execute query statement
-        $stmt = $conn->prepare("SELECT * FROM ProductTable");
+        $stmt = $conn->query("SELECT * FROM productTable");
 
         //$stmt = $conn->prepare("INSERT INTO world_of_pets_members (fname, lname, email, password) VALUES ('jane','doe','jane@abc.com','123')");
 
-        if (!$stmt->execute()) {
-            $errorMsg = "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
-            $success = false;
+
+
+        // Check if there are rows returned
+        if ($stmt->num_rows > 0) {
+            // Loop through the rows and fetch the data
+            while ($row = $stmt->fetch_assoc()) {
+                // Access data using column names
+                echo "ID: " . $row["productID"] . " - Name: " . $row["productName"] . "<br>";
+                // Adjust column names as per your table structure
+            }
+        } else {
+            echo "0 results";
         }
-        $result = mysqli_query($conn, $stmt);
-        $books = mysqli_fetch_all($result, MYSQLI_ASSOC);
-        $stmt->close();
     }
     $conn->close();
 }
@@ -60,29 +81,29 @@ if (!$config) {
                     </div>
                 </div>
                 <div class="row">
-                    <?php foreach($books as $book){ ?>
-                    <div class="col-md-4 col-sm-6 col-xs-12">
-                        <div class="featured-item">
-                            <div class="thumb">
-                                <img src="images/tabby_small.jpg" alt="">
-                            </div>
-                            <div class="down-content">
-                                <h4><?php echo htmlspecialchars("Book Name:" + $book['productName']);?></h4>
-                                <div><?php echo htmlspecialchars($book['arrivalDate']);?></div>
-                                <div><?php echo htmlspecialchars($book['productGenre']);?></div>
-                                <div><?php echo htmlspecialchars($book['price']);?></div>
-                                <div><?php echo htmlspecialchars($book['bookAuthor']);?></div>
+                    <?php foreach ($books as $book) { ?>
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="featured-item">
+                                <div class="thumb">
+                                    <img src="images/tabby_small.jpg" alt="">
+                                </div>
+                                <div class="down-content">
+                                    <h4><?php echo htmlspecialchars("Book Name:" + $book['productName']); ?></h4>
+                                    <div><?php echo htmlspecialchars($book['arrivalDate']); ?></div>
+                                    <div><?php echo htmlspecialchars($book['productGenre']); ?></div>
+                                    <div><?php echo htmlspecialchars($book['price']); ?></div>
+                                    <div><?php echo htmlspecialchars($book['bookAuthor']); ?></div>
 
-                                
 
-                                <p>This is an image about tabby cats.</p>
 
-                                <div class="text-button">
-                                    <a href="product-details.html">View More</a>
+                                    <p>This is an image about tabby cats.</p>
+
+                                    <div class="text-button">
+                                        <a href="product-details.html">View More</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     <?php } ?>
 
                     <div class="col-md-4 col-sm-6 col-xs-12">
