@@ -32,7 +32,7 @@ include "inc/head.inc.php";
                     <?php
                     $books = [];
                     //create db connection
-                    $config_file = parse_ini_file('/var/www/private/db-config.ini');
+                    $config_file = '/var/www/private/db-config.ini';
                     if (file_exists($config_file)) {
                         // Parse the INI file
 
@@ -88,7 +88,7 @@ include "inc/head.inc.php";
 
                     echo "<section>";
                     foreach ($books as $book) {
-                        $bookPrice = number_format((float)$book['price'],2);
+                        $bookPrice = number_format((float)$book['price'], 2);
                         echo "<div class= 'col-md-4 col-sm-6 col-xs-12'>";
                         echo "<div class='featured-item'>";
                         echo "<div class='thumb'>";
