@@ -1,4 +1,6 @@
 <?php
+$redirect_Success ? $redirect_Success: "index.php";
+$redirect_Fail ? $redirect_Fail : "index.php";
 
 echo '<link rel="stylesheet" href="../css/otp.css">';
 echo '<script defer src="../js/otp.js"></script>';
@@ -19,7 +21,7 @@ echo '<script defer src="../js/otp.js"></script>';
 </form>
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['specific'])) {
-    echo "在用";
+    
     $config_file = parse_ini_file('/var/www/private/db-config.ini');
     if (file_exists($config_file)) {
         // Parse the INI file
@@ -42,7 +44,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['specific'])) {
 
     if ($conn->connect_error) {
         $errorMsg = "Connection failed: " . $conn->connect_error;
-        $success = false;
         exit;
     } else {
         $concatenatedInput = $_POST['input1'] . $_POST['input2'] . $_POST['input3'] . $_POST['input4'] . $_POST['input5'] . $_POST['input6'];
@@ -64,13 +65,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['specific'])) {
             $now = $now->format('Y-m-d H:i:s');
             if ($now < $expiry) {
                 // OTP Validated
-                echo "YOU HAVE LOGGED IN!!!";
+                header("Location: " . $redirect_Success);
+
             } else {
-                echo "OTP has expired.";
+                echo "<script>console.log('OTP has expired');</script>";
+                header("Location: " . $redirect_Fail);
             }
-            header("location: process_login.php");
         } else {
-            echo "No matching entry found for otp";
+            echo "<script>console.log('No matching entry found for otp');</script>";
+            header("Location: " . $redirect_Fail);
         }
 
         $conn->close();

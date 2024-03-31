@@ -1,5 +1,4 @@
 <?php
-echo "DIBO";
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -50,7 +49,7 @@ try {
     $mail->Body    = $body;
 
     $mail->send();
-    echo 'Email sent successfully.';
+    echo "<script>console.log('Email Successfully Sent');</script>";
 } catch (Exception $e) {
-    echo 'Email could not be sent. Mailer Error: '. $mail->ErrorInfo;
+    echo "<script>console.log('" . $mail->ErrorInfo . "');</script>";
 }

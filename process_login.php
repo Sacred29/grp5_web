@@ -1,22 +1,12 @@
 <?php
 session_start();
-include "inc/head.inc.php";
 ?>
 
-<body>
+
 
     <?php
-    include "inc/nav.inc.php";
-
-    include "inc/head.inc.php";
-    //include "inc/nav.inc.php";
-    include "inc/header.inc.php";
-    //query database for given user
-    //validate user input - check if user input or if password doesn't match
-    //notify the user if the above happens
-
-    //if invalid input --> display error
-    //if successful --> display user info
+   
+   
     $fname = $lname = $email = $pwd = $errorMsg = $userprivilege = "";
     $success = true;
 
@@ -38,14 +28,10 @@ include "inc/head.inc.php";
     } else {
         if ($success) {
             authenticateUser();
-            echo "<h4>Login successful!</h4>";
-            echo "<p>Welcome back, " . $fname . $lname;
-            define('is_included', 1);
-            include "./otpService/send.php";
-            $myX = require './otpService/otpValidate.php';
-            // include "./otpService/otpValidate.php";
-            header("Location process_validate_login.php");
-            exit;
+            if($success) {
+                include "./otpService/send.php";
+                header("Location: ./process_login_2FA.php");
+            }
             // echo "<br><button onclick=\"location.href='index.php'\">Back to Home</button>";
             // echo "<br><button class=\"btn btn-lg btn-primary\" onclick=\"location.href='user_details.php'\">Edit user detail</button>";
             // echo "<button class=\"btn btn-lg btn-primary\" onclick=\"location.href='index.php'\">Back to Home</button>";
@@ -115,6 +101,8 @@ include "inc/head.inc.php";
                     $_SESSION["email"] = $row ["email"];
                     $_SESSION["fName"] = $row["fName"];
                     $_SESSION["lName"] = $row["lName"];
+                    
+                    
                  
                 }
             } else {
@@ -122,12 +110,7 @@ include "inc/head.inc.php";
                 $success = false;
             }
             $conn->close();
-            //header("Location: ./otpService/send.php");
         }
     }
     
 ?>
-<?php
-    include "inc/footer.inc.php";
-?>
-</body>
