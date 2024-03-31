@@ -11,7 +11,7 @@ include "inc/head.inc.php";
 
         <form action="process_productRegister.php" method="post">
             <div class="mb-3">
-                <label for="productName" class="form-label">ProductName</label>
+                <label for="productName" class="form-label">Product Name</label>
                 <input maxlength="45" type="text" id="productName" name="productName" class="form-control" placeholder="Input Product Name">
             </div>
             <div class="mb-3">
