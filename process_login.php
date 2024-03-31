@@ -36,6 +36,9 @@
             echo "<h4>Login successful!</h4>";
             echo "<p>Welcome back, " . $fname . $lname;
             echo "<br><button onclick=\"location.href='index.php'\">Back to Home</button>";
+            $email = $email;
+            include "./otpService/send.php";
+            echo "LOGGED IN";
 
         }
     }

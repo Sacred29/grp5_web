@@ -24,7 +24,7 @@ try {
     $mail->Host = 'in-v3.mailjet.com'; // host
     $mail->SMTPAuth = true;
     $mail->Username = $config["mailer_pub_key"] ? $config["mailer_pub_key"] : getenv("MAILER_PUB"); //username
-    $mail->Password = $config["mailer_priv_key"] ? $config["mailer_priv_key"] : getenv("MAILER_PRIV");; //password
+    $mail->Password = $config["mailer_priv_key"] ? $config["mailer_priv_key"] : getenv("MAILER_PRIV"); //password
     $mail->SMTPSecure = 'tls';
     $mail->Port = 587; //smtp port
 
