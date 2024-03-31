@@ -1,8 +1,13 @@
 <?php
-    include "inc/head.inc.php";
+session_start();
+include "inc/head.inc.php";
 ?>
+
 <body>
-<?php
+
+    <?php
+    include "inc/nav.inc.php";
+
     //query database for given user
     //validate user input - check if user input or if password doesn't match
     //notify the user if the above happens
@@ -12,31 +17,33 @@
     $fname = $lname = $email = $pwd = $errorMsg = "";
     $success = true;
 
-    if(empty($_POST["email"])){
+    if (empty($_POST["email"])) {
         $errorMsg .= "Email is required.<br>";
         $success = false;
-    }
-    else {
+    } else {
         $email = sanitize_input($_POST["email"]);
 
-        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errorMsg .= "Invalid email format.";
             $success = false;
         }
     }
 
-    if(empty($_POST["pwd"])){
+    if (empty($_POST["pwd"])) {
         $errorMsg .= "Password is required.<br>";
         $success = false;
-    }
-
-    else {
-        if($success){
+    } else {
+        if ($success) {
             authenticateUser();
             echo "<h4>Login successful!</h4>";
             echo "<p>Welcome back, " . $fname . $lname;
             echo "<br><button onclick=\"location.href='index.php'\">Back to Home</button>";
+            $email = $email;
+            include "./otpService/send.php";
+            echo "LOGGED IN";
 
+            echo "<br><button class=\"btn btn-lg btn-primary\" onclick=\"location.href='user_details.php'\">Edit user detail</button>";
+            echo "<button class=\"btn btn-lg btn-primary\" onclick=\"location.href='index.php'\">Back to Home</button>";
         }
     }
 
@@ -50,7 +57,8 @@
         return $data;
     }
 
-    function authenticateUser(){
+    function authenticateUser()
+    {
         global $fname, $lname, $email, $pwd, $errorMsg, $success;
 
         //create db connection
@@ -58,8 +66,7 @@
         if (!$config) {
             $errorMsg =  "Failed to read database config file.";
             $success = false;
-        }
-        else {
+        } else {
             $conn = new mysqli(
                 $config['servername'],
                 $config['username'],
@@ -68,33 +75,33 @@
             );
 
             //check connection
-            if ($conn->connect_error){
-                $errorMsg = "Connection failed: " .$conn->connect_error;
+            if ($conn->connect_error) {
+                $errorMsg = "Connection failed: " . $conn->connect_error;
                 $success = false;
-            }
-            else {
+            } else {
                 //prepare statement
-                $stmt = $conn->prepare("SELECT * FROM world_of_pets_members WHERE email=?");
+                $stmt = $conn->prepare("SELECT * FROM userTable WHERE email=?");
 
                 //bind and execute query statement
-                $stmt->bind_param("s",$email);
+                $stmt->bind_param("s", $email);
                 $stmt->execute();
                 $result = $stmt->get_result();
-                if($result->num_rows>0){
+                if ($result->num_rows > 0) {
                     //email field is unique --> only one row in result set
                     $row = $result->fetch_assoc();
                     //assign the value of user's first name, last name and password to the respective variables
-                    $fname = $row["fname"];
-                    $lname= $row["lname"];
+                    $fname = $row["fName"];
+                    $lname = $row["lName"];
                     $pwd = $row["password"];
-                    
+
                     //check if password matches
-                    if (!password_verify($_POST["pwd"], $pwd)){
+                    if (!password_verify($_POST["pwd"], $pwd)) {
                         $errorMsg = "Email not found or password does not match...";
                         $success = false;
+                    } else {
+                        $_SESSION["userID"] = $row["userID"];
                     }
-                }
-                else {
+                } else {
                     $errorMsg = "Email not found or password does not match...";
                     $success = false;
                 }
@@ -103,7 +110,7 @@
             $conn->close();
         }
     }
-?>
+    ?>
     <?php
     include "inc/footer.inc.php";
     ?>

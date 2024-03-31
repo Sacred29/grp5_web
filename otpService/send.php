@@ -1,17 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<?php
-    include "/inc/head.inc.php";
-?>
-<body>
-        <!-- Collapsible Top Navbar -->
-        <?php
-            include "/inc/nav.inc.php";
-        ?>
-        <?php
-            include "/inc/header.inc.php";
-        ?>
-    <main class="container">
         <?php
          $config_file = '/var/www/private/db-config.ini';
 
@@ -36,12 +22,17 @@
          if ($conn->connect_error) {
             $errorMsg = "Connection failed: " .$conn->connect_error;
             $success = false;
+            exit;
         }
         else {
             // DB logic
 
-            // $email = isset($email) ? $email : trigger_error("User Email is missing", E_USER_ERROR);
-            $email = "bull.daniel.3@gmail.com";
+           // $email = isset($email) ? $email : trigger_error("User Email is missing", E_USER_ERROR);
+            if (!isset($email)) {
+                trigger_error("User Email is missing", E_USER_ERROR);
+                exit;
+            }
+            // $email = "bull.daniel.3@gmail.com";
             $expiry = new DateTime();
             // echo $expiry->format('Y-m-d H:i:s');
             $expiry = ($expiry->modify(' +5 minutes'))->format('Y-m-d H:i:s');
@@ -60,6 +51,7 @@
             if (!$stmt->execute()){
                 $errorMsg = "Execute failed: (" .$stmt->errno .") " . $stmt->error;
                 $success = false;
+                exit;
             }
             
 
@@ -74,26 +66,7 @@
             $subject = "OTP Verification";
             $body = "Your OTP Passcode is <b>" . $code . "</b>. It will Expire within 5 minutes, at " . $timezone . " " . $expiry;
 
-            include "/mailer/sendMail.php";
+            include "../mailer/sendMail.php";
         }
         
         ?>
-    </main>
-        <?php
-            include "/inc/footer.inc.php";
-        ?>
-   
-        
-        <!--Modal-->
-        <div id="imgModal" class="imgModal">
-            <span class="close">&times;</span>
-            <img class="modal-content" id="img01">
-        </div>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
-    <script>window.jQuery || document.write('<script src="/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>x
-    <script src="/js/vendor/bootstrap.min.js"></script>
-    <script src="/js/datepicker.js"></script>
-    <script src="/js/plugins.js"></script>
-</body>
-</html>
