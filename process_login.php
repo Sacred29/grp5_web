@@ -4,6 +4,8 @@
     session_start(); // Ensure this is at the very top
 
     include "inc/head.inc.php";
+    //include "inc/nav.inc.php";
+    include "inc/header.inc.php";
     //query database for given user
     //validate user input - check if user input or if password doesn't match
     //notify the user if the above happens

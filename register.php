@@ -1,4 +1,8 @@
 <?php
+    session_start();
+?>
+
+<?php
     include "inc/head.inc.php";
 ?>
 <body>

@@ -1,35 +1,53 @@
-<nav>
-<div class="wrap">
-        <header id="header">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <button id="primary-nav-button" type="button">Menu</button>
-                        <!-- <a href="index.html">
-                        <div class="logo">
-                            <img class="logo" src="images/logo3.png" alt="Logo" title="Logo"/>
-                        </div>
-                        </a> -->
-                        <nav id="primary-nav" class="dropdown cf">
-                            <ul class="dropdown menu">
-                                <li class='active'><a href="index.php">Home</a></li>
-
-                                <li><a class="nav-link" href="products.php">Products</a></li>
-
-                                <li><a href="cart.php">Shopping Cart</a></li>
-                                <!-- Might replace with an icon later-->
-                                <li>
-                                    <a href="login.php">Login</a>
-                                </li>
-
-                                <li><a href="about.php">About us</a></li>
-                            </ul>
-                        </nav><!-- / #primary-nav -->
-                    </div>
-                </div>
-            </div>
-        </header>
+<nav class="navbar navbar-expand-md">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="index.php">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="products.php">Products</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="cart.php">Shopping Cart</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="about.php">About us</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ms-auto">
+            <?php if (isset($_SESSION['user_email'])): ?>
+                <li class="nav-item d-flex align-items-center">
+                    <span class="navbar-text mr-3">
+                        <?php if ($_SESSION['user_privilege'] == 'admin'): ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="admin.php">Admin</a>
+                            </li>
+                        <?php elseif ($_SESSION['user_privilege'] == 'staff'): ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="staff.php">Staff</a>
+                            </li>
+                        <?php endif?>
+                    </span>
+                    <span class="navbar-text mr-3">
+                        <?php
+                            echo htmlspecialchars($_SESSION['user_fname']) . " " . htmlspecialchars($_SESSION['user_lname']); 
+                        ?>
+                    </span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout.php">Logout</a>
+                </li>
+            <?php else: ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="register.php">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="login.php">Login</a>
+                </li>
+            <?php endif; ?>
+        </ul>   
     </div>
 </nav>
-
-

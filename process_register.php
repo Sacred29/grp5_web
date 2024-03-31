@@ -1,7 +1,9 @@
 <?php
+    session_start();
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
+    
     $fname = $lname = $email = $pwd = $errorMsg = $errorMsg2 = $errorMsg3 = "";
     $singleError = true; // Initialize as true
     $fields = array(
@@ -53,6 +55,12 @@
         $success = false;
     }
 
+    if (isset($_POST['userPrivilege'])) {
+        $userPrivilege = sanitize_input($_POST['userPrivilege']);
+    } else {
+        $userPrivilege = 'user';
+    }
+
     if ($success)
         {
             //$hashedPassword = password_hash($pwd, PASSWORD_DEFAULT);
@@ -61,9 +69,8 @@
             echo "<p>First name: " . $fname;
             echo "<p>Last name: " . $lname;
             echo "<p>Hashed password: " .$pwd;
-            $userPrivilege = 'user';
             saveMemberToDB();
-
+            echo "<br><button onclick=\"location.href='index.php'\">Back to Home</button>";
         }
     else
         {
