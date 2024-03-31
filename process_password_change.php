@@ -7,10 +7,7 @@ include "inc/head.inc.php";
 
     <?php
     include "inc/nav.inc.php";
-
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
+    
     $pwd = $pwd_cur = $pwd_new = $pwd_confirm = "";
 
     $singleError = true; // Initialize as true

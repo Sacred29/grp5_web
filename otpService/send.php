@@ -1,4 +1,5 @@
         <?php
+        session_start();
         $config_file = '/var/www/private/db-config.ini';
 
         if (file_exists($config_file)) {
@@ -25,24 +26,19 @@
             exit;
         } else {
             // DB logic
-
-            // $email = isset($email) ? $email : trigger_error("User Email is missing", E_USER_ERROR);
-            if (!isset($email)) {
+            if (!$_SESSION["email"]) {
                 trigger_error("User Email is missing", E_USER_ERROR);
                 exit;
             }
-            // $email = "bull.daniel.3@gmail.com";
+            $email = $_SESSION["email"];
             $expiry = new DateTime();
-            // echo $expiry->format('Y-m-d H:i:s');
             $expiry = ($expiry->modify(' +5 minutes'))->format('Y-m-d H:i:s');
-            // echo $expiry->format('Y-m-d H:i:s');
             $timezone = date_default_timezone_get();
-            // echo "<br>" . $timezone;
 
             // Random 6 digit number
             $code = rand(100000, 999999);
-            // echo "<br>" . "Random 6-digit number: " . $code;
-
+            
+            // Store in otpTable
             $stmt = $conn->prepare("INSERT INTO otpTable (email, expiry, code) VALUES (?,?,?)");
 
             $stmt->bind_param("ssi", $email, $expiry, $code);
@@ -58,14 +54,14 @@
             $conn->close();
 
             // Send Email
-            $senderName = "Admin";
-            $senderEmail = "Admin@thedaniel.life";
-            $customerName = "Customer";
-            $customerEmail = $email;
+            $senderName  = "Bookstore Botique";
+            $senderEmail= "BookstoreBotique@thedaniel.life";
+            $customerName  = $_SESSION["fName"] . " " . $_SESSION["lName"];
+            $customerEmail  = $email;
             $subject = "OTP Verification";
             $body = "Your OTP Passcode is <b>" . $code . "</b>. It will Expire within 5 minutes, at " . $timezone . " " . $expiry;
 
-            include "./mailer/sendMail.php";
+            include __DIR__ . '/../mailer/sendMail.php';
         }
 
         ?>

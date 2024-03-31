@@ -1,6 +1,5 @@
 <?php
-// ini_set('display_errors', 1);
-// error_reporting(E_ALL);
+
 session_start();
 
 // Check if the user is logged in and is an admin
@@ -13,9 +12,25 @@ if (!isset($_SESSION['user_privilege']) || $_SESSION['user_privilege'] !== 'admi
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['userID'])) {
     $memberId = $_POST['userID'];
 
-    // Database configuration
-    $config = true;//parse_ini_file('/var/www/private/db-config.ini');
-    $conn = new mysqli('35.212.243.22', 'inf1005-sqldev', 'p1_5', 'bookStore');
+    $config_file = '/var/www/private/db-config.ini';
+    if (file_exists($config_file)) {
+        // Parse the INI file
+
+        $config = parse_ini_file($config_file);
+    } else {
+        // Get configuration from environment variables
+        $config['servername'] = getenv('SERVERNAME');
+        $config['username'] = getenv('DB_USERNAME');
+        $config['password'] = getenv('DB_PASSWORD');
+        $config['dbname'] = getenv('DBNAME');
+    }
+
+    $conn = new mysqli(
+        $config['servername'],
+        $config['username'],
+        $config['password'],
+        $config['dbname']
+    );
 
     // Check connection
     if ($conn->connect_error) {
@@ -42,4 +57,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['userID'])) {
     // Redirect them to admin page or show an error
     echo "Invalid request.";
 }
-?>

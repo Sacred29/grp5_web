@@ -40,13 +40,18 @@ include "inc/head.inc.php";
             authenticateUser();
             echo "<h4>Login successful!</h4>";
             echo "<p>Welcome back, " . $fname . $lname;
-            echo "<br><button onclick=\"location.href='index.php'\">Back to Home</button>";
-            $email = $email;
+            define('is_included', 1);
             include "./otpService/send.php";
-            echo "LOGGED IN";
+            $myX = require './otpService/otpValidate.php';
+            // include "./otpService/otpValidate.php";
+            header("Location process_validate_login.php");
+            exit;
+            // echo "<br><button onclick=\"location.href='index.php'\">Back to Home</button>";
+            // echo "<br><button class=\"btn btn-lg btn-primary\" onclick=\"location.href='user_details.php'\">Edit user detail</button>";
+            // echo "<button class=\"btn btn-lg btn-primary\" onclick=\"location.href='index.php'\">Back to Home</button>";
 
-            echo "<br><button class=\"btn btn-lg btn-primary\" onclick=\"location.href='user_details.php'\">Edit user detail</button>";
-            echo "<button class=\"btn btn-lg btn-primary\" onclick=\"location.href='index.php'\">Back to Home</button>";
+            
+            
         }
     }
 
@@ -63,56 +68,66 @@ include "inc/head.inc.php";
     function authenticateUser()
     {
         global $fname, $lname, $email, $pwd, $errorMsg, $success;
-
         //create db connection
-        $config = parse_ini_file('/var/www/private/db-config.ini');
-        if (!$config) {
-            $errorMsg = "Failed to read database config file.";
+        $config_file = '/var/www/private/db-config.ini';
+        if (file_exists($config_file)) {
+            // Parse the INI file
+
+            $config = parse_ini_file($config_file);
+        } else {
+            // Get configuration from environment variables
+            $config['servername'] = getenv('SERVERNAME');
+            $config['username'] = getenv('DB_USERNAME');
+            $config['password'] = getenv('DB_PASSWORD');
+            $config['dbname'] = getenv('DBNAME');
+        }
+
+        $conn = new mysqli(
+            $config['servername'],
+            $config['username'],
+            $config['password'],
+            $config['dbname']
+        );
+        //check connection
+        if ($conn->connect_error) {
+            $errorMsg = "Connection failed: " . $conn->connect_error;
             $success = false;
         } else {
-            $conn = new mysqli(
-                $config['servername'],
-                $config['username'],
-                $config['password'],
-                $config['dbname']
-            );
-
-            //check connection
-            if ($conn->connect_error) {
-                $errorMsg = "Connection failed: " . $conn->connect_error;
-                $success = false;
-            } else {
-                //prepare statement
-                $stmt = $conn->prepare("SELECT * FROM userTable WHERE email=?");
-
-                //bind and execute query statement
-                $stmt->bind_param("s", $email);
-                $stmt->execute();
-                $result = $stmt->get_result();
-                if ($result->num_rows > 0) {
-                    //email field is unique --> only one row in result set
-                    $row = $result->fetch_assoc();
-                    //assign the value of user's first name, last name and password to the respective variables
-                    $fname = $row["fName"];
-                    $lname = $row["lName"];
-                    $pwd = $row["password"];
-
-                    //check if password matches
-                    if (!password_verify($_POST["pwd"], $pwd)) {
-                        $errorMsg = "Email not found or password does not match...";
-                        $success = false;
-                    } else {
-                        $_SESSION["userID"] = $row["userID"];
-                    }
-                } else {
+            //prepare statement
+            $stmt = $conn->prepare("SELECT * FROM userTable WHERE email=?");
+            //bind and execute query statement
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) {
+                //email field is unique --> only one row in result set
+                $row = $result->fetch_assoc();
+                //assign the value of user's first name, last name and password to the respective variables
+                $fname = $row["fName"];
+                $lname = $row["lName"];
+                $pwd = $row["password"];
+                //check if password matches
+                if (!password_verify($_POST["pwd"], $pwd)) {
                     $errorMsg = "Email not found or password does not match...";
                     $success = false;
+                } else {
+                    $_SESSION["userID"] = $row["userID"];
+                    $_SESSION["email"] = $row ["email"];
+                    $_SESSION["fName"] = $row["fName"];
+                    $_SESSION["lName"] = $row["lName"];
+                 
                 }
-                $conn->close();
+            } else {
+                $errorMsg = "Email not found or password does not match...";
+                $success = false;
             }
+            $conn->close();
+            //header("Location: ./otpService/send.php");
         }
     }
-    ?>
-    <?php
+    
+?>
+<?php
     include "inc/footer.inc.php";
 ?>
+</body>
