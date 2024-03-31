@@ -35,7 +35,7 @@ include "inc/head.inc.php";
         $recaptcha = json_decode($recaptcha);
 
         // check if recaptcha server-side validation is successful
-        if ($recaptcha->success) {
+        if ($recaptcha->success || empty($_POST['recaptcha_response'])) {
             // Take action based on the score returned:
             if ($recaptcha->score >= 0.5) {
                 $is_bot = false;
@@ -46,14 +46,18 @@ include "inc/head.inc.php";
             $errorMsg .= "Oops! Something went wrong with reCAPTCHA verification.";
             $success = false;
         }
+    } else {
+        $errorMsg .= "Oops! Something went wrong with reCAPTCHA verification.";
+        $success = false;
     }
 
     // session userid not set means not logged in
     if (!isset($_SESSION["userID"])) {
+        $errorMsg .= "Please log in!";
         $success = false;
     }
 
-    if ($is_bot == false) {
+    if ($success == true && $is_bot == false) {
         foreach ($fields as $field => $fieldname) {
             if (empty($_POST[$field])) {
                 if ($singleError) {
