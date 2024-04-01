@@ -3,7 +3,7 @@
 ?>
 
 <?php
-    include "inc/head.inc.php";
+    include "inc/head.inc.php";    
 ?>
 <script>
     grecaptcha.ready(() => {
@@ -63,9 +63,16 @@
                 <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
                 <button type="submit">Submit</button>
             </div>
+            <div id="errorMsg" class="mb-3"></div>
         </form>
     </main>
     <?php
     include "inc/footer.inc.php";
     ?>
 </body>
+<?php
+if(isset($_GET['errMsg'])) {
+    $errMsg = urldecode($_GET['errMsg']);
+    echo "<script>document.getElementById('errorMsg').innerHTML = '<p>" . $errMsg . "</p>';</script>";
+}
+?>
