@@ -1,10 +1,15 @@
 <?php
+    session_start();
+?>
+
+<?php
     include "inc/head.inc.php";
 ?>
 
 <body>
     <?php
         include "inc/nav.inc.php";
+        include "inc/header.inc.php"
     ?>
     <main class="container">
         <h1> Member Login </h1>

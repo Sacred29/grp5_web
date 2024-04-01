@@ -1,12 +1,17 @@
 <?php
 session_start();
+include "inc/head.inc.php";
 ?>
 
 <body>
-
     <?php
-    
-    $fname = $lname = $email = $pwd = $errorMsg = "";
+    include "inc/nav.inc.php";
+    include "inc/header.inc.php";
+
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+    $fname = $lname = $email = $pwd = $errorMsg = $errorMsg2 = $errorMsg3 = "";
     $is_bot = true;
     $userPrivilege = "user";
 
@@ -15,13 +20,9 @@ session_start();
         "fname" => "First name",
         "lname" => "Last name",
         "email" => "Email",
-        "pwd" => "Password",
-        "pwd_confirm" => "Password Confirmation"
     );
     $errorMsg = "";
     $success = true;
-    $pwd = $_POST['pwd'];
-    $pwd_confirm = $_POST['pwd_confirm'];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['recaptcha_response'])) {
         // Build POST request:
@@ -34,27 +35,36 @@ session_start();
         $recaptcha = json_decode($recaptcha);
 
         // check if recaptcha server-side validation is successful
-        if ($recaptcha->success) {
+        if ($recaptcha->success || empty($_POST['recaptcha_response'])) {
             // Take action based on the score returned:
             if ($recaptcha->score >= 0.5) {
                 $is_bot = false;
             } else {
-                $errorMsg = "reCAPTCHA thinks you are a bot. Try again in a few minutes. <br />";
+                $errorMsg = "reCAPTCHA thinks you are a bot. Try again in a few minutes.";
             }
         } else {
-            $errorMsg .= "Oops! Something went wrong with reCAPTCHA verification. <br />";
+            $errorMsg .= "Oops! Something went wrong with reCAPTCHA verification.";
             $success = false;
         }
+    } else {
+        $errorMsg .= "Oops! Something went wrong with reCAPTCHA verification.";
+        $success = false;
     }
 
-    if ($is_bot == false) {
+    // session userid not set means not logged in
+    if (!isset($_SESSION["userID"])) {
+        $errorMsg .= "Please log in!";
+        $success = false;
+    }
+
+    if ($success == true && $is_bot == false) {
         foreach ($fields as $field => $fieldname) {
             if (empty($_POST[$field])) {
                 if ($singleError) {
-                    $errorMsg = $fieldname . " is required. <br />";
+                    $errorMsg = $fieldname . " is required.";
                     $singleError = false; // Set to false if multiple fields are missing
                 } else {
-                    $errorMsg .= "<br />" . $fieldname . " is required. " . "<br />";
+                    $errorMsg .= "<br>" . $fieldname . " is required.<br>";
                 }
                 $success = false;
             } else {
@@ -64,60 +74,32 @@ session_start();
                 $fname = sanitize_input($_POST["fname"]);
 
                 if ($field === "email" && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    $errorMsg .= "Invalid email format." . "<br />";
+                    $errorMsg2 .= "Invalid email format.";
                     $success = false;
                 }
             }
         }
-        if ($pwd !== $pwd_confirm) {
-            $errorMsg .= "Passwords do not match." . "<br />";
-            $success = false;
-        } else {
-            $pwd = password_hash($_POST["pwd"], PASSWORD_DEFAULT);
-        }
 
         if (!preg_match('/^[a-zA-Z\-\' ]+$/', $lname)) {
-            $errorMsg .= "Invalid last name format." . "<br />";
+            $errorMsg .= "Invalid last name format.";
             $success = false;
         }
     }
 
     if ($success) {
         //$hashedPassword = password_hash($pwd, PASSWORD_DEFAULT);
-        // echo "<h4>Registration successful!</h4>";
-        // echo "<p>Email: " . $email;
-        // echo "<p>First name: " . $fname;
-        // echo "<p>Last name: " . $lname;
-        // echo "<p>Hashed password: " . $pwd;
-        saveMemberToDB();
+        echo "<h4>User details update successful!</h4>";
+        echo "<p>Email: " . $email;
+        echo "<p>First name: " . $fname;
+        echo "<p>Last name: " . $lname;
+        updateMemberInDB();
     } else {
-        // echo "<h4>The following errors were detected:</h4>";
-        // echo "<p>" . $errorMsg . "</p>";
-        header('Location: register.php?errMsg=' . urlencode($errorMsg));
-        exit;
+        echo "<h4>The following errors were detected:</h4>";
+        echo "<p>" . $errorMsg2 . "</p>";
+        echo "<p>" . $errorMsg . "</p>";
     }
 
-    if (isset($_POST['userPrivilege'])) {
-        $userPrivilege = sanitize_input($_POST['userPrivilege']);
-    } else {
-        $userPrivilege = 'user';
-    }
-
-    if ($success)
-        {
-            
-            saveMemberToDB();
-        }
-    else
-        {
-            
-            header('Location: register.php?errMsg=' . urlencode($errorMsg));
-            exit;
-            
-        }
-    
-    
-/*
+    /*
 * Helper function that checks input for malicious or unwanted content.
 */
     function sanitize_input($data)
@@ -134,7 +116,7 @@ session_start();
     --> how to write to dabase using PHP oo MySSQLi
 */
 
-    function saveMemberToDB()
+    function updateMemberInDB()
     {
         global $fname, $lname, $email, $pwd, $userPrivilege, $errorMsg, $success;
         //create db connection
@@ -152,46 +134,38 @@ session_start();
         }
 
         $conn = new mysqli(
-            $config['servername'],
-            $config['username'],
-            $config['password'],
-            $config['dbname']
+            getenv('SERVERNAME'),
+            getenv('DB_USERNAME'),
+            getenv('DB_PASSWORD'),
+            getenv('DBNAME')
         );
 
         if ($conn->connect_error) {
-            $errorMsg = "Connection failed: " . $conn->connect_error . "<br />";
+            $errorMsg = "Connection failed: " . $conn->connect_error;
             $success = false;
         } else {
 
-            // unique email validation
-            $stmt = $conn->prepare("SELECT * FROM userTable WHERE email=?");
-            //bind and execute query statement
-            $stmt->bind_param("s", $email);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows > 0) {
-                // throw an error
-                // If error already exists
-                $errMsg = "Email already Exists.";
-                header('Location: register.php?errMsg=' . urlencode($errMsg));
-                exit;
-               
+            //check connection
+            if ($conn->connect_error) {
+            } else {
+                //Prepare statement
+                //Bind and execute query statement
+                $stmt = $conn->prepare("UPDATE userTable SET fName = ?, lName = ?, email = ? WHERE userID = ?");
+                $stmt->bind_param("ssss", $fname, $lname, $email, $_SESSION["userID"]);
+
+                //$stmt = $conn->prepare("INSERT INTO world_of_pets_members (fname, lname, email, password) VALUES ('jane','doe','jane@abc.com','123')");
+
+                if (!$stmt->execute()) {
+                    $errorMsg = "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+                    $success = false;
+                }
+                $stmt->close();
             }
-
-            // Prepare statement
-            // Bind and execute query statement
-            // hardcoded privilege first
-            $stmt = $conn->prepare("INSERT INTO userTable (fName, lName, email, password, userPrivilege) VALUES (?,?,?,?, 'user')");
-            $stmt->bind_param("ssss", $fname, $lname, $email, $pwd);
-
-
-            if (!$stmt->execute()) {
-                $errorMsg = "Execute failed: (" . $stmt->errno . ") " . $stmt->error . "<br />";
-                $success = false;
-            }
-            $stmt->close();
             $conn->close();
         }
     }
+    ?>
+    <?php
+    include "inc/footer.inc.php";
     ?>
 </body>

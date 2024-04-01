@@ -1,0 +1,25 @@
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+th {
+    font-size: 24px; /* Adjust the font size as needed */
+    padding: 15px; /* Add space within cells */
+    text-align: left;
+}
+
+td {
+    padding: 5px; 
+    text-align: left;
+}
+
+/* Additional styles for zebra-striping for better readability */
+tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
