@@ -2,6 +2,7 @@
 <html lang="en">
 <?php
 include "inc/head.inc.php";
+session_start();
 
 ?>
 
@@ -19,9 +20,11 @@ include "inc/head.inc.php";
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <a href="createProduct.php" target="">
-                            <button class="btn btn-primary">Register New Product</button>
-                        </a>
+                        <?php //if statement for showing and hiding based on session 
+                        echo "<a href='createProduct.php' target=''> <button class='btn btn-primary'>Register New Product</button>
+                        </a>"
+
+                        ?>
                         <div class="section-heading">
                             <!-- <span>Featured Products</span> -->
                             <h2>New Releases</h2>
@@ -99,8 +102,8 @@ include "inc/head.inc.php";
                         echo "<span><sup>Price: " . $bookPrice . "</span></sup></br>";
                         echo "<p>Product Author: " . $book['bookAuthor'] . "</p</br>";
                         echo "<p>Product Publisher: " . $book['bookPublisher'] . "</p</br>";
-                        echo "<div class='text-button' data-toggle='modal' data-target='#myModal'>";
-                        echo "<a href='#'>View More</a>";
+                        echo "<div class='text-button'>";
+                        echo "<a href='productDetails.php?id={$book['productID']}'>View More</a>";
                         echo "</div>";
                         echo "</div>";
                         echo "</div>";
@@ -249,33 +252,36 @@ include "inc/head.inc.php";
     <!-- Modal -->
     <div id="myModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
-
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <?php
-                    foreach ($books as $book) {
-
-                        echo "Product Name: " . $book['productName'] . "</br>";
-                    }
-                    ?>
+                    <h4 class="modal-title">Product Details</h4>
                 </div>
                 <div class="modal-body">
                     <?php
-
-
-                    echo "<p>Price: " . $bookPrice . "</p>";
-                    echo "<p>Product Author: " . $book['bookAuthor'] . "</p</br>";
-                    echo "<p>Product Publisher: " . $book['bookPublisher'] . "</p</br>";
-
+                    if (isset($_GET["productID"])) {
+                        // Assuming $books is your array containing all books data
+                        foreach ($books as $book) {
+                            if ($book['productID'] == $_GET["productID"]) {
+                                $bookPrice = number_format((float)$book['price'], 2);
+                                echo "<p><strong>Product Name:</strong> " . $book['productName'] . "</p>";
+                                echo "<p><strong>Price:</strong> $" . $bookPrice . "</p>";
+                                echo "<p><strong>Product Author:</strong> " . $book['bookAuthor'] . "</p>";
+                                echo "<p><strong>Product Publisher:</strong> " . $book['bookPublisher'] . "</p>";
+                                break; // Once found the matching book, exit the loop
+                            }
+                        }
+                    } else {
+                        echo "No product selected.";
+                    }
                     ?>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-success">Add to Cart</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
-
         </div>
     </div>
 

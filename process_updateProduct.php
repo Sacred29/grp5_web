@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Registration Results</title>
+    <title>Update Product Listing</title>
     <?php
     include "inc/head.inc.php";
     ?>
@@ -97,6 +97,7 @@
             global $productName, $arrivalDate, $genre, $bookUEN, $price, $bookAuthor, $bookPublisher, $productImage, $errorMsg, $success;
 
             $productImage = "/images/" . $productImage;
+
             //create db connection
             $config_file = '/var/www/private/db-config.ini';
 
@@ -118,28 +119,28 @@
                 getenv('DBNAME')
             );
 
+
+            //check connection
             if ($conn->connect_error) {
-                $errorMsg = "Connection failed: " . $conn->connect_error;
-                $success = false;
             } else {
+                if ($_SERVER['REQUEST_METHOD']  == 'GET') {
+                    if (isset($_GET['productID'])) {
+                        $id = $_GET['productID'];
+                        //Prepare statement
+                        //Bind and execute query statement
+                        $stmt = $conn->prepare("UPDATE productTable SET productName = ?, arrivalDate = ?, productGenre = ?, bookUEN = ?, price = ?, bookAuthor = ?, bookPublisher = ?,  productImage = ? WHERE productID = $id");
+                        $stmt->bind_param("ssssdsss", $productName, $arrivalDate, $genre, $bookUEN, $price, $bookAuthor, $bookPublisher, $productImage);
 
-                //check connection
-                if ($conn->connect_error) {
-                } else {
-                    //Prepare statement
-                    //Bind and execute query statement
-                    $stmt = $conn->prepare("INSERT INTO productTable (productName, arrivalDate, productGenre, bookUEN, price, bookAuthor, bookPublisher, productImage) VALUES (?,?,?,?,?,?,?,?)");
-                    $stmt->bind_param("ssssdsss", $productName, $arrivalDate, $genre, $bookUEN, $price, $bookAuthor, $bookPublisher, $productImage);
+                        //$stmt = $conn->prepare("INSERT INTO world_of_pets_members (fname, lname, email, password) VALUES ('jane','doe','jane@abc.com','123')");
 
-                    //$stmt = $conn->prepare("INSERT INTO world_of_pets_members (fname, lname, email, password) VALUES ('jane','doe','jane@abc.com','123')");
-
-                    if (!$stmt->execute()) {
-                        $errorMsg = "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
-                        $success = false;
+                        if (!$stmt->execute()) {
+                            $errorMsg = "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+                            $success = false;
+                        }
+                        $stmt->close();
                     }
-                    $stmt->close();
+                    $conn->close();
                 }
-                $conn->close();
             }
         }
         ?>
