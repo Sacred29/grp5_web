@@ -7,10 +7,7 @@ include "inc/head.inc.php";
 
     <?php
     include "inc/nav.inc.php";
-
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
+    
     $fname = $lname = $email = $pwd = $errorMsg = $errorMsg2 = $errorMsg3 = "";
     $is_bot = true;
     $userPrivilege = "user";
@@ -101,7 +98,32 @@ include "inc/head.inc.php";
         echo "<p>" . $errorMsg . "</p>";
     }
 
-    /*
+    if (isset($_POST['userPrivilege'])) {
+        $userPrivilege = sanitize_input($_POST['userPrivilege']);
+    } else {
+        $userPrivilege = 'user';
+    }
+
+    if ($success)
+        {
+            //$hashedPassword = password_hash($pwd, PASSWORD_DEFAULT);
+            echo "<h4>Registration successful!</h4>";
+            echo "<p>Email: " . $email;
+            echo "<p>First name: " . $fname;
+            echo "<p>Last name: " . $lname;
+            echo "<p>Hashed password: " .$pwd;
+            saveMemberToDB();
+            echo "<br><button onclick=\"location.href='index.php'\">Back to Home</button>";
+        }
+    else
+        {
+            echo "<h4>The following errors were detected:</h4>";
+            echo "<p>" . $errorMsg2 . "</p>";
+            echo "<p>" . $errorMsg . "</p>";
+        }
+    
+    
+/*
 * Helper function that checks input for malicious or unwanted content.
 */
     function sanitize_input($data)

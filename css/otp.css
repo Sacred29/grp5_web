@@ -29,3 +29,9 @@
 .bottom {
     margin-top: 30px;
 }
+
+#errorMessage, #errorMessage > * {
+    text-align: center;
+    color: red;
+    font-size:larger;
+}

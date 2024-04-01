@@ -1,5 +1,9 @@
 <?php
-include "inc/head.inc.php";
+    session_start();
+?>
+
+<?php
+    include "inc/head.inc.php";
 ?>
 <script>
     grecaptcha.ready(() => {
