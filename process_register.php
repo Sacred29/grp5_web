@@ -1,14 +1,12 @@
 <?php
 session_start();
-include "inc/head.inc.php";
 ?>
 
 <body>
 
     <?php
-    include "inc/nav.inc.php";
     
-    $fname = $lname = $email = $pwd = $errorMsg = $errorMsg2 = $errorMsg3 = "";
+    $fname = $lname = $email = $pwd = $errorMsg = "";
     $is_bot = true;
     $userPrivilege = "user";
 
@@ -41,10 +39,10 @@ include "inc/head.inc.php";
             if ($recaptcha->score >= 0.5) {
                 $is_bot = false;
             } else {
-                $errorMsg = "reCAPTCHA thinks you are a bot. Try again in a few minutes.";
+                $errorMsg = "reCAPTCHA thinks you are a bot. Try again in a few minutes. <br />";
             }
         } else {
-            $errorMsg .= "Oops! Something went wrong with reCAPTCHA verification.";
+            $errorMsg .= "Oops! Something went wrong with reCAPTCHA verification. <br />";
             $success = false;
         }
     }
@@ -53,10 +51,10 @@ include "inc/head.inc.php";
         foreach ($fields as $field => $fieldname) {
             if (empty($_POST[$field])) {
                 if ($singleError) {
-                    $errorMsg = $fieldname . " is required.";
+                    $errorMsg = $fieldname . " is required. <br />";
                     $singleError = false; // Set to false if multiple fields are missing
                 } else {
-                    $errorMsg .= "<br>" . $fieldname . " is required.<br>";
+                    $errorMsg .= "<br />" . $fieldname . " is required. " . "<br />";
                 }
                 $success = false;
             } else {
@@ -66,36 +64,37 @@ include "inc/head.inc.php";
                 $fname = sanitize_input($_POST["fname"]);
 
                 if ($field === "email" && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    $errorMsg2 .= "Invalid email format.";
+                    $errorMsg .= "Invalid email format." . "<br />";
                     $success = false;
                 }
             }
         }
         if ($pwd !== $pwd_confirm) {
-            $errorMsg .= "Passwords do not match.";
+            $errorMsg .= "Passwords do not match." . "<br />";
             $success = false;
         } else {
             $pwd = password_hash($_POST["pwd"], PASSWORD_DEFAULT);
         }
 
         if (!preg_match('/^[a-zA-Z\-\' ]+$/', $lname)) {
-            $errorMsg .= "Invalid last name format.";
+            $errorMsg .= "Invalid last name format." . "<br />";
             $success = false;
         }
     }
 
     if ($success) {
         //$hashedPassword = password_hash($pwd, PASSWORD_DEFAULT);
-        echo "<h4>Registration successful!</h4>";
-        echo "<p>Email: " . $email;
-        echo "<p>First name: " . $fname;
-        echo "<p>Last name: " . $lname;
-        echo "<p>Hashed password: " . $pwd;
+        // echo "<h4>Registration successful!</h4>";
+        // echo "<p>Email: " . $email;
+        // echo "<p>First name: " . $fname;
+        // echo "<p>Last name: " . $lname;
+        // echo "<p>Hashed password: " . $pwd;
         saveMemberToDB();
     } else {
-        echo "<h4>The following errors were detected:</h4>";
-        echo "<p>" . $errorMsg2 . "</p>";
-        echo "<p>" . $errorMsg . "</p>";
+        // echo "<h4>The following errors were detected:</h4>";
+        // echo "<p>" . $errorMsg . "</p>";
+        header('Location: register.php?errMsg=' . urlencode($errorMsg));
+        exit;
     }
 
     if (isset($_POST['userPrivilege'])) {
@@ -106,20 +105,15 @@ include "inc/head.inc.php";
 
     if ($success)
         {
-            //$hashedPassword = password_hash($pwd, PASSWORD_DEFAULT);
-            echo "<h4>Registration successful!</h4>";
-            echo "<p>Email: " . $email;
-            echo "<p>First name: " . $fname;
-            echo "<p>Last name: " . $lname;
-            echo "<p>Hashed password: " .$pwd;
+            
             saveMemberToDB();
-            echo "<br><button onclick=\"location.href='index.php'\">Back to Home</button>";
         }
     else
         {
-            echo "<h4>The following errors were detected:</h4>";
-            echo "<p>" . $errorMsg2 . "</p>";
-            echo "<p>" . $errorMsg . "</p>";
+            
+            header('Location: register.php?errMsg=' . urlencode($errorMsg));
+            exit;
+            
         }
     
     
@@ -165,29 +159,39 @@ include "inc/head.inc.php";
         );
 
         if ($conn->connect_error) {
-            $errorMsg = "Connection failed: " . $conn->connect_error;
+            $errorMsg = "Connection failed: " . $conn->connect_error . "<br />";
             $success = false;
         } else {
 
-            //Prepare statement
-            //Bind and execute query statement
+            // unique email validation
+            $stmt = $conn->prepare("SELECT * FROM userTable WHERE email=?");
+            //bind and execute query statement
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) {
+                // throw an error
+                // If error already exists
+                $errMsg = "Email already Exists.";
+                header('Location: register.php?errMsg=' . urlencode($errMsg));
+                exit;
+               
+            }
+
+            // Prepare statement
+            // Bind and execute query statement
             // hardcoded privilege first
             $stmt = $conn->prepare("INSERT INTO userTable (fName, lName, email, password, userPrivilege) VALUES (?,?,?,?, 'user')");
             $stmt->bind_param("ssss", $fname, $lname, $email, $pwd);
 
 
             if (!$stmt->execute()) {
-                $errorMsg = "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+                $errorMsg = "Execute failed: (" . $stmt->errno . ") " . $stmt->error . "<br />";
                 $success = false;
             }
             $stmt->close();
-
             $conn->close();
         }
     }
-    ?>
-
-    <?php
-    include "inc/footer.inc.php";
     ?>
 </body>
