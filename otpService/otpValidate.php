@@ -15,10 +15,12 @@ echo '<script defer src="../js/otp.js"></script>';
         <input class="input" type="text" inputmode="numeric" maxlength="1 " id="input4" name="input4" />
         <input class="input" type="text" inputmode="numeric" maxlength="1" id="input5" name="input5" />
         <input class="input" type="text" inputmode="numeric" maxlength="1" id="input6" name="input6" />
+        <button class="fa fa-sign-in fa-2x" type="submit" value="Submit" name="specific"></button>
     </div>
-    <input type="submit" value="Submit" name="specific">
-
+    
 </form>
+<div id="errorMessage"></div>
+
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['specific'])) {
     
@@ -69,11 +71,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['specific'])) {
 
             } else {
                 echo "<script>console.log('OTP has expired');</script>";
-                header("Location: " . $redirect_Fail);
+                echo "<script>document.getElementById('errorMessage').innerHTML = '<p>OTP has expired</p>';</script>";
+                // header("Location: " . $redirect_Fail);
             }
         } else {
             echo "<script>console.log('No matching entry found for otp');</script>";
-            header("Location: " . $redirect_Fail);
+            echo "<script>document.getElementById('errorMessage').innerHTML = '<p>No matching entry found for otp</p>';</script>";
+            // header("Location: " . $redirect_Fail);
         }
 
         $conn->close();
