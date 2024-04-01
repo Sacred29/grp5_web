@@ -29,7 +29,7 @@
             For existing members, please go to the
             <a href="login.php">Sign In page</a>.
         </p>
-        <form id="register-form" action="process_register.php" method="post">
+        <form id="register-form" action="process_register2.php" method="post">
             <div class="mb-3">
                 <label for="fname" class="form-label">First Name:</label>
                 <input maxlength="45" type="text" id="fname" name="fname" class="form-control" placeholder="Enter first name">
@@ -65,7 +65,7 @@
             </div>
             <div id="errorMsg" class="mb-3"></div>
         </form>
-    </main>
+</main>
     <?php
     include "inc/footer.inc.php";
     ?>

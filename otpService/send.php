@@ -1,5 +1,4 @@
         <?php
-        session_start();
         $config_file = '/var/www/private/db-config.ini';
 
         if (file_exists($config_file)) {
@@ -26,11 +25,7 @@
             exit;
         } else {
             // DB logic
-            if (!$_SESSION["email"]) {
-                trigger_error("User Email is missing", E_USER_ERROR);
-                exit;
-            }
-            $email = $_SESSION["email"];
+            $email = $_POST["email"] ;
             $expiry = new DateTime();
             $expiry = ($expiry->modify(' +5 minutes'))->format('Y-m-d H:i:s');
             $timezone = date_default_timezone_get();
@@ -56,12 +51,14 @@
             // Send Email
             $senderName  = "Bookstore Botique";
             $senderEmail= "BookstoreBotique@thedaniel.life";
-            $customerName  = $_SESSION["fName"] . " " . $_SESSION["lName"];
+            $customerName  = "Customer";
             $customerEmail  = $email;
             $subject = "OTP Verification";
             $body = "Your OTP Passcode is <b>" . $code . "</b>. It will Expire within 5 minutes, at " . $timezone . " " . $expiry;
 
             include __DIR__ . '/../mailer/sendMail.php';
+            header("Location: " . $_POST["redirect"]);
         }
+        
 
         ?>

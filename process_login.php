@@ -1,44 +1,36 @@
 <?php
-session_start();
+include "inc/head.inc.php";
 ?>
-
-
-
+<body>
+    <main>
     <?php
-   
-   
     $fname = $lname = $email = $pwd = $errorMsg = $userprivilege = "";
     $success = true;
 
     if (empty($_POST["email"])) {
-        $errorMsg .= "Email is required.<br>";
+        $errorMsg .= "Email is required.<br />";
         $success = false;
     } else {
         $email = sanitize_input($_POST["email"]);
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errorMsg .= "Invalid email format.";
+            $errorMsg .= "Invalid email format.<br />";
             $success = false;
         }
     }
 
     if (empty($_POST["pwd"])) {
-        $errorMsg .= "Password is required.<br>";
+        $errorMsg .= "Password is required.<br />";
         $success = false;
-    } else {
-        if ($success) {
-            authenticateUser();
-            if($success) {
-                include "./otpService/send.php";
-                header("Location: ./process_login_2FA.php");
-            }
-            // echo "<br><button onclick=\"location.href='index.php'\">Back to Home</button>";
-            // echo "<br><button class=\"btn btn-lg btn-primary\" onclick=\"location.href='user_details.php'\">Edit user detail</button>";
-            // echo "<button class=\"btn btn-lg btn-primary\" onclick=\"location.href='index.php'\">Back to Home</button>";
+    }
 
-            
-            
-        }
+    if ($success) {
+        authenticateUser();
+    }
+
+    if (!$success) {
+        header('Location: login.php?errMsg=' . urlencode($errorMsg));
+        exit;
     }
 
 
@@ -86,31 +78,40 @@ session_start();
             $stmt->execute();
             $result = $stmt->get_result();
             if ($result->num_rows > 0) {
-                //email field is unique --> only one row in result set
+                // if email is found     
                 $row = $result->fetch_assoc();
                 //assign the value of user's first name, last name and password to the respective variables
                 $fname = $row["fName"];
                 $lname = $row["lName"];
                 $pwd = $row["password"];
-                //check if password matches
                 if (!password_verify($_POST["pwd"], $pwd)) {
-                    $errorMsg = "Email not found or password does not match...";
+                    $errorMsg = "Password is incorrect.";
                     $success = false;
-                } else {
-                    $_SESSION["userID"] = $row["userID"];
-                    $_SESSION["email"] = $row ["email"];
-                    $_SESSION["fName"] = $row["fName"];
-                    $_SESSION["lName"] = $row["lName"];
-                    
-                    
-                 
                 }
-            } else {
-                $errorMsg = "Email not found or password does not match...";
+                else {
+                    // Loading Screen
+                    include "inc/wave-loader.inc.php";
+                    
+                    $redirect = "/process_login_2FA.php";
+                    $url = "./otpService/send.php";
+                    // Hidden forms
+                    echo '<form id="hiddenForm" action="./otpService/send.php" method="post" style="display: none;">
+                        <input name="email" value="' . $email . '">
+                        <input name="redirect" value="'. $redirect . '">
+                        <input type="submit" value="Submit">
+                        </form>'; 
+                    echo "<script>window.onload = function() {
+                        document.getElementById('hiddenForm').submit();
+                        };</script>";
+                }
+            }
+            else {
+                $errorMsg .= "Email Cannot Be Found.";
                 $success = false;
             }
-            $conn->close();
         }
     }
     
 ?>
+</main>
+</body>

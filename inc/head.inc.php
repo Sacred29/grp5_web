@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="css/owl-carousel.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/table.css">
+    <link rel="stylesheet" type="text/css" href="css/info-alert.css">
+    <link rel="stylesheet" type="text/css" href="css/loading.css">
     <script src="https://kit.fontawesome.com/777528c189.js" crossorigin="anonymous"></script>
 
     <!--Bootstrap JS-->

@@ -67,7 +67,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['specific'])) {
             $now = $now->format('Y-m-d H:i:s');
             if ($now < $expiry) {
                 // OTP Validated
-                header("Location: " . $redirect_Success);
+                // Redirect using form, to emit post req
+                echo '<form id="hiddenForm" action="'. $redirect_Success .'" method="post" style="display: none;">
+                        <input name="email" value="' . $email . '">
+                        
+                        <input type="submit" value="Submit">
+                        </form>'; 
+                    echo "<script>window.onload = function() {
+                        document.getElementById('hiddenForm').submit();
+                        };</script>";
 
             } else {
                 echo "<script>console.log('OTP has expired');</script>";
