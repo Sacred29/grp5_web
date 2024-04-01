@@ -39,8 +39,7 @@
             header("Location: index.php");
         }
         else {
-
+            header("Location: login.php");
         }
-        $_SESSION['user_privilege'];
      }
 ?>
