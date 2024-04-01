@@ -76,15 +76,14 @@
         ?>
     </div> <!-- End of shopping-cart div-->
 
-<div id="product-grid">
-    <div class="txt-heading">Product Catalog</div>
+    <div class="container-fluid bg-3 text-center">    
+    <h3 class="margin">Product Catalog</h3><br>
+
         
     <?php
     //create db connection
     $config_file = '/var/www/private/db-config.ini';
-   // $config = parse_ini_file('/var/www/private/db-config.ini');
    if (file_exists($config_file)) {
-    // Parse the INI file
 
     $config = parse_ini_file($config_file);
     } else {
@@ -117,32 +116,24 @@
                 $resultArray[] = $row;
             }
             if(!empty($resultArray)){
-               // $counter = 0;
-               // echo '<div class="product-row" style="display:inline-block; width: 1110px; height:auto;">';
                 foreach($resultArray as $key=>$value){
-                    
-     ?>
 
-        <div class="product-item">
-                <form method="post" action="cart.php?action=add&uen=<?php echo $resultArray[$key]["bookUEN"]; ?>">
-                    <div class="product-image"><img src="<?php echo $resultArray[$key]["productImage"]; ?>" alt="<?php echo $resultArray[$key]["productName"]; ?>"></div>                
-                    <div class="product-tile-footer">
-                    <div class="product-title"><?php echo $resultArray[$key]["productName"]; ?></div>
-                    <div class="product-author"><?php echo "by " .$resultArray[$key]["bookAuthor"]; ?></div>
-                    <div class="product-price"><?php echo "$".$resultArray[$key]["price"]; ?></div>
-                    <div class="cart-action">
-                        <input type="text" class="product-quantity" name="quantity" value="1" size="1"/>
-                        <input type="submit" value="Add to Cart" class="btnAddAction" /></div>
-                    </div>
-                </form>
-        </div> <!--end of product-item div-->
-    <?php
-            // $counter++;
-            // if ($counter % 2 === 0) {
-            //     echo '</div><div class="product-row">';
-            // }
+                    echo '<div class="col-md-4">';
+                    echo '<div class="product-item">';
+                    echo '<form method="post" action="cart.php?action=add&uen=' . $resultArray[$key]["bookUEN"] . '">';
+                    echo '<img src="' .$resultArray[$key]["productImage"] . '" class="img-responsive margin" style="width:100%" alt="Image">';
+                    echo '<div class="product-title" style="text-align:center;">' . $resultArray[$key]["productName"] . '</div>';
+                    echo '<div class="product-author" style="text-align:center; margin-bottom:5px;">"by" '.$resultArray[$key]["bookAuthor"] .'</div>';
+                    echo '<div class="product-price" style="text-align:right; margin-left: 30px;"> $ '.$resultArray[$key]["price"] . '</div>';
+                    echo '<div class="cart-action" style="text-align:left;">';
+                    echo '<input type="text" class="product-quantity" name="quantity" value="1" size="1" style="text-align:center; margin-left:70px;"/>';
+                    echo '<input type="submit" style="margin-right:20px;" value="Add to Cart" class="btnAddAction" />';
+                    echo '</div>';
+                    echo '</div>';
+                    echo '</div>';
+                    echo '</form>';
+
             }
-            echo '</div>';
                 }
                 $stmt->close();
             }
@@ -187,14 +178,14 @@
             if(!empty($_GET["action"])) {
                 switch($_GET["action"]){
                     case "add":
-                        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                            // Check if the "quantity" field is set in the $_POST array
-                            if (isset($_POST["quantity"])) {
-                              $quantity = $_POST["quantity"];
-                              echo 'Quantity: ' . $quantity . '<script>console.log("Quantity: ' . $quantity . '");</script>';  
+                        // if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                        //     // Check if the "quantity" field is set in the $_POST array
+                        //     if (isset($_POST["quantity"])) {
+                        //       $quantity = $_POST["quantity"];
+                        //       echo 'Quantity: ' . $quantity . '<script>console.log("Quantity: ' . $quantity . '");</script>';  
                     
-                             }
-                          }
+                        //      }
+                        //   }
                           
                         if(!empty($_POST["quantity"])){
                             $uen = $_GET["uen"];

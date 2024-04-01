@@ -2,51 +2,55 @@
     include "inc/head.inc.php";
 ?>
 <body>
-    <?php
-    include "inc/nav.inc.php";
-    ?>
-<main class="container">
-    <h1>Member Registration</h1>
-<p>
-    For existing members, please go to the
-    <a href="login.php">Sign In page</a>.
-</p>
-<form action="process_register.php" method="post">
-<div class="mb-3">
-    <label for="fname" class="form-label">First Name:</label>
-    <input maxlength="45" type="text" id="fname" name="fname" class="form-control" placeholder="Enter first name">
+<?php
+        include "inc/nav.inc.php";
+?>
+
+<style>
+      body {
+    font: 20px Montserrat, sans-serif;
+    line-height: 1.8;
+    color: #f5f6f7;
+  }
+  p {font-size: 16px;}
+  .margin {margin-bottom: 45px;}
+  .bg-1 { 
+    background-color: #1abc9c; /* Green */
+    color: #ffffff;
+  }
+  .bg-2 { 
+    background-color: #474e5d; /* Dark Blue */
+    color: #ffffff;
+  }
+  .bg-3 { 
+    background-color: #ffffff; /* White */
+    color: #555555;
+  }
+  .bg-4 { 
+    background-color: #2f2f2f; /* Black Gray */
+    color: #fff;
+  }
+  .container-fluid {
+    padding-top: 70px;
+    padding-bottom: 70px;
+  }
+
+  </style>
+
+<div class="container-fluid bg-1 text-center" style="background-image: url('images/bg.jpg'); background-size: cover; background-position: center; height: 300px;">
 </div>
-<div class="mb-3">
-    <label for="lname" class="form-label">Last Name:</label>
-    <input required maxlength="45" type="text" id="lname" name="lname" class="form-control" placeholder="Enter last name">
-    <!-- <input id="lname" name="lname" class="form-control" placeholder="Enter last name"> -->
+
+<!-- Second Container -->
+<div class="container-fluid bg-2 text-center">
+  <h3 class="margin">What Am I?</h3>
+  <p style="max-width: 300px; overflow-wrap: break-word; margin: 0 auto; text-align: center; color:beige;">Bookstore Boutique is an online book procurement website for book lovers. With the closure of Book Depository, there exists a gap between book lovers and affordable books, where book lovers would ...</p>   
 </div>
-<div class="mb-3">
-    <label for="email" class="form-label">Email:</label>
-    <input required maxlength="45" type="email" id="email" name="email" class="form-control" placeholder="Enter email">
-    <!-- <input id="email" name="email" class="form-control" placeholder="Enter email"> -->
-</div>
-<div class="mb-3">
-    <label for="pwd" class="form-label">Password:</label>
-    <input required type="password" id="pwd" name="pwd" class="form-control" placeholder="Enter password">
-    <!-- <input id="pwd" name="pwd" class="form-control" placeholder="Enter password"> -->
-</div>
-<div class="mb-3">
-    <label for="pwd_confirm" class="form-label">Confirm Password:</label>
-    <input required type="password" id="pwd_confirm" name="pwd_confirm"  class="form-control"placeholder="Confirm password">
-    <!-- <input id="pwd_confirm" name="pwd_confirm"  class="form-control"placeholder="Confirm password"> -->
-</div>
-<div class="mb-3 form-check">
-    <input required type="checkbox" name="agree" class="form-check-input"> 
-    <label class="form-check-label" for="agree">
-    Agree to terms and conditions.</label>
-</div>
-<div class="mb-3">
-    <button type="submit">Submit</button>
-</div>
-</form>
-</main>
-    <?php
-    include "inc/footer.inc.php";
-    ?>
+
+<div class="container-fluid bg-1 text-center" style="background-image: url('images/bg.jpg'); background-size: cover; background-position: center; height:300px"></div>
+
+<?php
+    include "inc/footer.inc.php"
+?>
+
 </body>
+</html>
