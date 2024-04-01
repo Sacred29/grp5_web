@@ -1,0 +1,145 @@
+#shopping-cart table {
+    width: 100%;
+    background-color: #F0F0F0;
+  }
+
+  #nav-logo{
+    margin-left: 40px;
+  }
+  
+  #shopping-cart table td {
+    background-color: #FFFFFF;
+  }
+
+  .tbl-cart {
+    display: table;
+    border-collapse: separate;
+    box-sizing: border-box;
+    text-indent: initial;
+    border-color: gray;
+  }
+
+  tbody {
+    display: table-row-group;
+    vertical-align: middle;
+    border-color: inherit;
+  }
+
+  .no-records {
+    text-align: center;
+    clear: both;
+    margin: 38px 0px;
+  }
+
+  #product-grid {
+    margin: 40px;
+    padding-bottom: 650px;
+  }
+
+.product-item {
+    float: left;
+    background: #ffffff;
+    margin: 30px 30px 0px 0px;
+    border: #E0E0E0 2px solid;
+    width: 30%;
+
+  }
+
+.product-image {
+	height: 155px;
+	width: 250px;
+    margin-left:10%;
+    margin-right:10%;
+	background-color: #FFF;
+}
+
+.clear-float{
+  clear:both;
+}
+
+.product-quantity {
+  padding: 5px 10px;
+  margin-left: 20px;
+  border-radius: 2px;
+  border: #E0E0E0 1px solid;
+}
+
+.product-tile-footer {
+  padding: 15px 15px 0px 15px;
+  overflow: auto;
+}
+
+.product-title {
+	margin-bottom: 20px;
+}
+
+.product-price {
+	float:left;
+    margin-top:7px;
+}
+
+#shopping-cart {
+  margin:40px;
+}
+
+.cart-item-image {
+    max-width: 250px;
+    max-height: 155px;
+}
+
+.btnAddAction {
+  padding: 5px 10px;
+  margin-left: 5px;
+  background-color: #efefef;
+  border: #E0E0E0 1px solid;
+  color: #211a1a;
+  float: right;
+  text-decoration: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.checkout-item-image {
+  max-width: 150px;
+  max-height: 100px;
+  border: 1px black solid;
+  margin-top: 1%;
+}
+
+.checkout-item-title {
+  position:relative;
+  bottom: 30px;
+  left: 10px;
+  font-size: 15px;
+  line-height: 15px;
+}
+
+.checkout-item-author {
+  font-weight: bold;
+  padding-right: 400px;
+}
+
+.td-test{
+  text-align: left;
+}
+
+.checkout-quantity {
+  position:relative;
+  left: 500px;
+  top: 30%;
+  text-align: right;
+}
+
+.checkout-item-price {
+  position:relative;
+  left: 50%;
+  bottom: 20%;
+  font-size: 18px;
+}
+
+
+#checkout-item-container {
+  border: 1px black solid;
+  height: 125px;
+}
+

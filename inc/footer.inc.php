@@ -8,8 +8,8 @@
             <div class="row">
                 <div class="col-md-5">
                     <div class="about-veno">
-                        <div class="logo">
-                            <img src="images/logo3.png" alt="Venue Logo">
+                        <div class="logo" id="nav-logo">
+                            <img src="/images/logo3 copy.png" alt="Venue Logo">
                         </div>
                         <p>Mauris sit amet quam congue, pulvinar urna et, congue diam. Suspendisse eu lorem massa. Integer sit amet posuere tellustea dictumst.</p>
                         <ul class="social-icons">
