@@ -59,6 +59,17 @@
                 <label class="form-check-label" for="agree">
                     Agree to terms and conditions.</label>
             </div>
+            <?php
+            if ($_SESSION['user_privilege'] == "admin") {
+                echo '<div class="mb-3">
+                <label for="user_privilege">Select the user type:</label>
+                <select id="user_privilege" name="user_privilege">
+                    <option value="user">User</option>
+                    <option value="staff">Staff</option>
+                    <option value="admin">Admin</option>
+                </select></div>';
+            }
+            ?>
             <div class="mb-3">
                 <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
                 <button type="submit">Submit</button>

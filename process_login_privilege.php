@@ -38,8 +38,18 @@
             // Add session states
             $_SESSION["user_privilege"] = $row["userPrivilege"];
             $_SESSION["email"] = $row["email"];
+            if($_SESSION["user_privilege"] == 'admin') {
+                header("Location: admin.php");
+                exit;
+            }
+            else if($_SESSION["user_privilege"] == 'staff') {
+                header("Location: staff.php");
+                exit;
+            }
+            else {
             header("Location: index.php");
             exit;
+            }
         }
         else {
             header("Location: login.php");

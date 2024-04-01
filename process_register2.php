@@ -58,6 +58,13 @@ foreach ($fields as $field => $fieldname) {
             $errorMsg2 .= "Invalid email format.";
             $success = false;
         }
+
+        if (isset($_POST["user_privilege"])) {
+            $userPrivilege = sanitize_input($_POST["user_privilege"]);
+        }
+        else {
+            $userPrivilege = 'user';
+        }
    }
 }
 
@@ -90,7 +97,7 @@ function sanitize_input($data)
         return $data;
     }
 function saveMemberToDB() {
-    global $fname, $lname, $email, $pwd, $errorMsg, $success;
+    global $fname, $lname, $email, $pwd, $errorMsg, $success, $userPrivilege;
     //create db connection
     $config_file = '/var/www/private/db-config.ini';
 
@@ -130,8 +137,8 @@ function saveMemberToDB() {
             $errorMsg .= "Email already exists. <br />";
         } else {
             // If the count is 0, the email does not exist. so can add.
-            $stmt = $conn->prepare("INSERT INTO userTable (fName, lName, email, password, userPrivilege) VALUES (?,?,?,?, 'user')");
-            $stmt->bind_param("ssss", $fname, $lname, $email, $pwd);
+            $stmt = $conn->prepare("INSERT INTO userTable (fName, lName, email, password, userPrivilege) VALUES (?,?,?,?,?)");
+            $stmt->bind_param("sssss    ", $fname, $lname, $email, $pwd, $userPrivilege);
             if (!$stmt->execute()){
                 $errorMsg = "Execute failed: (" .$stmt->errno .") " . $stmt->error;
                 $success = false;
