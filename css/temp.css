@@ -159,3 +159,93 @@
 .navbar-nav  li a:hover {
   color: #1abc9c !important;
 }
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+th {
+  font-size: 15px; /* Adjust the font size as needed */
+  padding: 15px; /* Add space within cells */
+  text-align: left;
+}
+
+td {
+  padding: 5px; 
+  text-align: left;
+}
+
+/* Additional styles for zebra-striping for better readability */
+tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+h2 {
+  text-decoration-line: underline;
+}
+
+img {
+  border-style: double;
+  border-color: black;
+}
+
+figure { display: table; }
+
+
+figcaption { 
+  display: table-caption; 
+  caption-side: bottom ; 
+  text-align: center;
+  color:gray;
+  font-style:italic;
+}
+
+footer {
+  border-top: black;
+  border-top-style:solid;
+  font-style:italic;
+  text-align: center;
+  font-size: 13px;
+
+}
+
+.logo {
+  border-style:none;
+  width: 40.5px;
+  height: 50px;
+  margin-top: 20px;
+}
+
+.imgModal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+}
+
+.primary-nav {
+  border-bottom: 4px;
+  border-bottom-style: dotted;
+}
+
+

@@ -277,10 +277,8 @@
                 }//end of switch
             }//end of !empty GET ACTION
             else{
-                echo "<h4>it is empty here!</h4>";
-                echo '<script>console.log("still empty");</script>';
             }
-            $stmt->close();
+           // $stmt->close();
         }//end of conn else
         $conn->close();
 
