@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_privilege']) || $_SESSION['user_privilege'] !== 'admi
 }
 
 // Database configuration
-$config = true; //parse_ini_file('/var/www/private/db-config.ini');
+$config; //parse_ini_file('/var/www/private/db-config.ini');
 
 $config_file = '/var/www/private/db-config.ini';
 if (file_exists($config_file)) {

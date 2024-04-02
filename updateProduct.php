@@ -10,7 +10,7 @@ include "inc/head.inc.php";
         <?php
         $books = [];
         //create db connection
-        $config_file = parse_ini_file('/var/www/private/db-config.ini');
+        $config_file = '/var/www/private/db-config.ini';
         if (file_exists($config_file)) {
             // Parse the INI file
 
@@ -53,12 +53,14 @@ include "inc/head.inc.php";
 
                     // Check if there are rows returned
                     if ($stmt->num_rows > 0) {
-                        // Loop through the rows and fetch the data
-                        while ($row = $stmt->fetch_assoc()) {
-                            // Access data using column names
-                            $books[] = $row;
-                            // Adjust column names as per your table structure
-                        }
+                        // // Loop through the rows and fetch the data
+                        // while ($row = $stmt->fetch_assoc()) {
+                        //     // Access data using column names
+                        //     $books[] = $row;
+                        //     // Adjust column names as per your table structure
+                        // }
+                        $books[] = $stmt->fetch_assoc();
+                        $book = $books[0];
                     } else {
                         echo "0 results";
                     }
@@ -74,11 +76,11 @@ include "inc/head.inc.php";
         <form action="process_updateProduct.php" method="POST">
             <div class="mb-3">
                 <label for="productName" class="form-label">Product Name</label>
-                <input maxlength="45" type="text" id="productName" name="productName" class="form-control" placeholder="Input Product Name">
+                <input maxlength="45" value="<?php echo $book["productName"] ?>" type="text" id="productName" name="productName" class="form-control" placeholder="Input Product Name">
             </div>
             <div class="mb-3">
                 <label for="arrivalDate" class="form-label">Arrival Date</label>
-                <input required type="date" id="arrivalDate" name="arrivalDate" class="form-control" placeholder="Select Date">
+                <input required type="date" value="<?php echo $book["arrivalDate"] ?>" id="arrivalDate" name="arrivalDate" class="form-control" placeholder="Select Date">
                 <!-- <input id="lname" name="lname" class="form-control" placeholder="Enter last name"> -->
             </div>
             <div class="mb-3">
@@ -93,22 +95,22 @@ include "inc/head.inc.php";
             </div>
             <div class="mb-3">
                 <label for="bookUEN" class="form-label">Product UEN:</label>
-                <input required type="text" id="bookUEN" name="bookUEN" class="form-control" placeholder="Input Book UEN">
+                <input required type="text" value="<?php echo $book["bookUEN"] ?>" id="bookUEN" name="bookUEN" class="form-control" placeholder="Input Book UEN">
                 <!-- <input id="pwd" name="pwd" class="form-control" placeholder="Enter password"> -->
             </div>
             <div class="mb-3">
                 <label for="price" class="form-label">Price: </label>
-                <input required type="text" id="price" name="price" class="form-control" placeholder="Input Price">
+                <input required type="text" value="<?php echo $book["price"] ?>" id="price" name="price" class="form-control" placeholder="Input Price">
                 <!-- <input id="pwd_confirm" name="pwd_confirm"  class="form-control"placeholder="Confirm password"> -->
             </div>
             <div class="mb-3">
                 <label for="bookAuthor" class="form-label">Product Author:</label>
-                <input required type="text" id="bookAuthor" name="bookAuthor" class="form-control" placeholder="Input Product Author">
+                <input required type="text" value="<?php echo $book["bookAuthor"] ?>" id="bookAuthor" name="bookAuthor" class="form-control" placeholder="Input Product Author">
                 <!-- <input id="pwd" name="pwd" class="form-control" placeholder="Enter password"> -->
             </div>
             <div class="mb-3">
                 <label for="bookPublisher" class="form-label">Product Publisher:</label>
-                <input required type="text" id="bookPublisher" name="bookPublisher" class="form-control" placeholder="Input Product Publisher">
+                <input required type="text" value="<?php echo $book["bookPublisher"] ?>" id="bookPublisher" name="bookPublisher" class="form-control" placeholder="Input Product Publisher">
                 <!-- <input id="pwd" name="pwd" class="form-control" placeholder="Enter password"> -->
             </div>
             <label for="productImage">Select Product Image:</label>
@@ -123,3 +125,8 @@ include "inc/head.inc.php";
     include "inc/footer.inc.php";
     ?>
 </body>
+<script>
+    <?php
+    echo "document.getElementById('genre').value ='" . $book["productGenre"] . "';";
+    ?>
+</script>
