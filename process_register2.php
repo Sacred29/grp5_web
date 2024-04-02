@@ -138,7 +138,7 @@ function saveMemberToDB() {
         } else {
             // If the count is 0, the email does not exist. so can add.
             $stmt = $conn->prepare("INSERT INTO userTable (fName, lName, email, password, userPrivilege) VALUES (?,?,?,?,?)");
-            $stmt->bind_param("sssss    ", $fname, $lname, $email, $pwd, $userPrivilege);
+            $stmt->bind_param("sssss", $fname, $lname, $email, $pwd, $userPrivilege);
             if (!$stmt->execute()){
                 $errorMsg = "Execute failed: (" .$stmt->errno .") " . $stmt->error;
                 $success = false;
