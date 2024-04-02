@@ -6,18 +6,8 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="css/fontAwesome.css">
-    <link rel="stylesheet" href="css/hero-slider.css">
-    <link rel="stylesheet" href="css/owl-carousel.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/table.css">
-    <link rel="stylesheet" type="text/css" href="css/info-alert.css">
-    <link rel="stylesheet" type="text/css" href="css/loading.css">
-    <script src="https://kit.fontawesome.com/777528c189.js" crossorigin="anonymous"></script>
-
-    <link rel="stylesheet" href="/css/fontAwesome.css">
-    <link rel="stylesheet" href="/css/hero-slider.css">
-    <link rel="stylesheet" href="/css/owl-carousel.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/temp.css">
     <script defer src="/js/vendor/jquery-1.11.2.min.js"></script>
