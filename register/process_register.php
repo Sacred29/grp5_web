@@ -85,7 +85,7 @@ if ($success) {
 }
 
 if(!$success) {
-    header('Location: register.php?errMsg=' . urlencode($errorMsg));
+    header('Location: ./'. $_POST['prevpage'] .'?errMsg=' . urlencode($errorMsg));
     exit;
 }
 
@@ -147,7 +147,7 @@ function saveMemberToDB() {
             $conn->close();
             
             // redirect after inserting
-            header("Location: index.php");
+            header("Location: /index.php");
             exit;
             
         }

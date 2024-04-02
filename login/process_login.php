@@ -1,5 +1,6 @@
 <?php
-include "inc/head.inc.php";
+include "../inc/head.inc.php";
+echo ' <link rel="stylesheet" type="text/css" href="/css/loading.css"> ';
 ?>
 <body>
     <main>
@@ -90,12 +91,11 @@ include "inc/head.inc.php";
                 }
                 else {
                     // Loading Screen
-                    include "inc/wave-loader.inc.php";
+                    include "../inc/wave-loader.inc.php";
                     
-                    $redirect = "/process_login_2FA.php";
-                    $url = "./otpService/send.php";
+                    $redirect = "/login/process_login_2FA.php";
                     // Hidden forms
-                    echo '<form id="hiddenForm" action="./otpService/send.php" method="post" style="display: none;">
+                    echo '<form id="hiddenForm" action="'.'/../otpService/send.php" method="post" style="display: none;">
                         <input name="email" value="' . $email . '">
                         <input name="redirect" value="'. $redirect . '">
                         <input type="submit" value="Submit">

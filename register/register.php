@@ -3,7 +3,7 @@
 ?>
 
 <?php
-    include "inc/head.inc.php";    
+    include "../inc/head.inc.php";    
 ?>
 <script>
     grecaptcha.ready(() => {
@@ -21,15 +21,15 @@
 
 <body>
     <?php
-    include "inc/nav.inc.php";
+    include "../inc/nav.inc.php";
     ?>
     <main class="container">
         <h1>Member Registration</h1>
         <p>
             For existing members, please go to the
-            <a href="login.php">Sign In page</a>.
+            <a href="/login/login.php">Sign In page</a>.
         </p>
-        <form id="register-form" action="process_register2.php" method="post">
+        <form id="register-form" action="process_register.php" method="post">
             <div class="mb-3">
                 <label for="fname" class="form-label">First Name:</label>
                 <input maxlength="45" type="text" id="fname" name="fname" class="form-control" placeholder="Enter first name">
@@ -59,8 +59,11 @@
                 <label class="form-check-label" for="agree">
                     Agree to terms and conditions.</label>
             </div>
+            <div type="hidden" class="mb-3 form-check">
+                <input type ="hidden" name="prevpage" id="prevpage" value="register.php"/>
+            </div>
             <?php
-            if ($_SESSION['user_privilege'] == "admin") {
+            if (isset($_SESSION["user_privilege"]) && $_SESSION['user_privilege'] == "admin") {
                 echo '<div class="mb-3">
                 <label for="user_privilege">Select the user type:</label>
                 <select id="user_privilege" name="user_privilege">
@@ -78,7 +81,7 @@
         </form>
 </main>
     <?php
-    include "inc/footer.inc.php";
+    include "../inc/footer.inc.php";
     ?>
 </body>
 <?php
