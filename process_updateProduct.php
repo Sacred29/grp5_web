@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+var_dump($_SESSION);
+?>
 
 <head>
     <title>Update Product Listing</title>
     <?php
+
     include "inc/head.inc.php";
     ?>
 </head>
@@ -123,11 +127,12 @@
             //check connection
             if ($conn->connect_error) {
             } else {
-                if ($_SERVER['REQUEST_METHOD']  == 'GET') {
-                    if (isset($_GET['productID'])) {
-                        $id = $_GET['productID'];
+                if ($_SERVER['REQUEST_METHOD']  == 'POST') {
+                    if (isset($_GET['id'])) {
+                        $id = $_GET['id'];
                         //Prepare statement
                         //Bind and execute query statement
+                        echo "<script>console.log($id)</script>";
                         $stmt = $conn->prepare("UPDATE productTable SET productName = ?, arrivalDate = ?, productGenre = ?, bookUEN = ?, price = ?, bookAuthor = ?, bookPublisher = ?,  productImage = ? WHERE productID = $id");
                         $stmt->bind_param("ssssdsss", $productName, $arrivalDate, $genre, $bookUEN, $price, $bookAuthor, $bookPublisher, $productImage);
 
