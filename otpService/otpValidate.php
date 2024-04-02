@@ -1,5 +1,5 @@
 <?php
-$redirect_Success ? $redirect_Success: "index.php";
+$redirect_Success ? $redirect_Success : "index.php";
 $redirect_Fail ? $redirect_Fail : "index.php";
 
 echo '<link rel="stylesheet" href="../css/otp.css">';
@@ -17,14 +17,14 @@ echo '<script defer src="../js/otp.js"></script>';
         <input class="input" type="text" inputmode="numeric" maxlength="1" id="input6" name="input6" />
         <button class="fa fa-sign-in fa-2x" type="submit" value="Submit" name="specific"></button>
     </div>
-    
+
 </form>
 <div id="errorMessage"></div>
 
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['specific'])) {
-    
-    $config_file = parse_ini_file('/var/www/private/db-config.ini');
+
+    $config_file = '/var/www/private/db-config.ini';
     if (file_exists($config_file)) {
         // Parse the INI file
         $config = parse_ini_file($config_file);
@@ -67,8 +67,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['specific'])) {
             $now = $now->format('Y-m-d H:i:s');
             if ($now < $expiry) {
                 // OTP Validated
-                header("Location: " . $redirect_Success);
-
+                // Redirect using form, to emit post req
+                echo '<form id="hiddenForm" action="' . $redirect_Success . '" method="post" style="display: none;">
+                        <input name="email" value="' . $email . '">
+                        
+                        <input type="submit" value="Submit">
+                        </form>';
+                echo "<script>window.onload = function() {
+                        document.getElementById('hiddenForm').submit();
+                        };</script>";
             } else {
                 echo "<script>console.log('OTP has expired');</script>";
                 echo "<script>document.getElementById('errorMessage').innerHTML = '<p>OTP has expired</p>';</script>";

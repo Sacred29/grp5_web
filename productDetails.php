@@ -20,7 +20,7 @@ session_start();
 
                 $books = [];
                 //create db connection
-                $config_file = parse_ini_file('/var/www/private/db-config.ini');
+                $config_file = '/var/www/private/db-config.ini';
                 if (file_exists($config_file)) {
                     // Parse the INI file
 
@@ -136,7 +136,7 @@ session_start();
                     <input type="hidden" name="deleteProductID" id="deleteProductID" value="<?php echo $book['productID'] ?>">
                     <input type="submit" onclick="confirmDelete()" name="deleteProduct" id="deleteProduct" value="Delete" class="btn btn-danger">
                 </form>
-                
+
                 <form action="updateProduct.php?id=<?php echo $book['productID'] ?>" method="POST">
                     <input type="hidden" name="updateProductID" id="updateProductID" value="<?php echo $book['productID'] ?>">
                     <input type="submit" name="updateProduct" id="updateProduct" value="Update Product" class="btn btn-primary">

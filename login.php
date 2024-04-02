@@ -28,9 +28,16 @@
         <div class="mb-3">
             <button type="submit">Submit</button>
         </div>
+        <div id="errorMsg" class="mb-3"></div>
         </form>
     </main>
     <?php
     include "inc/footer.inc.php";
     ?>
 </body>
+<?php
+if(isset($_GET['errMsg'])) {
+    $errMsg = urldecode($_GET['errMsg']);
+    echo "<script>document.getElementById('errorMsg').innerHTML = '<p>" . $errMsg . "</p>';</script>";
+}
+?>

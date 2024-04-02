@@ -1,12 +1,20 @@
 <?php
     session_start();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <?php
     include "inc/head.inc.php";
 ?>
 <body>
+<?php 
+    if(isset($_SESSION["user_privilege"])) {
+        "<strong>Well done!</strong> You successfully read this important alert message.";
+        $message =  "you are logged in as " . $_SESSION["user_privilege"];
+        include "inc/success-alert.inc.php";
+    } 
+?>
         <!-- Collapsible Top Navbar -->
         <?php
             include "inc/nav.inc.php";
