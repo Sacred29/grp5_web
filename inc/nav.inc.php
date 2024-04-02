@@ -18,7 +18,7 @@
             </li>
         </ul>
         <ul class="navbar-nav ms-auto">
-            <?php if (isset($_SESSION['user_email'])): ?>
+            <?php if (isset($_SESSION['email'])): ?>
                 <li class="nav-item d-flex align-items-center">
                     <span class="navbar-text mr-3">
                         <?php if ($_SESSION['user_privilege'] == 'admin'): ?>
@@ -33,7 +33,7 @@
                     </span>
                     <span class="navbar-text mr-3">
                         <?php
-                            echo htmlspecialchars($_SESSION['user_fname']) . " " . htmlspecialchars($_SESSION['user_lname']); 
+                            echo htmlspecialchars($_SESSION['fName']) . " " . htmlspecialchars($_SESSION['lName']); 
                         ?>
                     </span>
                 </li>

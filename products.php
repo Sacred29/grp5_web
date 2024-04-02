@@ -20,10 +20,10 @@ session_start();
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <?php //if statement for showing and hiding based on session 
-                        echo "<a href='createProduct.php' target=''> <button class='btn btn-primary'>Register New Product</button>
-                        </a>"
-
+                    <?php //if statement for showing and hiding based on session 
+                            if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] != 'user') {
+                                echo "<a href='createProduct.php' target=''> <button class='btn btn-primary'>Register New Product</button></a>";
+                            }
                         ?>
                         <div class="section-heading">
                             <!-- <span>Featured Products</span> -->
