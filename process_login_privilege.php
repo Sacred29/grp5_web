@@ -38,6 +38,9 @@
             // Add session states
             $_SESSION["user_privilege"] = $row["userPrivilege"];
             $_SESSION["email"] = $row["email"];
+            $_SESSION["fName"] = $row["fName"];
+            $_SESSION["lName"] = $row["lName"];
+            
             if($_SESSION["user_privilege"] == 'admin') {
                 header("Location: admin.php");
                 exit;
