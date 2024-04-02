@@ -13,7 +13,9 @@
     <script defer src="/js/vendor/jquery-1.11.2.min.js"></script>
     <script defer src="/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous">
-
+    <link rel="stylesheet" type="text/css" href="css/info-alert.css"> 
+    <link rel="stylesheet" type="text/css" href="css/loading.css"> 
+    <script src="https://kit.fontawesome.com/777528c189.js" crossorigin="anonymous"></script>
 
     </script>
     <!--Bootstrap JS-->
