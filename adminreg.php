@@ -11,7 +11,7 @@
     ?>
     <main class="container">
         <h1>Member Registration</h1>
-        <form action="process_register.php" method="post">
+        <form action="process_register2.php" method="post">
             <div class="mb-3">
                 <label for="fname" class="form-label">First Name:</label>
                 <input maxlength="45" type="text" id="fname" name="fname" class="form-control" placeholder="Enter first name">
