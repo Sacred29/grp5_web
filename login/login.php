@@ -3,13 +3,13 @@
 ?>
 
 <?php
-    include "../inc/head.inc.php";
+    include "./../inc/head.inc.php";
 ?>
 
 <body>
     <?php
-        include "../inc/nav.inc.php";
-        include "../inc/header.inc.php"
+        include "./../inc/nav.inc.php";
+        include "./../inc/header.inc.php"
     ?>
     <main class="container">
         <h1> Member Login </h1>
@@ -32,7 +32,7 @@
         </form>
     </main>
     <?php
-    include "../inc/footer.inc.php";
+    include "./../inc/footer.inc.php";
     ?>
 </body>
 <?php

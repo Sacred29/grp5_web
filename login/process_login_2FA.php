@@ -10,18 +10,18 @@
 
 <body>
     <?php
-        include "../inc/nav.inc.php";
-        include "../inc/header.inc.php"
+        include "./../inc/nav.inc.php";
+        include "./../inc/header.inc.php"
     ?>
     <main>
         <?php
         $redirect_Success="process_login_privilege.php";
         $redirect_Fail="process_login_2FA.php";
-        include "../otpService/otpValidate.php";
+        include "./../otpService/otpValidate.php";
         ?>
     </main>
     <?php
-        include "../inc/footer.inc.php";
+        include "./../inc/footer.inc.php";
     ?>
 </body>
 </html>
