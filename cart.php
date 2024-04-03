@@ -6,6 +6,16 @@
     <?php
     include "inc/nav.inc.php";
     session_start();
+    echo "<script> console.log('UserID: " . $_SESSION["userID"] . "');  </script>";
+    echo "<script> console.log('Final cart: " . json_encode($_SESSION["cart_item"]) . "'); </script>";
+
+
+    ?>
+
+    <?php //if statement for showing and hiding based on session 
+        if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] == 'user') {
+            echo "<script> console.log('Logged in as user');  </script>";
+        }
     ?>
 
 <main class="container">

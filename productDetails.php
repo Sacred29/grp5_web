@@ -113,7 +113,7 @@ $conn->close();
                                         <p class="card-text">Product Author: <?= htmlspecialchars($book['bookAuthor']) ?></p>
                                         <p class="card-text">Product Publisher: <?= htmlspecialchars($book['bookPublisher']) ?></p>
                                         <?php //if statement for showing and hiding based on session 
-                                        if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] == 'user') { ?>
+                                        if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] != 'staff' && $_SESSION['user_privilege'] != 'admin') { ?>
                                             <div class='d-flex justify-content-between'>
                                                 <div>
                                                     <p class='text-dark'>Quantity</p>
