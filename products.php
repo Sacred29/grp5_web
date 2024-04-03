@@ -92,7 +92,7 @@ session_start();
                     echo "<section>";
                     foreach ($books as $book) {
                         $bookPrice = number_format((float)$book['price'], 2);
-                        echo "<div class= 'col-md-4 col-sm-6 col-xs-12'>";
+                        echo "<div class= 'col-md-4'>";
                         echo "<div class='featured-item'>";
                         echo "<div class='thumb'>";
                         echo "<img src='{$book['productImage']}' alt=''>";

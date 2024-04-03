@@ -90,7 +90,7 @@ session_start();
                             $conn->close();
 
                             // Redirect back to the admin page or inform the user
-                            header('Location: products.php');
+
                             exit;
                         } else {
                             // Redirect them to admin page or show an error
@@ -117,21 +117,45 @@ session_start();
 
                 foreach ($books as $book) {
                     $bookPrice = number_format((float)$book['price'], 2);
-                    echo "<div class= 'col-md-4 col-sm-6 col-xs-12'>";
-                    echo "<img src='{$book['productImage']}' alt=''>";
+                    echo "<div class='card mb-3'>";
+                    echo "<div class='row no-gutters'>";
+                    echo "<div class='col-md-4'>";
+                    echo "<img src='{$book['productImage']}' class='card-img' alt=''>";
                     echo "</div>";
-                    echo "<div class='down-content'>";
-                    echo "<h4>Product Name: " . $book['productName'] . "</h4></br>";
-                    echo "<span><sup>Price: " . $bookPrice . "</span></sup></br>";
-                    echo "<p>Product Author: " . $book['bookAuthor'] . "</p</br>";
-                    echo "<p>Product Publisher: " . $book['bookPublisher'] . "</p</br>";
+                    echo "<div class='col-md-8'>";
+                    echo "<div class='card-body'>";
 
-                    echo "</br><button class='btn btn-primary' >Add to Cart</button>";
+                    //display product details
+                    echo "<h3 class='card-title'>Product Name: " . $book['productName'] . "</h5>";
+                    echo "<p class='card-text'>Price: " . $bookPrice . "</p>";
+                    echo "<p class='card-text'>Author: " . $book['bookAuthor'] . "</p>";
+                    echo "<p class='card-text'>Publisher: " . $book['bookPublisher'] . "</p>";
+                    echo "<p class='card-text'>Book Arrival: " . $book['arrivalDate'] . "</p>";
+                    echo "<p class='card-text'>Genre: " . $book['productGenre'] . "</p>";
+                    echo "<p class='card-text'>Book UEN: " . $book['bookUEN'] . "</p>";
+
+                    //Quantity Selector Code
+                    echo "<div class='d-flex justify-content-between'>";
+                    echo "<div>";
+                    echo "<p class='text-dark'>Quantity</p>";
                     echo "</div>";
+                    echo "<div class='input-group w-auto justify-content-end align-items-center'>";
+                    echo "<input type='number' step='1' max='10' value='1' name='quantity' class='quantity-field text-center w-25'>";
+                    echo "</div>";
+                    echo "</div>";
+
+                    //Add to cart button
+                    echo "<button class='btn btn-primary'>Add to Cart</button>";
+                    echo "</div>"; // Close card-body
+                    echo "</div>"; // Close col-md-8
+                    echo "</div>"; // Close row
+                    echo "</div>"; // Close card
+
                 }
 
 
                 ?>
+
                 <form action="productDetails.php" method="POST">
                     <input type="hidden" name="deleteProductID" id="deleteProductID" value="<?php echo $book['productID'] ?>">
                     <input type="submit" onclick="confirmDelete()" name="deleteProduct" id="deleteProduct" value="Delete" class="btn btn-danger">
@@ -146,6 +170,25 @@ session_start();
             </div>
 
         </section>
+        <div class="container">
+            <div class="card">
+                <form action="process_productReview.php?=<?php echo $book['productID'] ?>">
+                    <div class="mb-3">
+                        <label for="productReview" class="form-label">Leave your review here: </label>
+                        <input maxlength="45" type="text" id="productReview" name="productReview" class="form-control" placeholder="Input Product Review">
+                    </div>
+                    <div class="mb-3">
+                        <label for="productRating" class="form-label">Product Rating</label>
+                        <input maxlength="2" type="number" id="productRating" name="productRating" class="form-control" placeholder="Input Product Ratings">
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
     </main>
 
     <script>

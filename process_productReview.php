@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Registration Results</title>
+    <title>Create Review</title>
     <?php
     include "inc/head.inc.php";
     session_start();
@@ -16,20 +16,20 @@
     ?>
     <main>
         <?php
+        $books = [];
+        $productID = $_GET("id");
+        $userID = $_SESSION('userID');
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
-        $productName = $arrivalDate = $genre = $bookUEN = $price = $bookAuthor = $bookPublisher = $productImage = $errorMsg = $errorMsg2 = $errorMsg3 = "";
+        $productID = $userID = $userReview = $userRating = $errorMsg = $errorMsg2 = $errorMsg3 = "";
         $singleError = true; // Initialize as true
         $fields = array(
-            "productName" => "Product Name",
-            "arrivalDate" => "Arrival Date",
-            "genre" => "Genre",
-            "bookUEN" => "Book UEN",
-            "price" => "Price",
-            "bookAuthor" => "Book Author",
-            "bookPublisher" => "Book Publisher",
-            "productImage" => "Product Image",
+            "productID" => "Product ID",
+            "userID" => "User ID",
+            "userReview" => "User Review",
+            "userRating" => "User Rating"
+
         );
         $errorMsg = "";
         $success = true;
@@ -44,15 +44,13 @@
                 }
                 $success = false;
             } else {
-                $productName = sanitize_input($_POST["productName"]);
+
+                $productID = sanitize_input($_POST[$productID]);
+                $userID = sanitize_input($_POST[$userID]);
+                $userReview = sanitize_input($_POST['userReview']);
+                $userRating = sanitize_input($_POST['userRating']);
                 // Additional check to make sure e-mail address is well-formed.
-                $arrivalDate = sanitize_input($_POST["arrivalDate"]);
-                $genre = sanitize_input($_POST["genre"]);
-                $bookUEN = sanitize_input($_POST["bookUEN"]);
-                $price = sanitize_input($_POST["price"]);
-                $bookAuthor = sanitize_input($_POST["bookAuthor"]);
-                $bookPublisher = sanitize_input($_POST["bookPublisher"]);
-                $productImage = sanitize_input($_POST["productImage"]);
+
             }
         }
 
@@ -60,13 +58,10 @@
         if ($success) {
             //$hashedPassword = password_hash($pwd, PASSWORD_DEFAULT);
             echo "<h4>Product Registration Successful!</h4>";
-            echo "<p>Product Name: " . $productName;
-            echo "<p>Arrival Date: " . $arrivalDate;
-            echo "<p>Genre: " . $genre;
-            echo "<p>Price: " . $price;
-            echo "<p>Book Author: " . $bookAuthor;
-            echo "<p>Book Publisher: " . $bookPublisher;
-            echo "<p>Product Image: " . $productImage;
+            echo "<p>Product ID: " . $productID;
+            echo "<p>User ID: " . $userID;
+            echo "<p>User Review: " . $userReview;
+            echo "<p>User Rating: " . $userRating;
             echo '</br><a href="/products.php" class="btn btn-success">Return to Products Page</a><br><br>';
             saveProductToDB();
         } else {
@@ -95,9 +90,9 @@
 
         function saveProductToDB()
         {
-            global $productName, $arrivalDate, $genre, $bookUEN, $price, $bookAuthor, $bookPublisher, $productImage, $errorMsg, $success;
+            global $productID, $userID, $userReview, $userRating, $errorMsg, $success;
 
-            $productImage = "/images/" . $productImage;
+
             //create db connection
             $config_file = '/var/www/private/db-config.ini';
 
@@ -129,8 +124,8 @@
                 } else {
                     //Prepare statement
                     //Bind and execute query statement
-                    $stmt = $conn->prepare("INSERT INTO productTable (productName, arrivalDate, productGenre, bookUEN, price, bookAuthor, bookPublisher, productImage) VALUES (?,?,?,?,?,?,?,?)");
-                    $stmt->bind_param("ssssdsss", $productName, $arrivalDate, $genre, $bookUEN, $price, $bookAuthor, $bookPublisher, $productImage);
+                    $stmt = $conn->prepare("INSERT INTO reviewTable (productID, userID, userReview, userRating) VALUES (?,?,?,?)");
+                    $stmt->bind_param("ddsd", $productID, $userID, $userReview, $userReview);
 
                     //$stmt = $conn->prepare("INSERT INTO world_of_pets_members (fname, lname, email, password) VALUES ('jane','doe','jane@abc.com','123')");
 
@@ -141,6 +136,7 @@
                     $stmt->close();
                 }
                 $conn->close();
+                header('Location: productDetails.php?id=' . $productID);
             }
         }
         ?>
