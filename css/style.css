@@ -1328,3 +1328,7 @@ main > section {
 main > section:nth-child(even) { 
   background: #f8f8f8; 
 }
+
+main > #gallery-carousell {
+  margin-bottom: 500px;
+}

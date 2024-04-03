@@ -60,7 +60,7 @@ $result = $conn->query($sql);
     <main class="container">
         <h1>User Management</h1>
         <div style="margin-top: 20px;">
-            <a href="adminreg.php" class="btn btn-primary">Register New User</a>
+            <a href="/register/register.php" class="btn btn-primary">Register New User</a>
         </div>
         <?php if ($result->num_rows > 0) : ?>
             <table>

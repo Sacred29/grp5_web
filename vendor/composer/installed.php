@@ -28,5 +28,14 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'stripe/stripe-php' => array(
+            'pretty_version' => 'v13.16.0',
+            'version' => '13.16.0.0',
+            'reference' => 'b122efcf4ee02256e4a9ae60783cbf1c3f702503',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../stripe/stripe-php',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
     ),
 );
