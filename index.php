@@ -171,6 +171,7 @@
         "<strong>Well done!</strong> You successfully read this important alert message.";
         $message =  "you are logged in as " . $_SESSION["user_privilege"];
         include "inc/success-alert.inc.php";
+        
     } 
 ?>
         <!-- Collapsible Top Navbar -->

@@ -4,8 +4,8 @@
 
 <body>
     <?php
-        include "inc/nav.inc.php";
         session_start();
+        include "inc/nav.inc.php";
     ?>
     <main class="container">
         <h1> Checkout </h1>
