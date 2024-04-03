@@ -43,17 +43,17 @@ if ($conn->connect_error) {
         $_SESSION["userID"] = $row["userID"];
 
         if ($_SESSION["user_privilege"] == 'admin') {
-            header("Location: admin.php");
+            header("Location: ../admin.php");
             exit;
         } else if ($_SESSION["user_privilege"] == 'staff') {
-            header("Location: staff.php");
+            header("Location: ../staff.php");
             exit;
         } else {
-            header("Location: index.php");
+            header("Location: ../index.php");
             exit;
         }
     } else {
-        header("Location: login.php");
+        header("Location: /login.php");
         exit;
     }
 }
