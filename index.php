@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] = 'user') {
+    if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] == 'user') {
         echo "<script> console.log('Logged in as user');  </script>";
     
     $userID = $_SESSION["userID"];

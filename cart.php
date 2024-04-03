@@ -13,7 +13,7 @@
     ?>
 
     <?php //if statement for showing and hiding based on session 
-        if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] = 'user') {
+        if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] == 'user') {
             echo "<script> console.log('Logged in as user');  </script>";
         }
     ?>
