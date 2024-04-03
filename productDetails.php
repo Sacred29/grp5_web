@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<head>
 <?php
 include "inc/head.inc.php";
 session_start();
+var_dump($_SESSION);
 
 ?>
 
+</head>
 <body>
     <?php
     include "inc/nav.inc.php";
@@ -19,6 +23,9 @@ session_start();
                 <?php
 
                 $books = [];
+
+
+
                 //create db connection
                 $config_file = '/var/www/private/db-config.ini';
                 if (file_exists($config_file)) {
@@ -92,6 +99,29 @@ session_start();
                             // Redirect back to the admin page or inform the user
 
                             exit;
+                        } else if (isset($_GET['id']) && isset($_SESSION['userID'])) {
+
+                            $productID = $_GET['id'];
+                            $userID = $_SESSION['userID'];
+                            $quantity = $_POST['quantity'];
+                            echo "<script>console.log($productID)</script>";
+                            echo "<script>console.log($userID)</script>";
+                            echo "<script>console.log($quantity)</script>";
+                            $stmt = $conn->prepare("INSERT INTO cartID, VALUES(?, ?, ?, ?)");
+                            $stmt->bind_param("i,i,i,d", $userID, $productID, $quantity, $bookPrice);
+
+                            if ($stmt->execute()) {
+                                echo "Record deleted successfully";
+                            } else {
+                                echo "Error deleting record: " . $conn->error;
+                            }
+
+                            $stmt->close();
+                            $conn->close();
+
+                            // Redirect back to the admin page or inform the user
+
+                            exit;
                         } else {
                             // Redirect them to admin page or show an error
                             echo "Invalid request.";
@@ -139,13 +169,15 @@ session_start();
                     echo "<div>";
                     echo "<p class='text-dark'>Quantity</p>";
                     echo "</div>";
+                    echo "<form action='productDetails.php?={$book['productID']}' method='POST'>";
                     echo "<div class='input-group w-auto justify-content-end align-items-center'>";
-                    echo "<input type='number' step='1' max='10' value='1' name='quantity' class='quantity-field text-center w-25'>";
+                    echo "<input type='number' step='1' max='10' value='1' name='quantity' id='quantity' class='quantity-field text-center w-25'>";
                     echo "</div>";
                     echo "</div>";
 
                     //Add to cart button
-                    echo "<button class='btn btn-primary'>Add to Cart</button>";
+                    echo "<input type='submit' name='addtoCart' id='addtoCart' value='Add to Cart' class='btn btn-primary'>";
+                    echo "</form>";
                     echo "</div>"; // Close card-body
                     echo "</div>"; // Close col-md-8
                     echo "</div>"; // Close row
@@ -171,23 +203,124 @@ session_start();
 
         </section>
         <div class="container">
+            <h1 class="mt-5">Leave your review here!</h1>
             <div class="card">
-                <form action="process_productReview.php?=<?php echo $book['productID'] ?>">
-                    <div class="mb-3">
-                        <label for="productReview" class="form-label">Leave your review here: </label>
-                        <input maxlength="45" type="text" id="productReview" name="productReview" class="form-control" placeholder="Input Product Review">
-                    </div>
-                    <div class="mb-3">
-                        <label for="productRating" class="form-label">Product Rating</label>
-                        <input maxlength="2" type="number" id="productRating" name="productRating" class="form-control" placeholder="Input Product Ratings">
-                    </div>
-                    <div class="mb-3">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-
-                </form>
+                <div class="card-body">
+                    <form action="process_productReview.php" method="POST">
+                        <div class="form-group">
+                            <label for="review">Your Review:</label>
+                            <textarea class="form-control" id="review" name="review" rows="4" placeholder="Enter your review here"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="rating">Your Rating:</label>
+                            <select class="form-control" id="rating" name="rating">
+                                <option value="1">1 - Poor</option>
+                                <option value="2">2 - Fair</option>
+                                <option value="3">3 - Average</option>
+                                <option value="4">4 - Good</option>
+                                <option value="5">5 - Excellent</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                    </form>
+                </div>
             </div>
+            </br>
+            <h1 class="mt-5">Reviews on Book:</h1>
+            <?php
+            $reviews = [];
+
+
+
+            //create db connection
+            $config_file = '/var/www/private/db-config.ini';
+            if (file_exists($config_file)) {
+                // Parse the INI file
+
+                $config = parse_ini_file($config_file);
+            } else {
+                // Get configuration from environment variables
+                $config['servername'] = getenv('SERVERNAME');
+                $config['username'] = getenv('DB_USERNAME');
+                $config['password'] = getenv('DB_PASSWORD');
+                $config['dbname'] = getenv('DBNAME');
+            }
+
+            $conn = new mysqli(
+                $config['servername'],
+                $config['username'],
+                $config['password'],
+                $config['dbname']
+            );
+            if ($conn->connect_error) {
+                $errorMsg = "Connection failed: " . $conn->connect_error;
+                $success = false;
+            } else {
+
+
+
+                //check connection
+                if ($conn->connect_error) {
+                    $errorMsg = "Connection failed: " . $conn->connect_error;
+                    $success = false;
+                } else {
+                    //Prepare statement
+                    //Bind and execute query statement
+                    if (isset($_GET['id'])) {
+                        $id = $_GET['id'];
+                        $stmt = $conn->query("SELECT * FROM reviewTable WHERE productID = $id");
+
+                        //$stmt = $conn->prepare("INSERT INTO world_of_pets_members (fname, lname, email, password) VALUES ('jane','doe','jane@abc.com','123')");
+
+
+
+                        // Check if there are rows returned
+                        if ($stmt->num_rows > 0) {
+                            // Loop through the rows and fetch the data
+                            while ($row = $stmt->fetch_assoc()) {
+                                // Access data using column names
+                                $reviews[] = $row;
+                                // Adjust column names as per your table structure
+                            }
+                        } else {
+                            echo "<h3>No reviews yet! Leave your review now!</h3>";
+                        }
+                    } else {
+                        // Redirect them to admin page or show an error
+                        echo "Invalid request.";
+                    }
+
+
+
+                    //$stmt = $conn->prepare("INSERT INTO world_of_pets_members (fname, lname, email, password) VALUES ('jane','doe','jane@abc.com','123')");
+
+
+
+                    // Check if there are rows returned
+
+                }
+            }
+            $conn->close();
+            foreach ($reviews as $review) {
+
+                echo "<div class='card'>";
+                echo "<div class='col-md-8'>";
+                echo "<div class='card-body'>";
+
+                //display product details
+                echo "<h3 class='card-title'>User: " . $_SESSION['fName'] . $_SESSION['lName'] . "</h3>";
+                echo "<p class='card-text'>Review: " . $review['userReview'] . "</p>";
+                echo "<p class='card-text'>Rating: " . $review['userRating'] . "</p>";
+
+                echo "</div>"; // Close col-md-8
+                echo "</div>"; // Close row
+                echo "</div>"; // Close card
+            }
+            ?>
         </div>
+
+
+
 
     </main>
 
@@ -202,4 +335,6 @@ session_start();
             }
         }
     </script>
+
+
 </body>

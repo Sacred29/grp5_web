@@ -27,7 +27,7 @@ session_start();
                         ?>
                         <div class="section-heading">
                             <!-- <span>Featured Products</span> -->
-                            <h2>New Releases</h2>
+                            <h2>Product Catalogue</h2>
                         </div>
                     </div>
                 </div>
