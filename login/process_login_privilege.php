@@ -42,6 +42,7 @@ if ($conn->connect_error) {
         $_SESSION["lName"] = $row["lName"];
         $_SESSION["userID"] = $row["userID"];
 
+
         if ($_SESSION["user_privilege"] == 'admin') {
             header("Location: ../admin.php");
             exit;

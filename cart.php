@@ -4,8 +4,18 @@
 
 <body>
     <?php
-    include "inc/nav.inc.php";
     session_start();
+    include "inc/nav.inc.php";
+    echo "<script> console.log('UserID: " . $_SESSION["userID"] . "');  </script>";
+    echo "<script> console.log('Final cart: " . json_encode($_SESSION["cart_item"]) . "'); </script>";
+
+
+    ?>
+
+    <?php //if statement for showing and hiding based on session 
+        if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] = 'user') {
+            echo "<script> console.log('Logged in as user');  </script>";
+        }
     ?>
 
 <main class="container">
@@ -17,20 +27,32 @@
             $quantity = 1;
             if (!isset($_SESSION["cart_item"])) {
                 $_SESSION["cart_item"] = array(); 
-                echo '<script>console.log("running here 2");</script>';
+                echo '<script>console.log("Session not set");</script>';
+                // $cartItems = $_SESSION["cart_item"];
+                // echo "<script> console.log('Cart Items: " . json_encode($cartItems) . "');  </script>";
+            }
+            else {
+                echo '<script>console.log("Session is set");</script>';
+            }
+            
+            if (empty($_SESSION["cart_item"])) {
+                echo '<h3>Cart is empty</h3>';
             }
 
-            if (isset($_SESSION["cart_item"])){
+
+            //if cart  session is set 
+            if (isset($_SESSION["cart_item"]) && !(empty($_SESSION["cart_item"]))){
                 $total_quantity = 0;
                 $total_price = 0;
-                echo '<script>console.log("running here");</script>';
+                echo '<script>console.log("Session is present");</script>';
+                $cartItems = $_SESSION["cart_item"];
+                //echo "<script> console.log('Cart Items: " . json_encode($cartItems) . "');  </script>";
         ?>  <!-- used to check if cart_item is established in session-->
 
         <table class="tbl-cart" cellpadding="10" cellspacing="1">
         <tbody>
         <tr>
             <th style="text-align:left;">Name</th>
-            <!--<th style="text-align:center;">Code</th>-->
             <th style="text-align:center;" width="10%">Unit Price</th>
             <th style="text-align:center;" width="10%">Quantity</th>
             <th style="text-align:center;" width="10%">Price</th>
@@ -42,6 +64,8 @@
                 $item_price = $item["quantity"]*$item["price"];
                 $cartItems = $_SESSION["cart_item"];
                 echo "<script> console.log('Cart Items: " . json_encode($cartItems) . "');  </script>";
+                echo "<script> console.log('');  </script>";
+
 
         ?>
             <tr>
@@ -68,7 +92,6 @@
         <?php
         } else {
         ?>
-        <div class="no-records">Your Cart is Empty</div>
             <?php
         }
         ?>
@@ -175,19 +198,12 @@
         else{
             if(!empty($_GET["action"])) {
                 switch($_GET["action"]){
-                    case "add":
-                        // if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                        //     // Check if the "quantity" field is set in the $_POST array
-                        //     if (isset($_POST["quantity"])) {
-                        //       $quantity = $_POST["quantity"];
-                        //       echo 'Quantity: ' . $quantity . '<script>console.log("Quantity: ' . $quantity . '");</script>';  
-                    
-                        //      }
-                        //   }
-                          
+                    case "add":              
+                        //check if quantity added is empty
                         if(!empty($_POST["quantity"])){
                             $uen = $_GET["uen"];
-                            echo 'UEN: ' . $uen . '<script>console.log("UEN: ' . $uen . '");</script>';                           
+                            echo 'UEN: ' . $uen . '<script>console.log("UEN: ' . $uen . '");</script>';  
+                            echo "<script> console.log('Add is called here');  </script>";                         
                             $stmt = $conn->prepare("SELECT * FROM bookStore.productTable WHERE bookUEN='$uen';");
                             $stmt->execute();
                             $result = $stmt->get_result();
@@ -213,42 +229,57 @@
                                   echo '<script>console.log("price: ' . $price . '");</script>';                           
                                   echo '<script>console.log("image: ' . $image . '");</script>';
                                   echo '<script>console.log("author: ' .$bookAuthor . '");</script>';                           
-                          
-                       
                                 }
                               } else {
                                 echo '<script>console.log("No Result found");</script>';
                             }
 
                         //itemArray stores the result of the selected item
+                        //checks if session is established
+                        //if cart_item in session is not empty
+                        //i need to check if the uen matches any of the ids in the cart_item session
                         if(!empty($_SESSION["cart_item"])) {
-                            echo '<script>console.log("UEN 2: ' . $uen . '");</script>'; 
-                            //currently session cart_item is empty
-                            if(in_array($uen,array_keys($_SESSION["cart_item"]))) {
-                               echo '<script>console.log("item found inside cart");</script>';
-                                foreach($_SESSION["cart_item"] as $k => $v){
-                                    echo '<script>console.log("ct2");</script>';
-                                    if($uen == $k) {
-                                        if(empty($_SESSION["cart_item"][$k]["quantity"])) {
-                                            $_SESSION["cart_item"][$k]["quantity"] = 0;
-                                        }
-                                        $_SESSION["cart_item"][$k]["quantity"] += $quantity;
-                                        echo '<script>console.log("redirect");</script>';
+                            echo '<script>console.log("Session is present --> about to add item to cart");</script>';
+                            echo '<script>console.log("UEN 2: ' . $uen . '");</script>';
+                            echo '<script>console.log("quantity not null and session is present");</script>';
+                            //established that my cart has an item inside here --> so i will start looping here
+                            //for each item in cart, check if item is inside
+                            $matchFound = false;
+                            foreach ($_SESSION["cart_item"] as $key => $item) {
+                                //foreach item in the cart --> if it matches i want to update the quantity
+                                //if it does not match --> its creating
+                                $bookUEN = $item["bookUEN"];
+                                echo '<script>console.log("bookUEN: ' . $bookUEN . '");</script>';
+                                echo '<script>console.log("UEN: ' . $uen . '");</script>';
+
+                                if($uen == $bookUEN){
+                                    echo '<script>console.log("Match found");</script>';
+                                    $matchFound = true;
+                                    if(!empty($item["quantity"]) && $matchFound){
+                                        $_SESSION["cart_item"][$key]["quantity"] += $quantity;
+
+                                        echo '<script>console.log("New Quantity: ' . $item["quantity"] . '");</script>';
+                                        echo '<script>console.log("Item qty updated inside");</script>';
+                                        echo "<script> console.log('Cart Items: " . json_encode($cartItems) . "');  </script>";
                                     }
                                 }
-                                
-                            } else {
-                                $_SESSION["cart_item"] = array_merge($_SESSION["cart_item"],$itemArray);
                             }
-                                            
-                            } else {
-                                $_SESSION["cart_item"] = $itemArray;
-                                  // Print the contents of $_SESSION["cart_item"]
-                                  echo '<script>console.log("Cart Items:");</script>';
-                                  echo '<script>console.log(' . json_encode($_SESSION["cart_item"]) . ');</script>';
+
+                            if (!$matchFound) {
+                                echo '<script>console.log("Added new item to cart");</script>';
+                                $_SESSION["cart_item"] = array_merge($_SESSION["cart_item"], $itemArray);
                             }
-                        }//end of EMPTY POST QUANTITY
+
+                                }   //if session cart items is empty 
+                                    else {
+                                    $_SESSION["cart_item"] = $itemArray;
+                                    echo '<script>console.log("no items in session, so im assigning first item here");</script>';
+                                }
+
+                                    // Perform additional operations for each bookUEN value
+                                }//end of EMPTY POST QUANTITY
                     break;
+        
 
                     case "remove":
                         if(!empty($_SESSION["cart_item"])) {
