@@ -3,7 +3,7 @@
 ?>
 
 <?php
-    include "../inc/head.inc.php";    
+    include "./../inc/head.inc.php";    
 ?>
 <script>
     grecaptcha.ready(() => {
@@ -21,7 +21,7 @@
 
 <body>
     <?php
-    include "../inc/nav.inc.php";
+    include "./../inc/nav.inc.php";
     ?>
     <main class="container">
         <h1>Member Registration</h1>
@@ -81,7 +81,7 @@
         </form>
 </main>
     <?php
-    include "../inc/footer.inc.php";
+    include "./../inc/footer.inc.php";
     ?>
 </body>
 <?php

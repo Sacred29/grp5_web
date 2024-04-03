@@ -2,7 +2,7 @@
 
 require './../vendor/autoload.php';
 
-$stripe = new \Stripe\StripeClient('sk_test_51P1LItP6kKY7DWfKhv9xq0ytLeU74KomwFb9DFKhHj65amG9MWBhSLglV3FlLfJQP8ja7nbMOggccAk774iyDUsy00WP0lMxkF'); // private api key. need store in envvars.
+$stripe = new \Stripe\StripeClient(getenv("STRIPE_PRIV")); // private api key. need store in envvars.
 
 $checkout_session = $stripe->checkout->sessions->create([
   'line_items' => [[

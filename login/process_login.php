@@ -1,5 +1,5 @@
 <?php
-include "../inc/head.inc.php";
+include "./../inc/head.inc.php";
 echo ' <link rel="stylesheet" type="text/css" href="/css/loading.css"> ';
 ?>
 <body>
@@ -91,7 +91,7 @@ echo ' <link rel="stylesheet" type="text/css" href="/css/loading.css"> ';
                 }
                 else {
                     // Loading Screen
-                    include "../inc/wave-loader.inc.php";
+                    include "./../inc/wave-loader.inc.php";
                     
                     $redirect = "/login/process_login_2FA.php";
                     // Hidden forms
