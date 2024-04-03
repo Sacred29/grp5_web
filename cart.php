@@ -6,9 +6,8 @@
     <?php
     session_start();
     include "inc/nav.inc.php";
-    echo "<script> console.log('UserID: " . $_SESSION["userID"] . "');  </script>";
-    echo "<script> console.log('Final cart: " . json_encode($_SESSION["cart_item"]) . "'); </script>";
-
+    // echo "<script> console.log('UserID: " . $_SESSION["userID"] . "');  </script>";
+    // echo "<script> console.log('Final cart: " . json_encode($_SESSION["cart_item"]) . "'); </script>";
 
     ?>
 
