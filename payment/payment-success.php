@@ -1,3 +1,5 @@
+<?php echo "uen: " . $_GET['uen']; echo "amt: " . $_GET['amt'];?>
+
 <html>
   <head><title>Thanks for your order!</title></head>
   <body>
