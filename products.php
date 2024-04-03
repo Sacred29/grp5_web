@@ -3,7 +3,7 @@
 <?php
 include "inc/head.inc.php";
 session_start();
-
+var_dump($_SESSION);
 ?>
 
 <body>
@@ -20,14 +20,14 @@ session_start();
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                    <?php //if statement for showing and hiding based on session 
-                            if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] != 'user') {
-                                echo "<a href='createProduct.php' target=''> <button class='btn btn-primary'>Register New Product</button></a>";
-                            }
+                        <?php //if statement for showing and hiding based on session 
+                        if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] != 'user') {
+                            echo "<a href='createProduct.php' target=''> <button class='btn btn-primary'>Register New Product</button></a>";
+                        }
                         ?>
                         <div class="section-heading">
                             <!-- <span>Featured Products</span> -->
-                            <h2>New Releases</h2>
+                            <h2>Product Catalogue</h2>
                         </div>
                     </div>
                 </div>
@@ -89,153 +89,37 @@ session_start();
                         $conn->close();
                     }
 
-                    echo "<section>";
-                    foreach ($books as $book) {
-                        $bookPrice = number_format((float)$book['price'], 2);
-                        echo "<div class= 'col-md-4 col-sm-6 col-xs-12'>";
-                        echo "<div class='featured-item'>";
-                        echo "<div class='thumb'>";
-                        echo "<img src='{$book['productImage']}' alt=''>";
-                        echo "</div>";
-                        echo "<div class='down-content'>";
-                        echo "<h4>Product Name: " . $book['productName'] . "</h4></br>";
-                        echo "<span><sup>Price: " . $bookPrice . "</span></sup></br>";
-                        echo "<p>Product Author: " . $book['bookAuthor'] . "</p</br>";
-                        echo "<p>Product Publisher: " . $book['bookPublisher'] . "</p</br>";
-                        echo "<div class='text-button'>";
-                        echo "<a href='productDetails.php?id={$book['productID']}'>View More</a>";
-                        echo "</div>";
-                        echo "</div>";
-                        echo "</div>";
-                        echo "</div>";
-                    }
-                    echo "</section>";
-
-                    /*
-                        ?>
-                        <div class="col-md-4 col-sm-6 col-xs-12">
-                            <div class="featured-item">
-                                <div class="thumb">
-                                    <img src="images/tabby_small.jpg" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <h4><?php echo htmlspecialchars("Book Name:" + $book['productName']); ?></h4>
-                                    <div><?php echo htmlspecialchars($book['arrivalDate']); ?></div>
-                                    <div><?php echo htmlspecialchars($book['productGenre']); ?></div>
-                                    <div><?php echo htmlspecialchars($book['price']); ?></div>
-                                    <div><?php echo htmlspecialchars($book['bookAuthor']); ?></div>
 
 
-
-                                    <p>This is an image about tabby cats.</p>
-
-                                    <div class="text-button">
-                                        <a href="product-details.html">View More</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    <div class="col-md-4 col-sm-6 col-xs-12">
-                        <div class="featured-item">
-                            <div class="thumb">
-                                <img src="images/chihuahua_small.jpg" alt="Chihuahua">
-                            </div>
-                            <div class="down-content">
-                                <h4>Chihuahua</h4>
-
-                                <span><del><sup>$</sup>999.00 </del> <strong><sup>$</sup>779.00</strong></span>
-
-                                <p>This is a book about Chihuahuas.</p>
-
-                                <div class="text-button">
-                                    <a href="product-details.html">View More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 col-sm-6 col-xs-12">
-                        <div class="featured-item">
-                            <div class="thumb">
-                                <img src="images/tabby_small.jpg" alt="">
-                            </div>
-                            <div class="down-content">
-                                <h4>Tabby Cats</h4>
-
-                                <span><del><sup>$</sup>1999.00 </del> <strong><sup>$</sup>1779.00</strong></span>
-
-                                <p>This is an image about tabby cats.</p>
-
-                                <div class="text-button">
-                                    <a href="product-details.html">View More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 col-sm-6 col-xs-12">
-                        <div class="featured-item">
-                            <div class="thumb">
-                                <img src="images/tabby_small.jpg" alt="">
-                            </div>
-                            <div class="down-content">
-                                <h4>Tabby Cats</h4>
-
-                                <span><del><sup>$</sup>99.00 </del> <strong><sup>$</sup>79.00</strong></span>
-
-                                <p>This is a book about tabbies.</p>
-
-                                <div class="text-button">
-                                    <a href="product-details.html">View More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 col-sm-6 col-xs-12">
-                        <div class="featured-item">
-                            <div class="thumb">
-                                <img src="images/chihuahua_small.jpg" alt="">
-                            </div>
-                            <div class="down-content">
-                                <h4>Chihuahua.</h4>
-
-                                <span><del><sup>$</sup>999.00 </del> <strong><sup>$</sup>779.00</strong></span>
-
-                                <p>This is a book about Chihuahuas</p>
-
-                                <div class="text-button">
-                                    <a href="product-details.html">View More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 col-sm-6 col-xs-12">
-                        <div class="featured-item">
-                            <div class="thumb">
-                                <img src="images/tabby_small.jpg" alt="">
-                            </div>
-                            <div class="down-content">
-                                <h4>Tabby Cats</h4>
-
-                                <span><del><sup>$</sup>1999.00 </del> <strong><sup>$</sup>1779.00</strong></span>
-
-                                <p>This is an image about tabby cats.</p>
-
-
-                                <div class="text-button">
-                                    <a href="product-details.html">View More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>*/
                     ?>
+
+                    <section>
+                        <?php foreach ($books as $book) : ?>
+
+                            <div class='col-md-4'>
+                                <div class='featured-item'>
+                                    <div class='item-wrapper'>
+                                        <div class='thumb'>
+                                            <img src='<?= htmlspecialchars($book['productImage']) ?>' alt='Product Image' style='min-height: 400px; max-height: 400px'>
+
+                                        </div>
+                                        <div class='down-content'>
+                                            <h4 style='min-height: 50px;'>Product Name: <?= htmlspecialchars($book['productName']) ?></h4>
+                                            <span style='min-height: 20px;'><sup>Price: <?= htmlspecialchars(number_format((float)$book['price'], 2)) ?></sup></span>
+                                            <p style='min-height: 20px;'>Product Author: <?= htmlspecialchars($book['bookAuthor']) ?></p>
+                                            <p style='min-height: 20px;'>Product Publisher: <?= htmlspecialchars($book['bookPublisher']) ?></p>
+                                            <div class='text-button'>
+                                                <a href='productDetails.php?id=<?= $book['productID'] ?>'>View More</a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        <?php endforeach; ?>
+                    </section>
 
     </main>
     <?php
@@ -243,47 +127,6 @@ session_start();
     ?>
 
 
-    <!--Modal-->
-    <div id="imgModal" class="imgModal">
-        <span class="close">&times;</span>
-        <img class="modal-content" id="img01">
-    </div>
-
-    <!-- Modal -->
-    <div id="myModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Product Details</h4>
-                </div>
-                <div class="modal-body">
-                    <?php
-                    if (isset($_GET["productID"])) {
-                        // Assuming $books is your array containing all books data
-                        foreach ($books as $book) {
-                            if ($book['productID'] == $_GET["productID"]) {
-                                $bookPrice = number_format((float)$book['price'], 2);
-                                echo "<p><strong>Product Name:</strong> " . $book['productName'] . "</p>";
-                                echo "<p><strong>Price:</strong> $" . $bookPrice . "</p>";
-                                echo "<p><strong>Product Author:</strong> " . $book['bookAuthor'] . "</p>";
-                                echo "<p><strong>Product Publisher:</strong> " . $book['bookPublisher'] . "</p>";
-                                break; // Once found the matching book, exit the loop
-                            }
-                        }
-                    } else {
-                        echo "No product selected.";
-                    }
-                    ?>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success">Add to Cart</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
     <script>
