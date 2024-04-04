@@ -47,7 +47,6 @@ include "inc/head.inc.php";
                 if (isset($_GET['id'])) {
                     $id = $_GET['id'];
                     echo "<script>console.log('id :" . $_GET['id'] . "')</script>";
-                    echo "<script>console.log('" . $_GET[''] . "')</script>";
                     $stmt = $conn->query("SELECT * FROM productTable WHERE productID = $id");
 
                     //$stmt = $conn->prepare("INSERT INTO world_of_pets_members (fname, lname, email, password) VALUES ('jane','doe','jane@abc.com','123')");

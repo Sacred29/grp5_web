@@ -18,36 +18,39 @@
             </li>
         </ul>
         <ul class="navbar-nav ms-auto">
-            <?php if (isset($_SESSION['email'])): ?>
+            <?php if (isset($_SESSION['email'])) : ?>
                 <li class="nav-item d-flex align-items-center">
                     <span class="navbar-text mr-3">
-                        <?php if ($_SESSION['user_privilege'] == 'admin'): ?>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin.php">Admin</a>
-                            </li>
-                        <?php elseif ($_SESSION['user_privilege'] == 'staff'): ?>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/staff.php">Staff</a>
-                            </li>
-                        <?php endif?>
-                    </span>
-                    <span class="navbar-text mr-3">
-                        <?php
-                            echo htmlspecialchars($_SESSION['fName']) . " " . htmlspecialchars($_SESSION['lName']); 
-                        ?>
-                    </span>
-                </li>
+                        <?php if ($_SESSION['user_privilege'] == 'admin') : ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="/logout.php">Logout</a>
+                    <a class="nav-link" href="admin.php">Admin</a>
                 </li>
-            <?php else: ?>
+            <?php elseif ($_SESSION['user_privilege'] == 'staff') : ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="/register/register.php">Register</a>
+                    <a class="nav-link" href="/staff.php">Staff</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/login/login.php">Login</a>
-                </li>
-            <?php endif; ?>
-        </ul>   
+            <?php endif ?>
+            </span>
+            <li class="nav-item d-flex align-items-center">
+                <span class="nav-link">
+                    Welcome back, <?php echo htmlspecialchars($_SESSION['fName']) . " " . htmlspecialchars($_SESSION['lName']); ?>
+                </span>
+            </li>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/account.php">Account</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout.php">Logout</a>
+            </li>
+        <?php else : ?>
+            <li class="nav-item">
+                <a class="nav-link" href="/register/register.php">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/login/login.php">Login</a>
+            </li>
+        <?php endif; ?>
+        </ul>
     </div>
 </nav>

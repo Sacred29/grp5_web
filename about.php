@@ -42,8 +42,8 @@
 
 <!-- Second Container -->
 <div class="container-fluid bg-2 text-center">
-  <h3 class="margin">What Am I?</h3>
-  <p style="max-width: 300px; overflow-wrap: break-word; margin: 0 auto; text-align: center; color:beige;">Bookstore Boutique is an online book procurement website for book lovers. With the closure of Book Depository, there exists a gap between book lovers and affordable books, where book lovers would ...</p>   
+  <h3 class="margin">Who Are We?</h3>
+  <p style="max-width: 300px; overflow-wrap: break-word; margin: 0 auto; text-align: center; color:beige;">Bookshelf Boutique is an online book procurement website for book lovers. With the closure of Book Depository, we bridge the gap between book lovers and affordable books.</p>   
 </div>
 
 <div class="container-fluid bg-1 text-center" style="background-image: url('images/bg.jpg'); background-size: cover; background-position: center; height:300px"></div>

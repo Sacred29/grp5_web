@@ -5,6 +5,7 @@
     <title>Registration Results</title>
     <?php
     include "inc/head.inc.php";
+    session_start();
     ?>
 </head>
 
