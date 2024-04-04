@@ -45,12 +45,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
     $bookAuthor = $conn->real_escape_string($_POST['bookAuthor']);
     $bookPublisher = $conn->real_escape_string($_POST['bookPublisher']);
     $productImage = $conn->real_escape_string($_POST['productImage']);
-    //$productImage1 = $conn->real_escape_string($_POST['productImage1']);
-    
-    if (isset($_POST['productImage1'])) {
-        $productImage = "/images/" . $_FILES["productImage1"]["name"];
 
-        $destination_dir = "/images/";
+    if (isset($_FILES)) {
+        $productImage = "/images/" . $_FILES["productImage1"]["name"];
+        $destination_dir = "./../images/";
         $file_name = $_FILES["productImage1"]["name"];
         $file_tmp = $_FILES["productImage1"]["tmp_name"];
         if(move_uploaded_file($file_tmp, $destination_dir . $file_name)) {
@@ -119,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
                 <div>
                     <label>Image</label>
                     <input type="hidden" name="productImage" value="<?php echo $product['productImage']; ?>">
-                    <input type="file" name="productImage1"  id="productImage1" >
+                    <input type="file" id="productImage1" name="productImage1">
                 </div>
                 
                 <button type="submit" name="update">Update Product</button>
