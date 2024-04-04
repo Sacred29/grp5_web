@@ -23,3 +23,29 @@ tbody tr:nth-child(odd) {
 tbody tr:nth-child(even) {
     background-color: #ffffff;
 }
+
+.transactions-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.transactions-table th,
+.transactions-table td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.transactions-table th {
+    background-color: #f2f2f2;
+}
+
+.transactions-table img {
+    width: 100px; /* Set image width or use a class */
+    height: auto;
+}
+
+.transactions-table .total-row {
+    font-weight: bold;
+    text-align: right;
+}
