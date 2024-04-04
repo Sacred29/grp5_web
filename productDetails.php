@@ -8,6 +8,7 @@ $reviews = [];
 $errorMsg = '';
 $success = true;
 
+
 // Create db connection
 $config_file = '/var/www/private/db-config.ini';
 if (file_exists($config_file)) {
@@ -23,6 +24,88 @@ $conn = new mysqli($config['servername'], $config['username'], $config['password
 if ($conn->connect_error) {
     $errorMsg = "Connection failed: " . $conn->connect_error;
     $success = false;
+}
+
+
+if (!empty($_GET["action"])) {
+    echo '<script>console.log("Add to cart clicked");</script>';
+    echo "<script> console.log('Cart Items: " . json_encode($_SESSION["cart_item"]) . "');  </script>";
+    switch ($_GET["action"]) {
+        case "add":
+            echo '<script>console.log("Inner add accessed");</script>';
+            $quantity = $_POST["quantity"];
+
+            if (!empty($_POST["quantity"])) {
+                echo "<script> console.log('Qty not empty');  </script>";
+                $qty = $_POST["quantity"];
+                $id = $_GET["id"];
+                echo "<script> console.log('Product selected: " . $id . "');  </script>";
+                echo "<script> console.log('Quantity added: " . $qty . "');  </script>";
+
+                //now that i have product n qty --> i need to check if id matches any existing product
+                $cartItems = $_SESSION["cart_item"];
+                $stmt = $conn->prepare("SELECT * FROM bookStore.productTable WHERE productID='$id';");
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $itemArray = array(
+                            $row["bookUEN"] => array(
+                                'productName' => $row["productName"],
+                                'bookUEN' => $row["bookUEN"],
+                                'quantity' => $_POST["quantity"],
+                                'price' => $row["price"],
+                                'productImage' => $row["productImage"],
+                                'bookAuthor' => $row["bookAuthor"]
+                            )
+                        );
+                        $name = $row["productName"];
+                        $uen = $row["bookUEN"];
+                        $price = $row["price"];
+                        $image = $row["productImage"];
+                        $bookAuthor = $row["bookAuthor"];
+                        echo '<script>console.log("Name: ' . $name . '");</script>';
+                        echo '<script>console.log("UEN: ' . $uen . '");</script>';
+                        echo '<script>console.log("price: ' . $price . '");</script>';
+                        echo '<script>console.log("image: ' . $image . '");</script>';
+                        echo '<script>console.log("author: ' . $bookAuthor . '");</script>';
+                    }
+                } //end of result
+
+                if (!empty($_SESSION["cart_item"])) {
+                    //if session is not empty
+                    $matchFound = false;
+                    foreach ($_SESSION["cart_item"] as $key => $item) {
+                        $bookUEN = $item["bookUEN"];
+                        echo '<script>console.log("bookUEN: ' . $bookUEN . '");</script>';
+
+                        if ($uen == $bookUEN) {
+                            echo '<script>console.log("Match found");</script>';
+                            $matchFound = true;
+                            if (!empty($item["quantity"]) && $matchFound) {
+                                $_SESSION["cart_item"][$key]["quantity"] += $qty;
+
+                                echo '<script>console.log("New Quantity: ' . $item["quantity"] . '");</script>';
+                                echo '<script>console.log("Item qty updated inside");</script>';
+                                echo "<script> console.log('Cart Items: " . json_encode($cartItems) . "');  </script>";
+                            }
+                        }
+                    }
+
+                    if (!$matchFound) {
+                        echo '<script>console.log("Added new item to cart");</script>';
+                        $_SESSION["cart_item"] = array_merge($_SESSION["cart_item"], $itemArray);
+                    }
+                } else {
+                    $_SESSION["cart_item"] = $itemArray;
+                    echo '<script>console.log("no items in session, so im assigning first item here");</script>';
+                }
+            } else {
+                echo '<script>console.log("Quantity is empty");</script>';
+            }
+            $stmt->close();
+    }
 }
 
 // Assuming below logic is executed only if $success is true
@@ -104,63 +187,69 @@ $conn->close();
                         <div class='card mb-3'>
                             <div class="row no-gutters">
                                 <div class="col-md-4">
-                                    <img src='<?= htmlspecialchars($book['productImage']) ?>' alt='Product Image' class="img-fluid">
+                                    <img src='<?= htmlspecialchars($book['productImage']) ?>' alt='Product Image' class="img-fluid" >
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body">
-                                        <h4 class="card-title">Product Name: <?= htmlspecialchars($book['productName']) ?></h4>
-                                        <span class="card-text">Price: <?= htmlspecialchars(number_format((float)$book['price'], 2)) ?></span>
+                                        <h4 class="card-title">Product Name: <?= htmlspecialchars($book['productName']) ?></h4> <span class="card-text">Price: <?= htmlspecialchars(number_format((float)$book['price'], 2)) ?></span>
                                         <p class="card-text">Product Author: <?= htmlspecialchars($book['bookAuthor']) ?></p>
                                         <p class="card-text">Product Publisher: <?= htmlspecialchars($book['bookPublisher']) ?></p>
-                                        <?php //if statement for showing and hiding based on session 
-                                        if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] != 'staff' && $_SESSION['user_privilege'] != 'admin') { ?>
-                                            <div class='d-flex justify-content-between'>
-                                                <div>
-                                                    <p class='text-dark'>Quantity</p>
-                                                </div>
-                                                <div class='input-group w-auto justify-content-end align-items-center'>
-                                                    <input type='number' step='1' max='10' value='1' name='quantity' id='quantity' class='quantity-field text-center w-25'>
-                                                </div>
-                                            </div>
-                                            <div class='d-flex justify-content-between align-items-center mb-3'>
+                                        <p class="card-text">Product Genre: <?= htmlspecialchars($book['productGenre']) ?></p>
+                                        <p class="card-text">Product UEN: <?= htmlspecialchars($book['bookUEN']) ?></p>
 
-                                                <form action='productDetails.php?=<?php echo $book['productID']; ?>' method='POST' class='d-flex align-items-center'>
-                                                    <input type='submit' name='addtoCart' id='addtoCart' value='Add to Cart' class='btn btn-primary mr-2'>
-                                                </form>
-                                            <?php
+                                        <?php //if statement for showing and hiding based on session 
+                                        if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] != 'staff' && $_SESSION['user_privilege'] != 'admin' ) {
+                                        ?>
+                                            <form action='productDetails.php?action=add&id=<?php echo $book['productID']; ?>' method='POST' class='d-flex align-items-center'>
+                                                <div class='d-flex justify-content-between'>
+                                                    <div>
+                                                        <p class='text-dark'>Quantity</p>
+                                                    </div>
+                                                    <div class='input-group w-auto justify-content-end align-items-center'>
+                                                        <input type='number' step='1' max='10' value='1' name='quantity' id='quantity' class='quantity-field text-center w-25'>
+                                                    </div>
+                                                </div>
+                                                <div class='d-flex justify-content-between align-items-center mb-3'>
+
+                                                    <input type='submit' name='addtoCart' id='addtoCart' onclick="confirmAddtoCart()" value='Add to Cart' class='btn btn-primary mr-2'>
+                                            </form>
+                                        <?php
                                         } ?>
 
-                                            <div class='d-flex'>
-                                                <?php //if statement for showing and hiding based on session 
-                                                if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] != 'user') { ?>
-                                                    <form action="productDetails.php" method="POST">
-                                                        <input type="hidden" name="deleteProductID" id="deleteProductID" value="<?php echo $book['productID'] ?>">
-                                                        <input type="submit" onclick="confirmDelete()" name="deleteProduct" id="deleteProduct" value="Delete" class="btn btn-danger">
-                                                    </form>
-                                                    &nbsp;
-                                                    <form action="updateProduct.php?id=<?php echo $book['productID'] ?>" method="POST">
-                                                        <input type="hidden" name="updateProductID" id="updateProductID" value="<?php echo $book['productID'] ?>">
-                                                        <input type="submit" name="updateProduct" id="updateProduct" value="Update Product" class="btn btn-primary">
-                                                    </form>
-                                                <?php
-                                                } ?>
+                                        <div class='d-flex'>
+                                            <?php //if statement for showing and hiding based on session 
+                                            if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] != 'user') {
+                                            ?>
+                                                <form action="productDetails.php" method="POST">
+                                                    <input type="hidden" name="deleteProductID" id="deleteProductID" value="<?php echo $book['productID'] ?>">
+                                                    <input type="submit" onclick="confirmDelete()" name="deleteProduct" id="deleteProduct" value="Delete" class="btn btn-danger">
+                                                </form>
+                                                &nbsp;
+                                                <form action="updateProduct.php?id=<?php echo $book['productID'] ?>" method="POST">
+                                                    <input type="hidden" name="updateProductID" id="updateProductID" value="<?php echo $book['productID'] ?>">
+                                                    <input type="submit" name="updateProduct" id="updateProduct" value="Update Product" class="btn btn-primary">
+                                                </form>
 
-                                            </div>
-                                            </div>
+
+                                            <?php
+                                            } ?>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+            </div>
 
 
-                        <?php
+            <?php
                         if (isset($_SESSION['message'])) {
                             echo "<script>alert('" . $_SESSION['message'] . "');</script>";
                             unset($_SESSION['message']); // Clear the message after displaying it
                         }
-                        ?>
+            ?>
 
-<!--
+            <!--
                         <button class='btn btn-secondary' onclick='showReviewBox("reviewBox<?= $book['productID'] ?>")'>Add Review</button>
 
                         <div id='reviewBox<?= $book['productID'] ?>' class="review-box">
@@ -174,72 +263,72 @@ $conn->close();
 
 
 
-                        <div class="container">
-                            <h1 class="mt-5">Leave your review here!</h1>
-                            <div class="card">
+            <div class="container">
+                <h1 class="mt-5">Leave your review here!</h1>
+                <div class="card">
+                    <div class="card-body">
+                        <form action="process_productReview.php" method="POST">
+                            <div class="form-group">
+                                <label for="review">Your Review:</label>
+                                <textarea required class="form-control" id="userReview" name="userReview" placeholder="Enter your review here"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="userRating">Your Rating:</label>
+                                <select required class="form-control" id="userRating" name="userRating">
+                                    <option value="1">1 - Poor</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Average</option>
+                                    <option value="4">4 - Good</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                            </div>
+                            <input type="hidden" name="productID" value="<?= htmlspecialchars($book['productID']) ?>">
+                            <input type="submit" class="btn btn-primary" value="Submit Review" name="submitReview" id="submitReview">
+                        </form>
+                    </div>
+                </div>
+
+
+                <div class='reviews-section'>
+                    <?php if (!empty($reviews) && isset($reviews[$book['productID']])) : ?>
+                        <h1 class="mt-5">Reviews on Book:</h1>
+                        <?php foreach ($reviews[$book['productID']] as $review) : ?>
+                            <div class='card'>
                                 <div class="card-body">
-                                    <form action="process_productReview.php" method="POST">
-                                        <div class="form-group">
-                                            <label for="review">Your Review:</label>
-                                            <textarea required class="form-control" id="userReview" name="userReview" placeholder="Enter your review here"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="userRating">Your Rating:</label>
-                                            <select required class="form-control" id="userRating" name="userRating">
-                                                <option value="1">1 - Poor</option>
-                                                <option value="2">2 - Fair</option>
-                                                <option value="3">3 - Average</option>
-                                                <option value="4">4 - Good</option>
-                                                <option value="5">5 - Excellent</option>
-                                            </select>
-                                        </div>
-                                        <input type="hidden" name="productID" value="<?= htmlspecialchars($book['productID']) ?>">
-                                        <input type="submit" class="btn btn-primary" value="Submit Review" name="submitReview" id="submitReview">
-                                    </form>
+                                    <strong><?= htmlspecialchars($review['fName'] ?? '') ?> <?= htmlspecialchars($review['lName'] ?? '') ?></strong>
+                                    <p>Rating: <?= htmlspecialchars($review['userRating'] ?? '') ?>/5</p>
+                                    <p><?= htmlspecialchars($review['userReview'] ?? '') ?></p>
+
+                                    <?php if (isset($_SESSION['user_privilege']) && ($_SESSION['user_privilege'] != 'user')) : ?>
+                                        <form method="post" action="process_deletereview.php" class="delete-review-form">
+                                            <input type="hidden" name="reviewID" value="<?= $review['reviewID'] ?>">
+                                            <input type="hidden" name="productID" value="<?= $book['productID'] ?>">
+                                            <input type="submit" onclick=deleteReview() value="Delete" class="fa fa-trash">
+                                        </form>
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
 
-                            <div class='reviews-section'>
-                                <?php if (!empty($reviews) && isset($reviews[$book['productID']])) : ?>
-                                    <h1 class="mt-5">Reviews on Book:</h1>
-                                    <?php foreach ($reviews[$book['productID']] as $review) : ?>
-                                        <div class='card'>
-                                            <div class="card-body">
-                                                <strong><?= htmlspecialchars($review['fName'] ?? '') ?> <?= htmlspecialchars($review['lName'] ?? '') ?></strong>
-                                                <p>Rating: <?= htmlspecialchars($review['userRating'] ?? '') ?>/5</p>
-                                                <p><?= htmlspecialchars($review['userReview'] ?? '') ?></p>
-
-                                                <?php if (isset($_SESSION['user_privilege']) && ($_SESSION['user_privilege'] != 'user')) : ?>
-                                                    <form method="post" action="process_deletereview.php" class="delete-review-form">
-                                                        <input type="hidden" name="reviewID" value="<?= $review['reviewID'] ?>">
-                                                        <input type="hidden" name="productID" value="<?= $book['productID'] ?>">
-                                                        <input type="submit" onclick=deleteReview() value="Delete" class="fa fa-trash">
-                                                    </form>
-                                                <?php endif; ?>
-                                            </div>
-                                        </div>
 
 
-
-
-                                    <?php endforeach; ?>
-                            </div>
-                        </div>
-
-
-
-
-                    <?php else : ?>
-                        <p>No reviews yet. Be the first to review!</p>
-                    <?php endif; ?>
+                        <?php endforeach; ?>
+                </div>
             </div>
 
-        <?php endforeach; ?>
 
-    <?php else : ?>
-        <p><?= $errorMsg ?></p>
-    <?php endif; ?>
+
+
+        <?php else : ?>
+            <p>No reviews yet. Be the first to review!</p>
+        <?php endif; ?>
+        </div>
+
+    <?php endforeach; ?>
+
+<?php else : ?>
+    <p><?= $errorMsg ?></p>
+<?php endif; ?>
 
         </section>
     </main>
@@ -252,6 +341,16 @@ $conn->close();
             }
             if (result == true) {
                 alert("Your listing has been deleted successfully!");
+            }
+        }
+
+        function confirmAddtoCart() {
+            var result = confirm("Are you sure you want to add to cart?");
+            if (result == false) {
+                event.preventDefault();
+            }
+            if (result == true) {
+                alert("Added to Cart Successfully!");
             }
         }
 

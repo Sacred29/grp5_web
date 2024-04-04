@@ -166,8 +166,7 @@ $conn->close();
     <main class="container">
         <h1>Shopping Cart</h1>
         <div id="shopping-cart">
-            <a id="btnEmpty" href="/cart.php?action=empty">Empty Cart</a>
-            <a id="btnRedirect" href="/checkout.php">Check Out</a>
+
             <?php
             $quantity = 1;
             if (!isset($_SESSION["cart_item"])) {
@@ -213,7 +212,7 @@ $conn->close();
 
                         ?>
                             <tr>
-                                <td style="border-top: 1px solid black; border-bottom: 1px solid black;"><img src="<?php echo $item["productImage"]; ?>" class="cart-item-image" /><?php echo $item["productName"]; ?></td>
+                                <td style="border-top: 1px solid black; border-bottom: 1px solid black;"><img src="<?php echo $item["productImage"]; ?>" class="cart-item-image" />&nbsp; <?php echo $item["productName"]; ?></td>
                                 <td style="text-align:center; border-top: 1px solid black; border-bottom: 1px solid black;"><?php echo "$ " . $item["price"]; ?></td>
                                 <td style="text-align:center; border-top: 1px solid black; border-bottom: 1px solid black;"><?php echo $item["quantity"]; ?></td>
                                 <td style="text-align:center; border-top: 1px solid black; border-bottom: 1px solid black;"><?php echo "$ " . number_format($item_price, 2); ?></td>
@@ -229,7 +228,7 @@ $conn->close();
                             <td colspan="2" align="right" style="display:table-cell; font-weight:bold; padding-right:30px; padding-top:10px;">Total:</td>
                             <td align="right" style="display:table-cell; font-weight:bold; padding-right:50px; padding-top:10px;"><?php echo $total_quantity; ?></td>
                             <td align="right" colspan="2" style="display:table-cell; font-weight:bold; padding-right:75px; padding-top:10px;"><strong><?php echo "$ " . number_format($total_price, 2); ?></strong></td>
-                            <td></td>
+
                         </tr>
                     </tbody>
                 </table>
@@ -239,6 +238,9 @@ $conn->close();
             <?php
             }
             ?>
+            <a id="btnRedirect" class="btn btn-primary" onclick="confirmCheckout()">Check Out</a>
+            <a id="btnEmpty" class="btn btn-danger" onclick="confirmEmpty()" href="/cart.php?action=empty">Empty Cart</a>
+
         </div> <!-- End of shopping-cart div-->
 
         <div class="container-fluid bg-3 text-center">
@@ -281,21 +283,24 @@ $conn->close();
                 }
                 if (!empty($resultArray)) {
                     foreach ($resultArray as $key => $value) {
-
+                        $price = number_format($resultArray[$key]["price"], 2);
                         echo '<div class="col-md-4">';
                         echo '<div class="product-item">';
+                        echo '<div class="item-wrapper">';
                         echo '<form method="post" action="/cart.php?action=add&uen=' . $resultArray[$key]["bookUEN"] . '">';
-                        echo '<img src="' . $resultArray[$key]["productImage"] . '" class="img-responsive margin" style="width:100%" alt="Image">';
-                        echo '<div class="product-title" style="text-align:center;">' . $resultArray[$key]["productName"] . '</div>';
-                        echo '<div class="product-author" style="text-align:center; margin-bottom:5px;">"by" ' . $resultArray[$key]["bookAuthor"] . '</div>';
-                        echo '<div class="product-price" style="text-align:right; margin-left: 30px;"> $ ' . $resultArray[$key]["price"] . '</div>';
-                        echo '<div class="cart-action" style="text-align:left;">';
-                        echo '<input type="text" class="product-quantity" name="quantity" value="1" size="1" style="text-align:center; margin-left:70px;"/>';
-                        echo '<input type="submit" style="margin-right:20px;" value="Add to Cart" class="btnAddAction" />';
+                        echo '<img src="' . $resultArray[$key]["productImage"] . '" class="img-responsive margin" style="width:100%; height: 400px;;" alt="Image">';
                         echo '</div>';
+                        echo '<div class="product-title text-center">' . $resultArray[$key]["productName"] . '</div>';
+                        echo '<div class="product-author text-center" style="margin-bottom:5px;">"by" ' . $resultArray[$key]["bookAuthor"] . '</div>';
+                        echo '<div class="product-details" style="display:flex; justify-content:space-between; align-items:center;">';
+                        echo '<div class="product-price">$ ' . $resultArray[$key]["price"] . '</div>';
+                        echo '<input type="number" step="1" min="1" max="10" value="1" name="quantity" id="quantity" class="quantity-field text-center w-25">';
+                        echo '<input type="submit" value="Add to Cart" class="btnAddAction" />';
+
                         echo '</div>';
                         echo '</div>';
                         echo '</form>';
+                        echo '</div>';
                     }
                 }
                 $stmt->close();
@@ -306,6 +311,26 @@ $conn->close();
             ?>
         </div> <!-- End of product-grid-->
     </main>
+    <script>
+        function confirmCheckout() {
+            <?php if (empty($_SESSION["cart_item"])) : ?>
+                alert("The cart is currently empty, unable to checkout");
+            <?php else : ?>
+                alert("Redirecting to checkout");
+                window.location.href = '/checkout.php';
+            <?php endif; ?>
+        }
+
+        function confirmEmpty() {
+            var result = confirm("Are you sure you want to empty this cart?");
+            if (result == false) {
+                event.preventDefault();
+            }
+            if (result == true) {
+                alert("Your cart has been emptied successfully!");
+            }
+        }
+    </script>
 
     <?php
     include "inc/footer.inc.php";
