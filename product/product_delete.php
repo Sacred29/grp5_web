@@ -2,15 +2,8 @@
 
 session_start();
 
-// Check if the user is logged in and is an admin
-if (!isset($_SESSION['user_privilege']) || $_SESSION['user_privilege'] !== 'admin' && $_SESSION['user_privilege'] !== 'staff') {
-    // Redirect to login page if not logged in or not an admin
-    header('Location: login.php');
-    exit;
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['userID'])) {
-    $memberId = $_POST['userID'];
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['productID'])) {
+    $productID = $_POST['productID'];
 
     $config_file = '/var/www/private/db-config.ini';
     if (file_exists($config_file)) {
@@ -38,8 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['userID'])) {
     }
 
     // Prepare and bind
-    $stmt = $conn->prepare("DELETE FROM bookStore.userTable WHERE userID = ?");
-    $stmt->bind_param("i", $memberId);
+    $stmt = $conn->prepare("DELETE FROM bookStore.productTable WHERE productID = ?");
+    $stmt->bind_param("i", $productID);
 
     if ($stmt->execute()) {
         echo "Record deleted successfully";
@@ -51,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['userID'])) {
     $conn->close();
 
     // Redirect back to the admin page or inform the user
-    header('Location: admin.php');
+    header('Location: /admin/management.php');
     exit;
 } else {
     // Redirect them to admin page or show an error

@@ -1,15 +1,6 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['email'])) {
-    header("location: /login/login.php");
-    exit;
-}
-
-if ($_SESSION['userPrivilege'] != 'staff' && $_SESSION['userPrivilege'] != 'admin') {
-    header("location: /index.php"); 
-}
-
 $config_file = '/var/www/private/db-config.ini';
 if (file_exists($config_file)) {
     $config = parse_ini_file($config_file);
@@ -56,9 +47,11 @@ if (isset($_POST['reviewID'])) {
 } else {
     $_SESSION['message'] = "No review ID provided for deletion.";
 }
+echo "123";
 
 // Redirect to product details page, or wherever you would like the user to go after deletion
-$productID = $_POST['productID'] ?? 'defaultProductID';
-header('Location: /productDetails.php?id=' . $productID);
+// $productID = $_POST['productID'] ?? 'defaultProductID';
+header("Location: /admin/management.php");
+// header('Location: /productDetails.php?id=' . $productID);
 exit;
 ?>

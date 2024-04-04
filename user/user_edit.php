@@ -53,11 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
     $updateSql = "UPDATE bookStore.userTable SET fName='$fName', lName='$lName', email='$email', userPrivilege='$userPrivilege' WHERE userID='$userID'";
 
     if ($conn->query($updateSql) === TRUE) {
-        if ($_SESSION['user_privilege'] == 'admin') {
-            echo "User updated successfully. <a href='admin.php'>Return to User Management</a>";
-        } else {
-            echo "User updated successfully. <a href='staff.php'>Return to User Management</a>";
-        }
+        header("Location: /admin/management.php");
     } else {
         echo "Error updating user: " . $conn->error;
     }
@@ -97,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
                     </select>
                 </div>
                 <button type="submit" name="update">Update User</button>
-                <button type="button" onclick="location.href='/admin.php'">Back</button>
+                <button type="button" onclick="location.href='/admin/management.php'">Back</button>
             </form>
         </body>
 
