@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php
 session_start();
 
@@ -84,4 +85,5 @@ $result = $conn->query($sql);
 
     <?php $conn->close(); ?>
 </div>
+</html>
   
