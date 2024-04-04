@@ -675,6 +675,7 @@ section.banner {
 .featured-places .featured-item .down-content .text-button a {
   font-size: 12px;
   text-transform: uppercase;
+  
   color: #7a7a7a;
   letter-spacing: 0.5px;
   text-decoration: none;
@@ -1322,11 +1323,11 @@ footer .contact-info ul li a {
 }
 
 main > section { 
-  background: #fff;  
+  background: #ffffff;  
 }
   
 main > section:nth-child(even) { 
-  background: #f8f8f8; 
+  background: #ffffff; 
 }
 
 main > #gallery-carousell {
