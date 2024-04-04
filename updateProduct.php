@@ -75,8 +75,8 @@ session_start();
         ?>
         <h1>Product Update</h1>
 
-        <form action="process_updateProduct.php?id=<?php echo $_GET['id'] ?>" method="POST">
-            <input type="hidden" name="id" id="id" value=<?php echo $_GET['id'] ?>>
+        <form action="process_updateProduct.php?id=<?php echo $_GET['id']?>" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="id" id = "id" value=<?php echo $_GET['id']?>>
             <div class="mb-3">
                 <label for="productName" class="form-label">Product Name</label>
                 <input maxlength="45" value="<?php echo $book["productName"] ?>" type="text" id="productName" name="productName" class="form-control" placeholder="Input Product Name">

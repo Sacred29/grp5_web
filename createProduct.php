@@ -16,7 +16,7 @@
     <main class="container">
         <h1>Product Registration</h1>
 
-        <form action="/process_productRegister.php" method="post">
+        <form action="/process_productRegister.php" method="post" enctype="multipart/form-data" >
             <div class="mb-3">
                 <label for="productName" class="form-label">Product Name</label>
                 <input maxlength="45" type="text" id="productName" name="productName" class="form-control" placeholder="Input Product Name">
