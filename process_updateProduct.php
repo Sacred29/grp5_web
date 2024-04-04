@@ -1,16 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
 <?php
-var_dump($_SESSION);
+include "inc/head.inc.php";
+session_start();
 ?>
 
-<head>
-    <title>Update Product Listing</title>
-    <?php
 
-    include "inc/head.inc.php";
-    ?>
-</head>
+
+
 
 
 <body>
@@ -32,7 +27,7 @@ var_dump($_SESSION);
             "price" => "Price",
             "bookAuthor" => "Book Author",
             "bookPublisher" => "Book Publisher",
-            "productImage" => "Product Image",
+            // "productImage" => "Product Image",
         );
         $errorMsg = "";
         $success = true;
@@ -55,14 +50,27 @@ var_dump($_SESSION);
                 $price = sanitize_input($_POST["price"]);
                 $bookAuthor = sanitize_input($_POST["bookAuthor"]);
                 $bookPublisher = sanitize_input($_POST["bookPublisher"]);
-                $productImage = sanitize_input($_POST["productImage"]);
+                // $productImage = sanitize_input($_POST["productImage"]);
+                
+            }
+        }
+
+        if (isset($_FILES)) {
+            $productImage = $_FILES["productImage"]["name"];
+            $destination_dir = "./images/";
+            $file_name = $_FILES["productImage"]["name"];
+            $file_tmp = $_FILES["productImage"]["tmp_name"];
+            if(move_uploaded_file($file_tmp, $destination_dir . $file_name)) {
+                echo "File uploaded successfully!";
+            } else {
+                echo "Error uploading file.";
             }
         }
 
 
         if ($success) {
             //$hashedPassword = password_hash($pwd, PASSWORD_DEFAULT);
-            echo "<h4>Product Registration Successful!</h4>";
+            echo "<h4>Product Update Successful!</h4>";
             echo "<p>Product Name: " . $productName;
             echo "<p>Arrival Date: " . $arrivalDate;
             echo "<p>Genre: " . $genre;

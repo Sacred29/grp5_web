@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+include "inc/head.inc.php";
+session_start();
+?>
 
-<head>
-    <title>Registration Results</title>
-    <?php
-    include "inc/head.inc.php";
-    session_start();
-    ?>
-</head>
 
 
 <body>
@@ -29,7 +24,7 @@
             "price" => "Price",
             "bookAuthor" => "Book Author",
             "bookPublisher" => "Book Publisher",
-            "productImage" => "Product Image",
+            // "productImage" => "Product Image",
         );
         $errorMsg = "";
         $success = true;
@@ -52,7 +47,20 @@
                 $price = sanitize_input($_POST["price"]);
                 $bookAuthor = sanitize_input($_POST["bookAuthor"]);
                 $bookPublisher = sanitize_input($_POST["bookPublisher"]);
-                $productImage = sanitize_input($_POST["productImage"]);
+                // $productImage = sanitize_input($_POST["productImage"]);
+                
+            }
+        }
+
+        if (isset($_FILES)) {
+            $productImage = $_FILES["productImage"]["name"];
+            $destination_dir = "./images/";
+            $file_name = $_FILES["productImage"]["name"];
+            $file_tmp = $_FILES["productImage"]["tmp_name"];
+            if(move_uploaded_file($file_tmp, $destination_dir . $file_name)) {
+                echo "File uploaded successfully!";
+            } else {
+                echo "Error uploading file.";
             }
         }
 
@@ -149,5 +157,3 @@
     include "inc/footer.inc.php";
     ?>
 </body>
-
-</html>

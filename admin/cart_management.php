@@ -2,13 +2,6 @@
 <?php
 session_start();
 
-// Check if the user is logged in and is an admin
-if (!isset($_SESSION['user_privilege']) || $_SESSION['user_privilege'] !== 'admin' && $_SESSION['user_privilege'] !== 'staff') {
-    // Redirect to login page if not logged in or not an admin
-    header('Location: /login/login.php');
-    exit;
-}
-
 // Database configuration
 $config; //parse_ini_file('/var/www/private/db-config.ini');
 
@@ -37,60 +30,42 @@ if ($conn->connect_error) {
 }
 
 // Query to select all columns for users with user_privilege = 'user'
-$sql = "SELECT * FROM bookStore.userTable WHERE userPrivilege != 'admin'";
+$sql = "SELECT user.userID, user.email , cart.cartID, cart.productID, cart.quantity, cart.price FROM bookStore.cartTable AS cart INNER JOIN bookStore.userTable AS user ON cart.userID = user.userID WHERE user.userPrivilege = 'user';";
 $result = $conn->query($sql);
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <title>BookStore - User Management</title>
-    <?php
-    include "inc/head.inc.php";
-    ?>
-</head>
-
-<body>
-    <?php
-    include "inc/nav.inc.php";
-    ?>
-    <!-- <?php
-            include "inc/header.inc.php";
-            ?> -->
-    <main class="container">
-        <h1>User Management</h1>
-        <div style="margin-top: 20px;">
-            <a href="/register/register.php" class="btn btn-primary">Register New User</a>
-        </div>
+  
+<div class="container">
         <?php if ($result->num_rows > 0) : ?>
             <table>
                 <thead>
                     <tr>
                         <th>Member ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
                         <th>Email</th>
-                        <th>User Privilege</th>
+                        <th>Cart ID</th>
+                        <th>Product ID</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php while ($row = $result->fetch_assoc()) : ?>
                         <tr>
                             <td><?php echo $row["userID"]; ?></td>
-                            <td><?php echo $row["fName"]; ?></td>
-                            <td><?php echo $row["lName"]; ?></td>
                             <td><?php echo $row["email"]; ?></td>
-                            <td><?php echo $row["userPrivilege"]; ?></td>
+                            <td><?php echo $row["cartID"]; ?></td>
+                            <td><?php echo $row["productID"]; ?></td>
+                            <td><?php echo $row["quantity"]; ?></td>
+                            <td><?php echo $row["price"]; ?></td>
                             <td>
-                                <form action="/process_edit.php" method="post">
-                                    <input type="hidden" name="userID" value="<?php echo $row["userID"]; ?>">
+                                <form action="/cart/cart_update.php" method="post">
+                                    <input type="hidden" name="cartID" value="<?php echo $row["cartID"]; ?>">
                                     <input type="submit" value="Edit">
                                 </form>
                             </td>
                             <td>
-                                <form action="/process_delete.php" method="post">
-                                    <input type="hidden" name="userID" value="<?php echo $row["userID"]; ?>">
+                                <form action="/cart/cart_delete.php" method="post">
+                                    <input type="hidden" name="cartID" value="<?php echo $row["cartID"]; ?>">
                                     <input type="submit" value="Delete">
                                 </form>
                             </td>
@@ -100,13 +75,9 @@ $result = $conn->query($sql);
             </table>
         <?php else : ?>
             <p>No user data found.</p>
-        <?php endif; ?>
+    <?php endif; ?>
 
-        <?php $conn->close(); ?>
-    </main>
-    <?php
-    include "inc/footer.inc.php";
-    ?>
-</body>
-
+    <?php $conn->close(); ?>
+</div>
 </html>
+  

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php
     include "inc/head.inc.php";
 ?>
@@ -50,3 +51,4 @@
     include "inc/footer.inc.php";
     ?>
 </body>
+</html>

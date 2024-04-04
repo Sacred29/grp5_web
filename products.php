@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
 <?php
 include "inc/head.inc.php";
 session_start();
-var_dump($_SESSION);
+
 ?>
 
 <body>
@@ -31,6 +30,14 @@ var_dump($_SESSION);
                         </div>
                     </div>
                 </div>
+                <form action="/search.php" method="get">
+                    <div class="input-group">
+                        <input maxlength="255" type="text" id="book-title" name="book-title" class="form-control" placeholder="Search">
+                        <span class="input-group-addon">
+                            <button type="submit">Search</button>
+                        </span>
+                    </div>
+                </form>
                 <div class="row">
                     <?php
                     $books = [];

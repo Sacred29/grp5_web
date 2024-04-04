@@ -2,13 +2,6 @@
 <?php
 session_start();
 
-// Check if the user is logged in and is an admin
-if (!isset($_SESSION['user_privilege']) || $_SESSION['user_privilege'] !== 'admin' && $_SESSION['user_privilege'] !== 'staff') {
-    // Redirect to login page if not logged in or not an admin
-    header('Location: /login/login.php');
-    exit;
-}
-
 // Database configuration
 $config; //parse_ini_file('/var/www/private/db-config.ini');
 
@@ -41,25 +34,9 @@ $sql = "SELECT * FROM bookStore.userTable WHERE userPrivilege != 'admin'";
 $result = $conn->query($sql);
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <title>BookStore - User Management</title>
-    <?php
-    include "inc/head.inc.php";
-    ?>
-</head>
-
-<body>
-    <?php
-    include "inc/nav.inc.php";
-    ?>
-    <!-- <?php
-            include "inc/header.inc.php";
-            ?> -->
-    <main class="container">
-        <h1>User Management</h1>
+  
+<div class="container">
+    
         <div style="margin-top: 20px;">
             <a href="/register/register.php" class="btn btn-primary">Register New User</a>
         </div>
@@ -83,13 +60,13 @@ $result = $conn->query($sql);
                             <td><?php echo $row["email"]; ?></td>
                             <td><?php echo $row["userPrivilege"]; ?></td>
                             <td>
-                                <form action="/process_edit.php" method="post">
+                                <form action="/user/user_edit.php" method="post">
                                     <input type="hidden" name="userID" value="<?php echo $row["userID"]; ?>">
                                     <input type="submit" value="Edit">
                                 </form>
                             </td>
                             <td>
-                                <form action="/process_delete.php" method="post">
+                                <form action="/user/user_delete.php" method="post">
                                     <input type="hidden" name="userID" value="<?php echo $row["userID"]; ?>">
                                     <input type="submit" value="Delete">
                                 </form>
@@ -100,13 +77,8 @@ $result = $conn->query($sql);
             </table>
         <?php else : ?>
             <p>No user data found.</p>
-        <?php endif; ?>
+    <?php endif; ?>
 
-        <?php $conn->close(); ?>
-    </main>
-    <?php
-    include "inc/footer.inc.php";
-    ?>
-</body>
-
-</html>
+    <?php $conn->close(); ?>
+</div>
+</html>  
