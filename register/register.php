@@ -1,9 +1,10 @@
+<!DOCTYPE html>
 <?php
-    session_start();
+session_start();
 ?>
 
 <?php
-    include "./../inc/head.inc.php";    
+include "./../inc/head.inc.php";
 ?>
 <script>
     grecaptcha.ready(() => {
@@ -60,7 +61,7 @@
                     Agree to terms and conditions.</label>
             </div>
             <div type="hidden" class="mb-3 form-check">
-                <input type ="hidden" name="prevpage" id="prevpage" value="register.php"/>
+                <input type="hidden" name="prevpage" id="prevpage" value="register.php" />
             </div>
             <?php
             if (isset($_SESSION["user_privilege"]) && $_SESSION['user_privilege'] == "admin") {
@@ -79,14 +80,16 @@
             </div>
             <div id="errorMsg" class="mb-3"></div>
         </form>
-</main>
+    </main>
     <?php
     include "./../inc/footer.inc.php";
     ?>
 </body>
 <?php
-if(isset($_GET['errMsg'])) {
+if (isset($_GET['errMsg'])) {
     $errMsg = urldecode($_GET['errMsg']);
     echo "<script>document.getElementById('errorMsg').innerHTML = '<p>" . $errMsg . "</p>';</script>";
 }
 ?>
+
+</html>

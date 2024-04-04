@@ -1,16 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
 <?php
-var_dump($_SESSION);
+include "inc/head.inc.php";
+session_start();
 ?>
 
-<head>
-    <title>Update Product Listing</title>
-    <?php
 
-    include "inc/head.inc.php";
-    ?>
-</head>
+
+
 
 
 <body>
@@ -62,7 +57,7 @@ var_dump($_SESSION);
 
         if ($success) {
             //$hashedPassword = password_hash($pwd, PASSWORD_DEFAULT);
-            echo "<h4>Product Registration Successful!</h4>";
+            echo "<h4>Product Update Successful!</h4>";
             echo "<p>Product Name: " . $productName;
             echo "<p>Arrival Date: " . $arrivalDate;
             echo "<p>Genre: " . $genre;

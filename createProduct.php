@@ -1,6 +1,13 @@
-<?php
-include "inc/head.inc.php";
-?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Product Registration</title>
+    <?php
+    include "inc/head.inc.php";
+    session_start();
+    ?>
+</head>
 
 <body>
     <?php
@@ -61,3 +68,5 @@ include "inc/head.inc.php";
     include "inc/footer.inc.php";
     ?>
 </body>
+
+</html>

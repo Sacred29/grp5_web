@@ -35,7 +35,7 @@
                             <div class="col-md-6">
                                 <ul>
                                     <li><a href="/products.php"><i class="fa fa-stop"></i>Products</a></li>
-                                    <li><a href="/contact.php"><i class="fa fa-stop"></i>Contact Us</a></li>
+                                    <li><a href="/cart.php"><i class="fa fa-stop"></i>Cart</a></li>
                                 </ul>
                             </div>
                         </div>

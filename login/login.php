@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php
     session_start();
 ?>
@@ -41,3 +42,4 @@ if(isset($_GET['errMsg'])) {
     echo "<script>document.getElementById('errorMsg').innerHTML = '<p>" . $errMsg . "</p>';</script>";
 }
 ?>
+</html>

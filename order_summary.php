@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php
 include "inc/head.inc.php";
 ?>
@@ -93,3 +94,4 @@ include "inc/head.inc.php";
         max-height: 50%;
     }
 </style>
+</html>

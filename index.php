@@ -153,7 +153,6 @@ if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] == 'user')
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
 <?php
 include "inc/head.inc.php";
 

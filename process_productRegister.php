@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+include "inc/head.inc.php";
+session_start();
+?>
 
-<head>
-    <title>Registration Results</title>
-    <?php
-    include "inc/head.inc.php";
-    session_start();
-    ?>
-</head>
 
 
 <body>
@@ -149,5 +144,3 @@
     include "inc/footer.inc.php";
     ?>
 </body>
-
-</html>

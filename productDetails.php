@@ -1,7 +1,7 @@
+<!DOCTYPE html>
 <?php
 include "inc/head.inc.php";
 session_start();
-var_dump($_SESSION);
 
 $books = [];
 $reviews = [];
@@ -187,7 +187,7 @@ $conn->close();
                         <div class='card mb-3'>
                             <div class="row no-gutters">
                                 <div class="col-md-4">
-                                    <img src='<?= htmlspecialchars($book['productImage']) ?>' alt='Product Image' class="img-fluid" >
+                                    <img src='<?= htmlspecialchars($book['productImage']) ?>' alt='Product Image' class="img-fluid">
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body">
@@ -198,7 +198,7 @@ $conn->close();
                                         <p class="card-text">Product UEN: <?= htmlspecialchars($book['bookUEN']) ?></p>
 
                                         <?php //if statement for showing and hiding based on session 
-                                        if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] != 'staff' && $_SESSION['user_privilege'] != 'admin' ) {
+                                        if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] != 'staff' && $_SESSION['user_privilege'] != 'admin') {
                                         ?>
                                             <form action='productDetails.php?action=add&id=<?php echo $book['productID']; ?>' method='POST' class='d-flex align-items-center'>
                                                 <div class='d-flex justify-content-between'>

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php
 include "inc/head.inc.php";
 session_start();
@@ -32,8 +33,7 @@ if ($conn->connect_error) {
                 //check if quantity added is empty
                 if (!empty($_POST["quantity"])) {
                     $uen = $_GET["uen"];
-                    echo 'UEN: ' . $uen . '<script>console.log("UEN: ' . $uen . '");</script>';
-                    echo "<script> console.log('Add is called here');  </script>";
+                    
                     $stmt = $conn->prepare("SELECT * FROM bookStore.productTable WHERE bookUEN='$uen';");
                     $stmt->execute();
                     $result = $stmt->get_result();
@@ -55,11 +55,6 @@ if ($conn->connect_error) {
                             $price = $row["price"];
                             $image = $row["productImage"];
                             $bookAuthor = $row["bookAuthor"];
-                            echo '<script>console.log("Name: ' . $name . '");</script>';
-                            echo '<script>console.log("UEN: ' . $uen . '");</script>';
-                            echo '<script>console.log("price: ' . $price . '");</script>';
-                            echo '<script>console.log("image: ' . $image . '");</script>';
-                            echo '<script>console.log("author: ' . $bookAuthor . '");</script>';
                         }
                     } else {
                         echo '<script>console.log("No Result found");</script>';
@@ -70,9 +65,7 @@ if ($conn->connect_error) {
                     //if cart_item in session is not empty
                     //i need to check if the uen matches any of the ids in the cart_item session
                     if (!empty($_SESSION["cart_item"])) {
-                        echo '<script>console.log("Session is present --> about to add item to cart");</script>';
-                        echo '<script>console.log("UEN 2: ' . $uen . '");</script>';
-                        echo '<script>console.log("quantity not null and session is present");</script>';
+                        
                         //established that my cart has an item inside here --> so i will start looping here
                         //for each item in cart, check if item is inside
                         $matchFound = false;
@@ -80,8 +73,7 @@ if ($conn->connect_error) {
                             //foreach item in the cart --> if it matches i want to update the quantity
                             //if it does not match --> its creating
                             $bookUEN = $item["bookUEN"];
-                            echo '<script>console.log("bookUEN: ' . $bookUEN . '");</script>';
-                            echo '<script>console.log("UEN: ' . $uen . '");</script>';
+                            
 
                             if ($uen == $bookUEN) {
                                 echo '<script>console.log("Match found");</script>';
@@ -89,21 +81,19 @@ if ($conn->connect_error) {
                                 if (!empty($item["quantity"]) && $matchFound) {
                                     $_SESSION["cart_item"][$key]["quantity"] += $quantity;
 
-                                    echo '<script>console.log("New Quantity: ' . $item["quantity"] . '");</script>';
-                                    echo '<script>console.log("Item qty updated inside");</script>';
-                                    echo "<script> console.log('Cart Items: " . json_encode($cartItems) . "');  </script>";
+                                    
                                 }
                             }
                         }
 
                         if (!$matchFound) {
-                            echo '<script>console.log("Added new item to cart");</script>';
+                            
                             $_SESSION["cart_item"] = array_merge($_SESSION["cart_item"], $itemArray);
                         }
                     }   //if session cart items is empty 
                     else {
                         $_SESSION["cart_item"] = $itemArray;
-                        echo '<script>console.log("no items in session, so im assigning first item here");</script>';
+                        
                     }
 
                     // Perform additional operations for each bookUEN value
@@ -113,7 +103,7 @@ if ($conn->connect_error) {
 
             case "remove":
                 if (!empty($_SESSION["cart_item"])) {
-                    echo "<script> console.log('Cart Items: " . json_encode($_SESSION["cart_item"]) . "');  </script>";
+                    
                     $uen = $_GET["uen"];
                     foreach ($_SESSION["cart_item"] as $key => $item) {
                         //foreach item in the cart --> if it matches i want to update the quantity 
@@ -123,12 +113,12 @@ if ($conn->connect_error) {
                         if (
                             $uen == $bookUEN
                         ) {
-                            echo '<script>console.log("Match found");</script>';
+                            
                             $matchFound = true;
                             if (!empty($item["quantity"]) && $matchFound) {
                                 unset($_SESSION["cart_item"][$key]);
                                 //echo "<script> console.log('Cart Items: " . json_encode($_SESSION["cart_item"]) . "');  </script>"; 
-                                echo '<script>console.log("removing item here");</script>';
+                                
                             }
                         }
                     }
@@ -136,7 +126,7 @@ if ($conn->connect_error) {
                 break;
                 break;
             case "empty":
-                echo '<script>console.log("Empty Clicked");</script>';
+                
                 unset($_SESSION["cart_item"]);
                 break;
         } //end of switch
@@ -151,15 +141,14 @@ $conn->close();
 <body>
     <?php
     include "inc/nav.inc.php";
-    echo "<script> console.log('UserID: " . $_SESSION["userID"] . "');  </script>";
-    echo "<script> console.log('Final cart: " . json_encode($_SESSION["cart_item"]) . "'); </script>";
+   
 
 
     ?>
 
     <?php //if statement for showing and hiding based on session 
     if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] == 'user') {
-        echo "<script> console.log('Logged in as user');  </script>";
+        
     }
     ?>
 
@@ -171,15 +160,15 @@ $conn->close();
             $quantity = 1;
             if (!isset($_SESSION["cart_item"])) {
                 $_SESSION["cart_item"] = array();
-                echo '<script>console.log("Session not set");</script>';
+                
                 // $cartItems = $_SESSION["cart_item"];
                 // echo "<script> console.log('Cart Items: " . json_encode($cartItems) . "');  </script>";
             } else {
-                echo '<script>console.log("Session is set");</script>';
+                
             }
 
             if (empty($_SESSION["cart_item"])) {
-                echo '<h3>Cart is empty</h3>';
+                
             }
 
 
@@ -187,7 +176,7 @@ $conn->close();
             if (isset($_SESSION["cart_item"]) && !(empty($_SESSION["cart_item"]))) {
                 $total_quantity = 0;
                 $total_price = 0;
-                echo '<script>console.log("Session is present");</script>';
+                
                 $cartItems = $_SESSION["cart_item"];
                 //echo "<script> console.log('Cart Items: " . json_encode($cartItems) . "');  </script>";
             ?> <!-- used to check if cart_item is established in session-->
@@ -206,8 +195,7 @@ $conn->close();
                         foreach ($_SESSION["cart_item"] as $item) {
                             $item_price = $item["quantity"] * $item["price"];
                             $cartItems = $_SESSION["cart_item"];
-                            echo "<script> console.log('Cart Items: " . json_encode($cartItems) . "');  </script>";
-                            echo "<script> console.log('');  </script>";
+                            
 
 
                         ?>
@@ -336,3 +324,5 @@ $conn->close();
     include "inc/footer.inc.php";
     ?>
 </body>
+
+</html>
