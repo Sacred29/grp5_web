@@ -549,7 +549,8 @@ section.banner {
   z-index: 9;
 }
 
-.featured-item { margin-bottom: 30px; }
+.featured-item { margin-bottom: 30px; 
+border-color: black;}
 
 .popular-places .popular-item .thumb .plus-button i {
   width: 30px;
@@ -733,9 +734,9 @@ section.our-services .service-item h4 {
 .accordion li .accordion-trigger {
   border: 1px solid #ddd;
 }
-.accordion li:last-child .accordion-trigger  {
+/* .accordion li:last-child .accordion-trigger  {
   
-}
+} */
 .accordion-content {
   display: none;
 }
@@ -1332,4 +1333,8 @@ main > section:nth-child(even) {
 
 main > #gallery-carousell {
   margin-bottom: 500px;
+}
+
+.bg-gray {
+  background-color: rgb(91, 83, 83);
 }

@@ -3,7 +3,7 @@ session_start();
 
 // Check if the user is logged in, if not then redirect to login page
 if (!isset($_SESSION['email'])) {
-    header("location: /login/login.php");
+    header("location: login.php");
     exit;
 }
 
@@ -35,8 +35,8 @@ $config_file = '/var/www/private/db-config.ini';
 // Process the review form when it is submitted
 if (isset($_POST['submitReview']) && isset($_SESSION['userID'])) {
     $userReview = $_POST['userReview'];
-    $userRating = $_POST['userRating'];
     $productID = $_POST['productID'];
+    $userRating = $_POST['userRating'];
     $userID = $_SESSION['userID'];
     //$userRating = 5; // Static value for now, you can change this to be dynamic
 
@@ -53,12 +53,11 @@ if (isset($_POST['submitReview']) && isset($_SESSION['userID'])) {
     $conn->close();
 
     // Redirect back to the product details page
-    header('Location: /productDetails.php?id=' . $productID);
+    header('Location: productDetails.php?id=' . $productID);
     exit;
 } else {
-    
     // Redirect them to the homepage or display an error message
-    //header('Location: index.php');
+    header('Location: index.php');
     exit;
 }
 ?>

@@ -77,7 +77,7 @@ if ($success && isset($_POST['deleteProduct'])) {
     $stmt->bind_param("i", $deleteProductID);
     if ($stmt->execute()) {
         $_SESSION['message'] = "Record deleted successfully";
-        header('Location: products.php');
+        header('Location: /products.php');
         exit;
     } else {
         $errorMsg = "Error deleting record: " . $conn->error;
@@ -112,6 +112,8 @@ $conn->close();
                                         <span class="card-text">Price: <?= htmlspecialchars(number_format((float)$book['price'], 2)) ?></span>
                                         <p class="card-text">Product Author: <?= htmlspecialchars($book['bookAuthor']) ?></p>
                                         <p class="card-text">Product Publisher: <?= htmlspecialchars($book['bookPublisher']) ?></p>
+                                        <p class="card-text">Product Genre: <?= htmlspecialchars($book['productGenre']) ?></p>
+                                        <p class="card-text">Product UEN: <?= htmlspecialchars($book['bookUEN']) ?></p>
                                         <?php //if statement for showing and hiding based on session 
                                         if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] != 'staff' && $_SESSION['user_privilege'] != 'admin') { ?>
                                             <div class='d-flex justify-content-between'>

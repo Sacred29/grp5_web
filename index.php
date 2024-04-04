@@ -177,13 +177,15 @@ include "inc/head.inc.php";
 
     <main class="container">
         <section id="gallery-carousell">
-            <div class="row">
-                <div class="col">
-                    <div class="section-heading">
-                        <!-- <span>Featured Products</span> -->
-                        <h2>Featured Products</h2>
-                    </div>
-                </div>
+            <div class="container">
+                <div class="row">
+                        <div class="col">
+                            <div class="section-heading">
+                                <!-- <span>Featured Products</span> -->
+                                <h2>Featured Products</h2>
+                            </div>
+                    </div> 
+                </div> 
             </div>
             <div class="row">
                 <div class="col">

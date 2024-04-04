@@ -1,0 +1,113 @@
+.reviews-section {
+    clear:both;
+    margin-top: 20px;
+}
+
+.review {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.reviews-section .review {
+    margin-bottom: 20px; /* Spacing between individual reviews */
+    padding: 10px; /* Padding inside each review */
+    border-bottom: 1px solid #eee; /* Separator between reviews */
+    word-wrap: break-word; /* Ensures long words don't overflow */
+}
+
+.review strong {
+    font-size: 16px;
+    color: #333;
+}
+
+.review p {
+    font-size: 14px;
+    color: #666;
+}
+
+.review p:first-of-type {
+    color: #000;
+    margin-bottom: 5px;
+}
+
+.review-box {
+    display: none; /* Keeps the review box hidden by default */
+    width: 100%; /* Sets the width to full width of its container */
+    margin-top: 20px; /* Adds space above the review box */
+}
+
+.review-box, .reviews-section {
+    width: 100%; /* Adjust this width as necessary */
+    max-width: 800px; /* Or any other max-width or full width if preferred */
+    margin: 0 auto; /* Centers the box */
+    padding: 20px; /* Padding inside the box */
+    box-sizing: border-box; /* Ensures padding doesn't affect overall width */
+    border: 1px solid #ddd; /* A border for visual structure, optional */
+    border-radius: 4px; /* Rounded corners, optional */
+}
+
+
+    /* Style the form within the review box for additional control */
+.review-box form {
+    margin: 0 auto; /* Centers the form in the review box */
+    padding: 15px; /* Adds padding inside the review box */
+    border: 1px solid #ddd; /* Adds a border around the review box */
+    border-radius: 5px; /* Rounds the corners of the review box */
+}
+
+.review-box textarea {
+    width: 100%; /* Takes full width of the container */
+    min-height: 150px; /* Minimum height for the textarea */
+    margin-bottom: 10px; /* Spacing after the textarea */
+    padding: 10px; /* Padding inside the textarea */
+    box-sizing: border-box; /* Ensures padding doesn't affect overall width */
+}
+
+    /* Adjust the button styling as needed */
+.review-box input[type='submit'] {
+    width: auto; /* Adjust the width as required, could be 100% for full width */
+    padding: 10px 20px; /* Adds padding inside the button */
+}
+
+.down-content .admin-form {
+    margin-top: 10px; /* Adds spacing above the admin forms */
+}
+
+.down-content .admin-btn {
+    display: block; /* Ensures admin buttons are on their own line */
+    width: 100%; /* Makes the admin buttons full width */
+    margin-top: 5px; /* Adds spacing between admin buttons */
+}
+
+.btn-primary {
+    margin-bottom: 10px; /* Adds space below the 'Add to Cart' button */
+}
+
+.btn-secondary {
+    display: block; /* Makes the 'Add Review' button a block element */
+    margin-top: 20px; /* Adds spacing above the 'Add Review' button */
+    margin-bottom: 20px; /* Adds spacing below the 'Add Review' button */
+    width: 100%; /* Optional: Makes the 'Add Review' button full width */
+}
+
+.delete-review-form {
+    display: inline-block; /* Allows the form to sit next to the review text */
+    margin-left: 10px; /* Spacing from the review text */
+}
+
+.btn-delete {
+    padding: 2px 5px; /* Smaller padding for a smaller button */
+    font-size: 0.8rem; /* Smaller font size for the button text */
+    color: #fff;
+    background-color: #dc3545; /* Bootstrap's `$danger` color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-delete:hover {
+    background-color: #c82333; /* Darken color on hover */
+}
+

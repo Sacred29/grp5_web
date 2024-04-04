@@ -11,7 +11,7 @@ session_start();
 // Check if the user is logged in
 if (!isset($_SESSION['user_privilege'])) {
   // Redirect to login page if not logged in
-  header('Location: login.php');
+  header('Location: /login/login.php');
   exit;
 }
 if (isset($_GET['session_id']) && !empty($_SESSION["cart_item"])) {

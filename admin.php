@@ -4,7 +4,7 @@ session_start();
 // Check if the user is logged in and is an admin
 if (!isset($_SESSION['user_privilege']) || $_SESSION['user_privilege'] !== 'admin' && $_SESSION['user_privilege'] !== 'staff') {
     // Redirect to login page if not logged in or not an admin
-    header('Location: login.php');
+    header('Location: /login/login.php');
     exit;
 }
 
@@ -82,13 +82,13 @@ $result = $conn->query($sql);
                             <td><?php echo $row["email"]; ?></td>
                             <td><?php echo $row["userPrivilege"]; ?></td>
                             <td>
-                                <form action="process_edit.php" method="post">
+                                <form action="/process_edit.php" method="post">
                                     <input type="hidden" name="userID" value="<?php echo $row["userID"]; ?>">
                                     <input type="submit" value="Edit">
                                 </form>
                             </td>
                             <td>
-                                <form action="process_delete.php" method="post">
+                                <form action="/process_delete.php" method="post">
                                     <input type="hidden" name="userID" value="<?php echo $row["userID"]; ?>">
                                     <input type="submit" value="Delete">
                                 </form>
