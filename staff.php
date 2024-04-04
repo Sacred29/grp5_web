@@ -4,7 +4,7 @@ session_start();
 // Check if the user is logged in and is an admin
 if (!isset($_SESSION['user_privilege']) || $_SESSION['user_privilege'] !== 'staff' ) {
     // Redirect to login page if not logged in or not an admin
-    header('Location: login.php');
+    header('Location: /login/login.php');
     exit;
 }
 

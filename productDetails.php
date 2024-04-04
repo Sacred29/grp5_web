@@ -77,7 +77,7 @@ if ($success && isset($_POST['deleteProduct'])) {
     $stmt->bind_param("i", $deleteProductID);
     if ($stmt->execute()) {
         $_SESSION['message'] = "Record deleted successfully";
-        header('Location: products.php');
+        header('Location: /products.php');
         exit;
     } else {
         $errorMsg = "Error deleting record: " . $conn->error;

@@ -732,9 +732,9 @@ section.our-services .service-item h4 {
 .accordion li .accordion-trigger {
   border: 1px solid #ddd;
 }
-.accordion li:last-child .accordion-trigger  {
+/* .accordion li:last-child .accordion-trigger  {
   
-}
+} */
 .accordion-content {
   display: none;
 }
@@ -1331,4 +1331,8 @@ main > section:nth-child(even) {
 
 main > #gallery-carousell {
   margin-bottom: 500px;
+}
+
+.bg-gray {
+  background-color: rgb(91, 83, 83);
 }
