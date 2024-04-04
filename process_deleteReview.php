@@ -2,12 +2,12 @@
 session_start();
 
 if (!isset($_SESSION['email'])) {
-    header("location: login.php");
+    header("location: /login/login.php");
     exit;
 }
 
 if ($_SESSION['userPrivilege'] != 'staff' && $_SESSION['userPrivilege'] != 'admin') {
-    header("location: index.php"); 
+    header("location: /index.php"); 
 }
 
 $config_file = '/var/www/private/db-config.ini';
@@ -59,6 +59,6 @@ if (isset($_POST['reviewID'])) {
 
 // Redirect to product details page, or wherever you would like the user to go after deletion
 $productID = $_POST['productID'] ?? 'defaultProductID';
-header('Location: productDetails.php?id=' . $productID);
+header('Location: /productDetails.php?id=' . $productID);
 exit;
 ?>

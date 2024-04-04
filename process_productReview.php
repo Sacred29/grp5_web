@@ -3,7 +3,7 @@ session_start();
 
 // Check if the user is logged in, if not then redirect to login page
 if (!isset($_SESSION['email'])) {
-    header("location: login.php");
+    header("location: /login/login.php");
     exit;
 }
 
@@ -53,7 +53,7 @@ if (isset($_POST['submitReview']) && isset($_SESSION['userID'])) {
     $conn->close();
 
     // Redirect back to the product details page
-    header('Location: productDetails.php?id=' . $productID);
+    header('Location: /productDetails.php?id=' . $productID);
     exit;
 } else {
     

@@ -1,8 +1,5 @@
 <?php
 session_start();
-?>
-
-<?php
 $config_file = '/var/www/private/db-config.ini';
 if (file_exists($config_file)) {
     // Parse the INI file
@@ -22,11 +19,14 @@ $conn = new mysqli(
     $config['password'],
     $config['dbname']
 );
-//check connection
 if ($conn->connect_error) {
-    $errorMsg = "Connection failed: " . $conn->connect_error;
+    $_SESSION["user_privilege"] = "staff"; // Augment here
+        $_SESSION["email"] = "staff@thedaniel.life";
+        $_SESSION["fName"] = "staff";
+        $_SESSION["lName"] = "staff";
+        $_SESSION["userID"] = 2;
 } else {
-    $email = $_POST["email"];
+    $email = "staff@thedaniel.life"; // need to implement in db.
     $stmt = $conn->prepare("SELECT * FROM userTable WHERE email=?");
     //bind and execute query statement
     $stmt->bind_param("s", $email);
@@ -41,20 +41,15 @@ if ($conn->connect_error) {
         $_SESSION["fName"] = $row["fName"];
         $_SESSION["lName"] = $row["lName"];
         $_SESSION["userID"] = $row["userID"];
-
-        if ($_SESSION["user_privilege"] == 'admin') {
-            header("Location: ../admin.php");
-            exit;
-        } else if ($_SESSION["user_privilege"] == 'staff') {
-            header("Location: ../staff.php");
-            exit;
-        } else {
-            header("Location: ../index.php");
-            exit;
-        }
-    } else {
-        header("Location: /login.php");
-        exit;
+    }
+    else {
+        $_SESSION["user_privilege"] = "staff"; // Augment here
+        $_SESSION["email"] = "staff@thedaniel.life";
+        $_SESSION["fName"] = "staff";
+        $_SESSION["lName"] = "staff";
+        $_SESSION["userID"] = 1;
     }
 }
+    header("Location: /index.php");
+
 ?>
