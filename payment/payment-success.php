@@ -3,10 +3,11 @@ include "../inc/head.inc.php";
 ?>
 
 <?php
+session_start();
+
 include "../inc/nav.inc.php";
 
 require './../vendor/autoload.php';
-session_start();
 
 // Check if the user is logged in
 if (!isset($_SESSION['user_privilege'])) {
@@ -85,28 +86,29 @@ if (isset($_GET['session_id']) && !empty($_SESSION["cart_item"])) {
     http_response_code(200);
   } catch (Error $e) {
     http_response_code(500);
-    echo json_encode(['error' => $e->getMessage()]);
+    header("Location: /payment/payment-error.php");
   }
+?>
+
+  <head>
+    <title>Thanks for your order!</title>
+  </head>
+
+  <body>
+    <h1>Thanks for your order!</h1>
+    <p>
+      We appreciate your business!
+      If you have any questions, please email
+      <a href="mailto:admin@thedaniel.life">admin@thedaniel.life</a>.
+    </p>
+  </body>
+  <?php
+  include "../inc/footer.inc.php";
+  ?>
+
+  </html>
+<?php
 } else {
-  echo "No checkout session ID was specified.";
+  header("Location: /payment/payment-error.php");
 }
 ?>
-
-
-<head>
-  <title>Thanks for your order!</title>
-</head>
-
-<body>
-  <h1>Thanks for your order!</h1>
-  <p>
-    We appreciate your business!
-    If you have any questions, please email
-    <a href="mailto:admin@thedaniel.life">admin@thedaniel.life</a>.
-  </p>
-</body>
-<?php
-include "../inc/footer.inc.php";
-?>
-
-</html>
