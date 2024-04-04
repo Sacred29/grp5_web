@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="en">
 <?php
 session_start();
 include "inc/head.inc.php";
@@ -113,4 +114,5 @@ include "inc/head.inc.php";
     include "inc/footer.inc.php";
     ?>
 </body>
+
 </html>

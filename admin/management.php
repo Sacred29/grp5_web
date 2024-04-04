@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="en">
 <?php
 include "./../inc/head.inc.php";
 echo '<link href="path_to_bootstrap_css/bootstrap.min.css" rel="stylesheet">';

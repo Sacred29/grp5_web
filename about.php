@@ -1,4 +1,5 @@
   <!DOCTYPE html>
+  <html lang="en">
   <?php
   include "inc/head.inc.php";
   ?>
