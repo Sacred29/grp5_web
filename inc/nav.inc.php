@@ -10,9 +10,11 @@
             <li class="nav-item">
                 <a class="nav-link" href="/products.php">Products</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/cart.php">Shopping Cart</a>
-            </li>
+            <?php if (isset($_SESSION['email'])) : ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="/cart.php">Shopping Cart</a>
+                </li>
+            <?php endif ?>
             <li class="nav-item">
                 <a class="nav-link" href="/about.php">About us</a>
             </li>
@@ -60,6 +62,5 @@
         navbar.forEach(function(navitem) {
             navitem.classList.toggle("collapse");
         });
-
     });
 </script>

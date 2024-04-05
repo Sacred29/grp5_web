@@ -57,12 +57,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
     // Display form
     if (isset($order)) {
 ?>
-
+<!DOCTYPE html>
+<html>
+    
         <?php include "./../inc/head.inc.php"; ?>
-        
-        
         <?php include "./../inc/nav.inc.php"; ?>
-            <div class="container">
+        <body>
+            <main class="container">
            
             <h1>Edit Order</h1>
             <form action="" method="post">
@@ -85,9 +86,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
                 </div>
                 <button type="submit" name="update" class="btn btn-primary">Update Order</button>
                 <button type="button" onclick="location.href='/admin/management.php'" class="btn btn-secondary">Back</button>
-            </form>
-            
-        </div>
+            </form>  
+        </main>
+    </body>
         <?php include "./../inc/footer.inc.php"; ?>
         
 <?php
@@ -97,3 +98,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
 }
 $conn->close();
 ?>
+</html>

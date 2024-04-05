@@ -2,6 +2,11 @@
 <html lang="en">
 <?php
 include "inc/head.inc.php";
+session_start();
+if (!isset($_SESSION['userID'])) {
+    header("Location: /login/login.php");
+    exit();
+}
 ?>
 
 <body>

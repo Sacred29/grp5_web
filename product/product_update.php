@@ -92,8 +92,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
 ?>
 
         
+<!DOCTYPE html>
+   <html lang="en">
+    <body>
 
-   
             <main class="container">
             <h1><?php echo isset($product) ? "Edit Product" : "Product Registration"; ?></h1>
 
@@ -157,6 +159,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
                 </div>
             </form>
     </main>
+</body>
+</html>
 <?php
     } else {
         echo "No user found with the provided ID.";
