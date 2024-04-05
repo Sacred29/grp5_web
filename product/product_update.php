@@ -113,8 +113,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
                 </div>
                 
                 <div class="mb-3">
-                    <label for="genre" class="form-label">Product Genre</label>
-                    <select name="genre" id="genre" class="form-control">
+                    <label for="productGenre" class="form-label">Product Genre</label>
+                    <select name="productGenre" id="productGenre" class="form-control">
                         <option value="Fiction" <?php echo isset($product) && $product['productGenre'] == 'Fiction' ? 'selected' : ''; ?>>Fiction</option>
                         <option value="Non-Fiction" <?php echo isset($product) && $product['productGenre'] == 'Non-Fiction' ? 'selected' : ''; ?>>Non-Fiction</option>
                         <option value="Educational" <?php echo isset($product) && $product['productGenre'] == 'Educational' ? 'selected' : ''; ?>>Educational</option>
