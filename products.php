@@ -128,6 +128,10 @@ session_start();
 
                         <?php endforeach; ?>
                     </section>
+                </div>
+            </div>
+        </section>
+
 
     </main>
     <?php

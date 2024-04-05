@@ -265,16 +265,16 @@ include "inc/head.inc.php";
     ?>
 
 
-    <!--Modal-->
+    <!--Modal
     <div id="imgModal" class="imgModal">
         <span class="close">&times;</span>
         <img class="modal-content" id="img01">
-    </div>
+    </div>-->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
     <script>
         window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')
-    </script>x
+    </script>
     <script src="js/vendor/bootstrap.min.js"></script>
     <script src="js/datepicker.js"></script>
     <script src="js/plugins.js"></script>

@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <title>Product Registration</title>
-    <?php
-    include "inc/head.inc.php";
-    session_start();
-    ?>
-</head>
+<?php
+echo "<title>Product Registration</title>";
+include "inc/head.inc.php";
+session_start();
+?>
+
 
 <body>
     <?php
@@ -16,14 +15,14 @@
     <main class="container">
         <h1>Product Registration</h1>
 
-        <form action="/process_productRegister.php" method="post" enctype="multipart/form-data" >
+        <form action="/process_productRegister.php" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="productName" class="form-label">Product Name</label>
                 <input maxlength="45" type="text" id="productName" name="productName" class="form-control" placeholder="Input Product Name">
             </div>
             <div class="mb-3">
                 <label for="arrivalDate" class="form-label">Arrival Date</label>
-                <input required type="date" id="arrivalDate" name="arrivalDate" class="form-control" placeholder="Select Date">
+                <input required type="date" id="arrivalDate" name="arrivalDate" class="form-control">
                 <!-- <input id="lname" name="lname" class="form-control" placeholder="Enter last name"> -->
             </div>
             <div class="mb-3">
@@ -58,7 +57,7 @@
             </div>
             <label for="productImage">Select Product Image:</label>
             <input type="file" id="productImage" name="productImage">
-            </br>
+
             <div class="mb-3">
                 <button type="submit">Submit</button>
             </div>
