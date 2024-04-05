@@ -8,14 +8,15 @@ echo '<script defer src="../js/otp.js"></script>';
 
 <form class="otpForm container" method="post" action="<?php echo realpath('otpValidate.php'); ?>">
     <div id="inputs" class="inputs bottom">
+    <div class="input-group mb-3">
         <input class="input" type="text" inputmode="numeric" maxlength="1" id="input1" name="input1" />
-
         <input class="input" type="text" inputmode="numeric" maxlength="1" id="input2" name="input2" />
         <input class="input" type="text" inputmode="numeric" maxlength="1 " id="input3" name="input3" />
         <input class="input" type="text" inputmode="numeric" maxlength="1 " id="input4" name="input4" />
         <input class="input" type="text" inputmode="numeric" maxlength="1" id="input5" name="input5" />
         <input class="input" type="text" inputmode="numeric" maxlength="1" id="input6" name="input6" />
         <button class="fa fa-sign-in fa-2x" type="submit" value="Submit" name="specific"></button>
+    </div>
     </div>
 
 </form>
