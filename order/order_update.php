@@ -58,32 +58,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
     if (isset($order)) {
 ?>
 
-        <!DOCTYPE html>
-        <html lang="en">
-
-        <head>
-            <title>Edit User</title>
-        </head>
-
-        <body>
-            <h1>Edit User</h1>
+        <?php include "./../inc/head.inc.php"; ?>
+        
+        
+        <?php include "./../inc/nav.inc.php"; ?>
+            <div class="container">
+           
+            <h1>Edit Order</h1>
             <form action="" method="post">
-                <input type="hidden" name="productID" value="<?php echo $order['productID']; ?>">
-                <input type="hidden" name="transactionID" value="<?php echo $order['transactionID']; ?>">
-                <div>
-                    <label>Quantity</label>
-                    <input type="number" name="quantity" value="<?php echo $order['quantity']; ?>">
+                <div class="mb-3">
+                <label class="form-label">Transaction ID</label>
+                <input class="form-control" name="transactionID" value="<?php echo $order['transactionID']; ?>" readonly>
                 </div>
-                <div>
-                    <label>Price</label>
-                    <input type="number" step="any" name="price" value="<?php echo $order['price']; ?>">
+                <div class="mb-3">
+                    <label class="form-label">Product ID</label>
+                    <input class="form-control" name="productID" value="<?php echo $order['productID']; ?>" readonly>
                 </div>
-                <button type="submit" name="update">Update Order</button>
-                <button type="button" onclick="location.href='/admin/management.php'">Back</button>
+                
+                <div class="mb-3">
+                    <label class="form-label">Quantity</label>
+                    <input class="form-control" type="number" name="quantity" value="<?php echo $order['quantity']; ?>">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Price</label>
+                    <input class="form-control type="number" step="any" name="price" value="<?php echo $order['price']; ?>">
+                </div>
+                <button type="submit" name="update" class="btn btn-primary">Update Order</button>
+                <button type="button" onclick="location.href='/admin/management.php'" class="btn btn-secondary">Back</button>
             </form>
-        </body>
-
-        </html>
+            
+        </div>
+        <?php include "./../inc/footer.inc.php"; ?>
+        
 <?php
     } else {
         echo "No user found with the provided ID.";
