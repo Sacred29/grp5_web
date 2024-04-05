@@ -3,7 +3,7 @@ session_start();
 
 // Check if the user is logged in and is an admin
 if (!isset($_SESSION['user_privilege']) || ($_SESSION['user_privilege'] !== 'admin' && $_SESSION['user_privilege'] !== 'staff')) {
-    header('Location: ./login/login.php');
+    header('Location: /login/login.php');
     exit;
 }
 
@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
     $updateSql = "UPDATE bookStore.userTable SET fName='$fName', lName='$lName', email='$email', userPrivilege='$userPrivilege' WHERE userID='$userID'";
 
     if ($conn->query($updateSql) === TRUE) {
-        header("Location: ./../admin/management.php");
+        header("Location: /admin/management.php");
     } else {
         echo "Error updating user: " . $conn->error;
     }

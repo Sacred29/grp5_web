@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
             $stmt->bind_param("ssssdsssi", $productName, $bookUEN, $productGenre, $arrivalDate, $price, $bookAuthor, $bookPublisher, $productImage, $productID);
             if ($stmt->execute()) {
                 $_SESSION['message'] = 'Product updated successfully.';
-                header("Location: ./../admin/management.php");
+                header("Location: /admin/management.php");
                 exit;
             } else {
                 $_SESSION['error'] = "Error updating product: " . $conn->error;
