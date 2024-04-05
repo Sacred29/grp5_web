@@ -33,7 +33,7 @@ session_start();
                 </div>
                 <form action="/search.php" method="get">
                     <div class="input-group">
-                        <input maxlength="255" type="text" id="book-title" name="book-title" class="form-control" placeholder="Search">
+                        <input maxlength="255" type="text" id="book-title" name="book-title" class="form-control" placeholder="Search" >
                         <span class="input-group-addon">
                             <button type="submit">Search</button>
                         </span>
@@ -112,7 +112,7 @@ session_start();
 
                                         </div>
                                         <div class='down-content'>
-                                            <h4 style='min-height: 50px;'>Product Name: <?= htmlspecialchars($book['productName']) ?></h4>
+                                            <h3 style='min-height: 50px;'>Product Name: <?= htmlspecialchars($book['productName']) ?></h3>
                                             <span style='min-height: 20px;'><sup>Price: <?= htmlspecialchars(number_format((float)$book['price'], 2)) ?></sup></span>
                                             <p style='min-height: 20px;'>Product Author: <?= htmlspecialchars($book['bookAuthor']) ?></p>
                                             <p style='min-height: 20px;'>Product Publisher: <?= htmlspecialchars($book['bookPublisher']) ?></p>

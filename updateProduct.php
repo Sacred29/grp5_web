@@ -118,8 +118,10 @@ session_start();
                 <input required type="text" value="<?php echo $book["bookPublisher"] ?>" id="bookPublisher" name="bookPublisher" class="form-control" placeholder="Input Product Publisher">
                 <!-- <input id="pwd" name="pwd" class="form-control" placeholder="Enter password"> -->
             </div>
-            <label for="productImage">Select Product Image:</label>
-            <input type="file" id="productImage" name="productImage">
+            <div class="mb-3">
+                <label for="productImage">Select Product Image:</label>
+                <input type="file" id="productImage" name="productImage">
+            </div>
             <div class="mb-3">
                 <button type="submit">Submit</button>
             </div>
@@ -128,7 +130,7 @@ session_start();
     <?php
     include "inc/footer.inc.php";
     ?>
-    
+
     <script>
         <?php
         echo "document.getElementById('genre').value ='" . $book["productGenre"] . "';";

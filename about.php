@@ -2,6 +2,7 @@
   <html lang="en">
   <?php
   include "inc/head.inc.php";
+  session_start();
   ?>
 
 
@@ -59,7 +60,7 @@
   </div>
 
   <!-- Second Container -->
-  <div class="container-fluid bg-2 text-center">
+  <div class="container-fluid bg-2 text-center" role="banner">
     <h3 class="margin">Who Are We?</h3>
     <p style="max-width: 300px; overflow-wrap: break-word; margin: 0 auto; text-align: center; color:beige;">Bookshelf Boutique is an online book procurement website for book lovers. With the closure of Book Depository, we bridge the gap between book lovers and affordable books.</p>
   </div>
