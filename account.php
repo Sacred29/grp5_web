@@ -4,6 +4,11 @@
 include "./inc/head.inc.php";
 echo '<link href="path_to_bootstrap_css/bootstrap.min.css" rel="stylesheet">';
 session_start();
+// if user not logged in, redirect to login page
+if (!isset($_SESSION["userID"])) {
+    header("location: /login/login.php");
+    exit();
+}
 include "./inc/nav.inc.php"
 ?>
 
