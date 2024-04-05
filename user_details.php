@@ -5,20 +5,6 @@ session_start();
 include "inc/head.inc.php";
 ?>
 
-<script>
-    grecaptcha.ready(() => {
-        document.getElementById('account-info-form').addEventListener("submit", function(event) {
-            event.preventDefault();
-            grecaptcha.execute('6Le0e7MZAAAAAJDAnFTrhlM8DJ1u-Fvi3N702bD7', {
-                action: 'updateinfo'
-            }).then(token => {
-                document.querySelector('#recaptchaResponse').value = token;
-                document.getElementById('account-info-form').submit();
-            });
-        }, false);
-    });
-</script>
-
 <body>
     <?php
     include "inc/nav.inc.php";
@@ -105,7 +91,6 @@ include "inc/head.inc.php";
                 <!-- <input id="email" name="email" class="form-control" placeholder="Enter email"> -->
             </div>
             <div class="mb-3">
-                <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
                 <button type="submit">Submit</button>
             </div>
         </form>
