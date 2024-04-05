@@ -140,7 +140,7 @@ session_start();
                         $id = $_GET['id'];
                         //Prepare statement
                         //Bind and execute query statement
-                        echo "<script>console.log($id)</script>";
+                        
                         $stmt = $conn->prepare("UPDATE productTable SET productName = ?, arrivalDate = ?, productGenre = ?, bookUEN = ?, price = ?, bookAuthor = ?, bookPublisher = ?,  productImage = ? WHERE productID = $id");
                         $stmt->bind_param("ssssdsss", $productName, $arrivalDate, $genre, $bookUEN, $price, $bookAuthor, $bookPublisher, $productImage);
 

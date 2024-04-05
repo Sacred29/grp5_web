@@ -62,7 +62,6 @@ if ($conn->connect_error) {
                             $bookAuthor = $row["bookAuthor"];
                         }
                     } else {
-                        echo '<script>console.log("No Result found");</script>';
                     }
 
                     //itemArray stores the result of the selected item
@@ -81,7 +80,6 @@ if ($conn->connect_error) {
 
 
                             if ($uen == $bookUEN) {
-                                echo '<script>console.log("Match found");</script>';
                                 $matchFound = true;
                                 if (!empty($item["quantity"]) && $matchFound) {
                                     $_SESSION["cart_item"][$key]["quantity"] += $quantity;
@@ -119,7 +117,6 @@ if ($conn->connect_error) {
                             $matchFound = true;
                             if (!empty($item["quantity"]) && $matchFound) {
                                 unset($_SESSION["cart_item"][$key]);
-                                //echo "<script> console.log('Cart Items: " . json_encode($_SESSION["cart_item"]) . "');  </script>"; 
 
                             }
                         }
@@ -161,9 +158,6 @@ $conn->close();
             $quantity = 1;
             if (!isset($_SESSION["cart_item"])) {
                 $_SESSION["cart_item"] = array();
-
-                // $cartItems = $_SESSION["cart_item"];
-                // echo "<script> console.log('Cart Items: " . json_encode($cartItems) . "');  </script>";
             } else {
             }
 
@@ -177,7 +171,6 @@ $conn->close();
                 $total_price = 0;
 
                 $cartItems = $_SESSION["cart_item"];
-                //echo "<script> console.log('Cart Items: " . json_encode($cartItems) . "');  </script>";
             ?> <!-- used to check if cart_item is established in session-->
 
                 <table class="tbl-cart" cellpadding="10" cellspacing="1">
