@@ -2,12 +2,13 @@
 <html lang="en">
 <?php
 include "inc/head.inc.php";
+
 ?>
 
 <body>
     <?php
-    include "inc/nav.inc.php";
     session_start();
+    include "inc/nav.inc.php";
     // Check if the user is logged in
     if (!isset($_SESSION['user_privilege'])) {
         // Redirect to login page if not logged in

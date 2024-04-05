@@ -30,9 +30,21 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Query to select all columns for users with user_privilege = 'user'
-$sql = "SELECT * FROM bookStore.userTable WHERE userPrivilege != 'admin'";
-$result = $conn->query($sql);
+$userPrivilege = $_SESSION['user_privilege'] ?? ''; // Assuming this is stored in the session on login
+
+if ($userPrivilege == 'admin') {
+    // For admin, fetch all non-admin users
+    $sql = "SELECT * FROM bookStore.userTable WHERE userPrivilege != 'admin'";
+} elseif ($userPrivilege == 'staff') {
+    // For staff, fetch only user-level users
+    $sql = "SELECT * FROM bookStore.userTable WHERE userPrivilege = 'user'";
+} else {
+    // If it's neither, perhaps you don't want to show any data or handle this differently
+    $sql = ""; // No SQL query, or a query that returns nothing/an error
+}
+    if($sql){
+        $result = $conn->query($sql);
+    }
 ?>
 
   
@@ -69,7 +81,7 @@ $result = $conn->query($sql);
                             <td>
                                 <form action="/user/user_delete.php" method="post">
                                     <input type="hidden" name="userID" value="<?php echo $row["userID"]; ?>">
-                                    <input type="submit" value="Delete">
+                                    <input type="submit" value="Delete" onclick="return confirm('Are you sure you want to delete this user?');">
                                 </form>
                             </td>
                         </tr>

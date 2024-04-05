@@ -14,6 +14,8 @@
     #advanced-options-collapsible {
         margin-top: 2em;
     }
+
+    
 </style>
 <?php
 include "inc/head.inc.php";

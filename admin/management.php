@@ -4,10 +4,11 @@
 include "./../inc/head.inc.php";
 echo '<link href="path_to_bootstrap_css/bootstrap.min.css" rel="stylesheet">';
 session_start();
+include "./../inc/nav.inc.php"
 ?>
 
 <main class="container">
-    <h2>Admin</h2>
+    <h2>Dashboard</h2>
     <?php if (isset($_SESSION['message'])) {
         echo "<script>alert('{$_SESSION['message']}');</script>";
         unset($_SESSION['message']); // Clear the message after displaying it
@@ -36,7 +37,7 @@ session_start();
 
 
 <!-- Include Bootstrap Bundle with Popper -->
-<script src="path_to_bootstrap_js/bootstrap.bundle.min.js"></script>
+<script src="./../js/vendor/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 
@@ -156,4 +157,4 @@ document.addEventListener("DOMContentLoaded", (event) => {
    
 });
 </script>
-</html>
+

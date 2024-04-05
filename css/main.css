@@ -79,3 +79,10 @@ footer {
     float: right;
     margin-right: 10px;
 }
+
+.card-text{
+    color: #2e2e2e;
+}
+.card-body p{
+    color: #2e2e2e;
+}

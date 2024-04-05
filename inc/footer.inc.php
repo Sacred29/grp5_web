@@ -12,9 +12,9 @@
                        <p>Hello Prof, This is the footer contents.</p>
                         <ul class="social-icons">
                             <li>
-                                <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                                <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                                <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                                <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                                <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+                                <a href="#" aria-label="Linkedin"><i class="fa-brands fa-linkedin"></i></a>
                             </li>
                         </ul>
                     </div>

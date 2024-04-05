@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
     $productID = $conn->real_escape_string($_POST['productID']);
     $quantity = $conn->real_escape_string($_POST['quantity']);
     $price = $conn->real_escape_string($_POST['price']);
-    
+
 
     // Update user data
     $updateSql = "UPDATE bookStore.cartTable SET productID='$productID', quantity='$quantity', price='$price' WHERE cartID='$cartID'";
@@ -57,36 +57,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
     // Display form
     if (isset($cart)) {
 ?>
-
-        <!DOCTYPE html>
-        <html lang="en">
-
-        <head>
-            <title>Edit User</title>
-        </head>
-
-        <body>
-            <h1>Edit User</h1>
-            <form action="" method="post">
-                <input type="hidden" name="cartID" value="<?php echo $cart['cartID']; ?>">
-                <div>
-                    <label>ProductID</label>
-                    <input type="number" name="productID" value="<?php echo $cart['productID']; ?>">
+            <?php include "./../inc/head.inc.php"; ?>
+            <?php include "./../inc/nav.inc.php"; ?>
+            <div class="container">
+            <h1>Edit Cart</h1>
+            <form action="#" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Cart ID</label>
+                    <input class="form-control" readonly name="cartID" value="<?php echo $cart['cartID']; ?>">
                 </div>
-                <div>
-                    <label>Quantity</label>
-                    <input type="number" name="quantity" value="<?php echo $cart['quantity']; ?>">
+                <div class="mb-3">
+                    <label class="form-label">ProductID</label>
+                    <input class="form-control" type="number" name="productID" value="<?php echo $cart['productID']; ?>">
                 </div>
-                <div>
-                    <label>Price</label>
-                    <input type="number" step="any" name="price" value="<?php echo $cart['price']; ?>">
+                <div class="mb-3">
+                    <label class="form-label">Quantity</label>
+                    <input class="form-control" type="number" name="quantity" value="<?php echo $cart['quantity']; ?>">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Price</label>
+                    <input class="form-control" type="number" step="any" name="price" value="<?php echo $cart['price']; ?>">
                 </div>
                 <button type="submit" name="update">Update Cart</button>
                 <button type="button" onclick="location.href='/admin/management.php'">Back</button>
             </form>
-        </body>
-
-        </html>
+            </div>
 <?php
     } else {
         echo "No user found with the provided ID.";

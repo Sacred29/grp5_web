@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md">
     <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button id="test" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <ul class="navbar-nav">
@@ -23,11 +23,11 @@
                     <span class="navbar-text mr-3">
                         <?php if ($_SESSION['user_privilege'] == 'admin') : ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="admin.php">Admin</a>
+                    <a class="nav-link" href="/admin/management.php">Admin</a>
                 </li>
             <?php elseif ($_SESSION['user_privilege'] == 'staff') : ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="/staff.php">Staff</a>
+                    <a class="nav-link" href="/admin/management.php">Staff</a>
                 </li>
             <?php endif ?>
             </span>
@@ -54,3 +54,14 @@
         </ul>
     </div>
 </nav>
+<script>
+  
+  var navbar = document.querySelectorAll('.navbar-nav');
+  document.getElementById("test").addEventListener("click", function() {
+    navbar.forEach(function(navitem) {
+        navitem.classList.toggle("collapse");
+  });
+    
+  });
+  
+</script>

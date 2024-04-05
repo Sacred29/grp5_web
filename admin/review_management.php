@@ -71,7 +71,7 @@ $result = $conn->query($sql);
                             <td>
                                 <form action="/review/process_deleteReview.php" method="post">
                                     <input type="hidden" name="reviewID" value="<?php echo $row["reviewID"]; ?>">
-                                    <input type="submit" value="Delete">
+                                    <input type="submit" value="Delete" onclick="return confirm('Are you sure you want to delete this review?');">
                                 </form>
                             </td>
                         </tr>

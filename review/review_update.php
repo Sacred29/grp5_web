@@ -26,63 +26,86 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+function sanitize_input($data)
+{
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
 $reviewID = isset($_POST['reviewID']) ? $conn->real_escape_string($_POST['reviewID']) : null;
 
-// Fetch user data if member_id is set
+// Fetch review data if reviewID is set
+$review = null;
 if ($reviewID) {
     $sql = "SELECT * FROM bookStore.reviewTable WHERE reviewID = '$reviewID'";
     $result = $conn->query($sql);
-    $review = $result->fetch_assoc();
+    if ($result) {
+        $review = $result->fetch_assoc();
+    }
 }
 
 // Check if form has been submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
     // Get form data
-    $userReview = $conn->real_escape_string($_POST['userReview']);
-    $userRating = $conn->real_escape_string($_POST['userRating']);
-    
+    $userReview = sanitize_input($_POST['userReview']);
+    $userRating = sanitize_input($_POST['userRating']);
 
-    // Update user data
+    // Update review data
     $updateSql = "UPDATE bookStore.reviewTable SET userReview='$userReview', userRating='$userRating' WHERE reviewID='$reviewID'";
 
     if ($conn->query($updateSql) === TRUE) {
+        $_SESSION['message'] = 'Review updated successfully.';
         header("Location: /admin/management.php");
         exit;
     } else {
-        echo "Error updating user: " . $conn->error;
-        header("Location: /admin/management.php");
-        exit;
-    }
-} else {
-    // Display form
-    if (isset($review)) {
-?>
-
-        <!DOCTYPE html>
-        <html lang="en">
-
-        <body>
-            <h1>Edit Review</h1>
-            <form action="" method="post">
-                <input type="hidden" name="reviewID" value="<?php echo $review['reviewID']; ?>">
-                <div>
-                    <label>Review</label>
-                    <input type="text" name="userReview" value="<?php echo $review['userReview']; ?>">
-                </div>
-                <div>
-                    <label>Rating</label>
-                    <input type="number" min="1" max="5" name="userRating" value="<?php echo $review['userRating']; ?>">
-                </div>
-                <button type="submit" name="update">Update Review</button>
-                <button type="button" onclick="location.href='/admin/management.php'">Back</button>
-            </form>
-        </body>
-
-        </html>
-<?php
-    } else {
-        echo "No user found with the provided ID.";
+        $_SESSION['error'] = "Error updating review: " . $conn->error;
     }
 }
 $conn->close();
 ?>
+
+
+    <?php include "./../inc/head.inc.php"; // Include Bootstrap CSS and other head elements ?>
+
+
+    <?php include "./../inc/nav.inc.php"; // Navigation bar ?>
+
+    <div class="container">
+        <h1>Edit Review</h1>
+        <?php if ($review): ?>
+            <div class="card">
+                <div class="card-body">
+                    <form action="#" method="post">
+                        <input type="hidden" name="reviewID" value="<?php echo htmlspecialchars($review['reviewID']); ?>">
+
+                        <div class="form-group mb-3">
+                            <label for="userReview" class="form-label">Your Review:</label>
+                            <textarea class="form-control" id="userReview" name="userReview" rows="3" required><?php echo htmlspecialchars($review['userReview']); ?></textarea>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="userRating" class="form-label">Your Rating:</label>
+                            <select class="form-control" id="userRating" name="userRating" required>
+                                <option value="1" <?php echo $review['userRating'] == 1 ? 'selected' : ''; ?>>1 - Poor</option>
+                                <option value="2" <?php echo $review['userRating'] == 2 ? 'selected' : ''; ?>>2 - Fair</option>
+                                <option value="3" <?php echo $review['userRating'] == 3 ? 'selected' : ''; ?>>3 - Average</option>
+                                <option value="4" <?php echo $review['userRating'] == 4 ? 'selected' : ''; ?>>4 - Good</option>
+                                <option value="5" <?php echo $review['userRating'] == 5 ? 'selected' : ''; ?>>5 - Excellent</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" name="update">Update Review</button>
+                        <a href="./../admin/management.php" class="btn btn-secondary">Back</a>
+                    </form>
+                </div>
+            </div>
+        <?php else: ?>
+            <p class="alert alert-warning">No review found with the provided ID.</p>
+        <?php endif; ?>
+    </div>
+
+    <?php include "./../inc/footer.inc.php"; // Footer ?>
+
+
