@@ -3,18 +3,14 @@ session_start();
 
 
 if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] == 'user') {
-    echo "<script> console.log('Logged in as user');  </script>";
 
     $userID = $_SESSION["userID"];
-    echo "<script> console.log('UserID: " . $userID . "');  </script>";
     $config_file = '/var/www/private/db-config.ini';
 
     //check if session is set --> otherwise initialize cart_item as array
     if (!isset($_SESSION["cart_item"])) {
         $_SESSION["cart_item"] = array();
         $cartItems = $_SESSION["cart_item"];
-        echo "<script> console.log('Session absent --> initializing here');  </script>";
-        echo "<script> console.log('Cart Items: " . json_encode($cartItems) . "');  </script>";
         //if cart is not set --> set up cart_item session
     }
 
@@ -50,15 +46,11 @@ if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] == 'user')
                 $productID = $row["productID"];
                 $quantity = $row["quantity"];
                 $productIdArray[] = $productID; // Append each productID to the array
-                echo "<script> console.log('Retrieved Product IDs: " . $productID . "');  </script>";
-                echo "<script> console.log('Retrieved Quantity: " . $quantity . "');  </script>";
             }
         }
         $productIdString = "";
         $productIdString = implode(", ", $productIdArray);
-        echo "<script> console.log('Product IDs: " . $productIdString . "'); </script>";
         if (!empty($productIdString)) {
-            echo "<script> console.log('product ID found'); </script>";
             $stmt2 = $conn->prepare("SELECT * FROM bookStore.productTable where productID in ($productIdString)");
             // $stmt2->bind_param("s",$productIDString);
             $stmt2->execute();
@@ -75,29 +67,23 @@ if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] == 'user')
                             'quantity' => $quantity
                         )
                     );
-                    echo "<script> console.log('Item Array: " . json_encode($itemArray) . "'); </script>";
                     $productName = $row2["productName"];
                     $price = $row2["price"];
                     $bookUEN = $row2["bookUEN"];
                     $bookAuthor = $row2["bookAuthor"];
                     $image = $row2["productImage"];
-                    // echo "<script> console.log('Product Name: " . $productName . ", Product Price: " . $price . ", Book UEN: " . $bookUEN . ", Book Author: " . $bookAuthor . ", Image: " . $image . "'); </script>";       
 
                     //while fetching results --> check if cart is empty here
                     if (empty($_SESSION["cart_item"])) {
-                        echo "<script> console.log('Fetching products from database --> cart detected empty');  </script>";
                         //since cart is empty --> append the first item into it
                         $_SESSION["cart_item"] = $itemArray;
-                        echo "<script> console.log('Added first item to cart');  </script>";
                     } else {
                         $matchFound = false;
-                        echo "<script> console.log('Item detected inside cart --> calling else');  </script>";
                         //if cart is not empty --> loop through all cart_items --> check if UEN already exists --> if it does not exist
                         foreach ($_SESSION["cart_item"] as $key => $item) {
 
                             $cartUEN = $item["bookUEN"];
                             $_SESSION["cart_item"][$key]["quantity"] = $quantity;
-                            echo "<script> console.log('Item Quantity: " . json_encode($_SESSION["cart_item"][$key]["quantity"]) . "'); </script>";
 
                             //check if UEN exists in cart --> if exists ignore
                             if ($bookUEN == $cartUEN) {
@@ -108,35 +94,16 @@ if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] == 'user')
 
                         if (!$matchFound) {
                             $_SESSION["cart_item"] = array_merge($_SESSION["cart_item"], $itemArray);
-                            echo "<script> console.log('UEN does not exist inside cart --> adding new item to cart');  </script>";
-                            echo "<script> console.log('Updated cart: " . json_encode($_SESSION["cart_item"]) . "'); </script>";
+
                         }
                     }
                 }
-                echo "<script> console.log('Final cart: " . json_encode($_SESSION["cart_item"]) . "'); </script>";
             } //end of result2
 
 
             $stmt3 = $conn->prepare("DELETE FROM bookStore.cartTable where userID=?");
             $stmt3->bind_param("s", $userID);
             $stmt3->execute();
-            echo "<script> console.log('All cart items added --> removing record from db');  </script>";
-
-
-            //if cart is established
-            //add the items back into cart_item session
-            //to be continued - later
-            /*
-                missing logic:
-                Add objects back to cart
-                - check if cart is set
-                - check if cart is empty
-                - if it is empty --> append the first object into the cart_item array
-                - if it has items inside --> merge to the array (probably dont need to check for uen)
-                - since we're adding directly from table records --> unlikely for overlap
-                - add all the items into cart_item
-                --> check that it displays normally on cart.php 
-            */
 
 
 
