@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
     if (isset($cart)) {
 ?>
     <!DOCTYPE html>
-    <html>
+    <html lang="en">
             <?php include "./../inc/head.inc.php"; ?>
             <?php include "./../inc/nav.inc.php"; ?>
             <body>

@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
     if (isset($order)) {
 ?>
 <!DOCTYPE html>
-<html>
+<html lan="en">
     
         <?php include "./../inc/head.inc.php"; ?>
         <?php include "./../inc/nav.inc.php"; ?>
