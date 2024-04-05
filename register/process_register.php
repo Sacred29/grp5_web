@@ -13,9 +13,7 @@ $is_bot = true;
 $pwd = $_POST['pwd'];
 $pwd_confirm = $_POST['pwd_confirm'];
 
-// I don't think the catcha works.
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['recaptcha_response'])) {
-
     // Build POST request:
     $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
     $recaptcha_secret = '6Le0e7MZAAAAAI-pCmb3uScqvJUf5y6RN6bTqra4';
