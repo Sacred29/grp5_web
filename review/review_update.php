@@ -65,14 +65,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
 }
 $conn->close();
 ?>
-
+<!DOCTYPE html>
+<html lang="en">
 
     <?php include "./../inc/head.inc.php"; // Include Bootstrap CSS and other head elements ?>
 
 
     <?php include "./../inc/nav.inc.php"; // Navigation bar ?>
-
-    <div class="container">
+    <body>
+    <main class="container">
         <h1>Edit Review</h1>
         <?php if ($review): ?>
             <div class="card">
@@ -104,7 +105,8 @@ $conn->close();
         <?php else: ?>
             <p class="alert alert-warning">No review found with the provided ID.</p>
         <?php endif; ?>
-    </div>
+        </main>
+</body>
 
     <?php include "./../inc/footer.inc.php"; // Footer ?>
 

@@ -72,11 +72,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
 
 $conn->close();
 ?>
-
+<!DOCTYPE html>
+<html lang="en">
 <?php include "./../inc/head.inc.php"; ?>
     <?php include "./../inc/nav.inc.php"; ?>
-
-    <div class="container">
+    <body>
+    <main class="container">
         <h1>Edit User</h1>
         <?php if ($user): ?>
             <form action="#" method="post">
@@ -116,6 +117,8 @@ $conn->close();
         <?php else: ?>
             <p>No user found with the provided ID.</p>
         <?php endif; ?>
-    </div>
+        </main>
+    </body>
 
     <?php include "./../inc/footer.inc.php"; ?>
+</html>

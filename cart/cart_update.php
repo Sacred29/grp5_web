@@ -57,9 +57,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
     // Display form
     if (isset($cart)) {
 ?>
+    <!DOCTYPE html>
+    <html>
             <?php include "./../inc/head.inc.php"; ?>
             <?php include "./../inc/nav.inc.php"; ?>
-            <div class="container">
+            <body>
+            <main class="container">
             <h1>Edit Cart</h1>
             <form action="#" method="post">
                 <div class="mb-3">
@@ -81,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
                 <button type="submit" name="update">Update Cart</button>
                 <button type="button" onclick="location.href='/admin/management.php'">Back</button>
             </form>
-            </div>
+    </main>
 <?php
     } else {
         echo "No user found with the provided ID.";
@@ -89,3 +92,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
 }
 $conn->close();
 ?>
+</body>
+</html>
