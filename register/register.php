@@ -56,11 +56,12 @@ include "./../inc/head.inc.php";
                 <input required type="password" id="pwd_confirm" name="pwd_confirm" class="form-control" placeholder="Confirm password">
                 <!-- <input id="pwd_confirm" name="pwd_confirm"  class="form-control"placeholder="Confirm password"> -->
             </div>
+            <?php if (!isset($_SESSION["user_privilege"]) || $_SESSION["user_privilege"] == "user"): ?>
             <div class="mb-3 form-check">
-                <input required type="checkbox" name="agree" class="form-check-input">
-                <label class="form-check-label" for="agree">
-                    Agree to terms and conditions.</label>
+                <input required type="checkbox" name="agree" class="form-check-input" id="agree">
+                <label class="form-check-label" for="agree">Agree to terms and conditions.</label>
             </div>
+            <?php endif; ?>
             <div type="hidden" class="mb-3 form-check">
                 <input type="hidden" name="prevpage" id="prevpage" value="register.php" />
             </div>

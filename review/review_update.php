@@ -26,6 +26,14 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+function sanitize_input($data)
+{
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
 $reviewID = isset($_POST['reviewID']) ? $conn->real_escape_string($_POST['reviewID']) : null;
 
 // Fetch review data if reviewID is set
@@ -41,8 +49,8 @@ if ($reviewID) {
 // Check if form has been submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
     // Get form data
-    $userReview = $conn->real_escape_string($_POST['userReview']);
-    $userRating = $conn->real_escape_string($_POST['userRating']);
+    $userReview = sanitize_input($_POST['userReview']);
+    $userRating = sanitize_input($_POST['userRating']);
 
     // Update review data
     $updateSql = "UPDATE bookStore.reviewTable SET userReview='$userReview', userRating='$userRating' WHERE reviewID='$reviewID'";
@@ -58,16 +66,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
 $conn->close();
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
+
     <?php include "./../inc/head.inc.php"; // Include Bootstrap CSS and other head elements ?>
-    <title>Edit Review</title>
-</head>
+
 <body>
     <?php include "./../inc/nav.inc.php"; // Navigation bar ?>
 
-    <main class="container">
+    <div class="container">
         <h1>Edit Review</h1>
         <?php if ($review): ?>
             <div class="card">
@@ -99,8 +104,8 @@ $conn->close();
         <?php else: ?>
             <p class="alert alert-warning">No review found with the provided ID.</p>
         <?php endif; ?>
-    </main>
+    </div>
 
     <?php include "./../inc/footer.inc.php"; // Footer ?>
 </body>
-</html>
+
