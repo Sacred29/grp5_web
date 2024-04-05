@@ -17,7 +17,7 @@ include "./inc/nav.inc.php"
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" id="accountTabs" role="tablist">
         <li class="nav-item">
-            <a class="nav-link" id="namechange-tab" data-bs-toggle="tab" href="#namechange" role="tab" aria-controls="namechange" aria-selected="false">Change Name</a>
+            <a class="nav-link active" id="namechange-tab" data-bs-toggle="tab" href="#namechange" role="tab" aria-controls="namechange" aria-selected="false">Change Name</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" id="password-tab" data-bs-toggle="tab" href="#password" role="tab" aria-controls="password" aria-selected="false">Change Password</a>
