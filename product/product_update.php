@@ -143,8 +143,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
                 </div>
                 
                 <div class="mb-3">
-                    <label for="productImage" class="form-label">Select Product Image:</label>
-                    <input type="file" id="productImage" name="productImage" class="form-control">
+                    <label class="form-label">Select Product Image:</label>
+                    <input type="hidden" id="productImage" name="productImage" >
+                    <input type="file" id="productImage1" name="productImage1" class="form-control" >
                     <?php if (isset($product) && $product['productImage']): ?>
                         <img src="<?php echo htmlspecialchars($product['productImage']); ?>" alt="Current Image" style="max-width: 200px; max-height: 200px;">
                     <?php endif; ?>
