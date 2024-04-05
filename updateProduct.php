@@ -85,7 +85,7 @@ session_start();
             </div>
             <div class="mb-3">
                 <label for="arrivalDate" class="form-label">Arrival Date</label>
-                <input required type="date" value="<?php echo $book["arrivalDate"] ?>" id="arrivalDate" name="arrivalDate" class="form-control" placeholder="Select Date">
+                <input required type="date" value="<?php echo $book["arrivalDate"] ?>" id="arrivalDate" name="arrivalDate" class="form-control">
                 <!-- <input id="lname" name="lname" class="form-control" placeholder="Enter last name"> -->
             </div>
             <div class="mb-3">
@@ -118,9 +118,10 @@ session_start();
                 <input required type="text" value="<?php echo $book["bookPublisher"] ?>" id="bookPublisher" name="bookPublisher" class="form-control" placeholder="Input Product Publisher">
                 <!-- <input id="pwd" name="pwd" class="form-control" placeholder="Enter password"> -->
             </div>
-            <label for="productImage">Select Product Image:</label>
-            <input type="file" id="productImage" name="productImage">
-            </br>
+            <div class="mb-3">
+                <label for="productImage">Select Product Image:</label>
+                <input type="file" id="productImage" name="productImage">
+            </div>
             <div class="mb-3">
                 <button type="submit">Submit</button>
             </div>
@@ -129,10 +130,12 @@ session_start();
     <?php
     include "inc/footer.inc.php";
     ?>
+
+    <script>
+        <?php
+        echo "document.getElementById('genre').value ='" . $book["productGenre"] . "';";
+        ?>
+    </script>
 </body>
-<script>
-    <?php
-    echo "document.getElementById('genre').value ='" . $book["productGenre"] . "';";
-    ?>
-</script>
+
 </html>
