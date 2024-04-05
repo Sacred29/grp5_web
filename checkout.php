@@ -20,7 +20,7 @@ if (!isset($_SESSION['userID'])) {
             $cartItems = $_SESSION["cart_item"];
             $total_quantity = 0;
             $total_price = 0;
-            echo "<script> console.log('Cart Items: " . json_encode($cartItems) . "');  </script>";
+
 
         ?>
 

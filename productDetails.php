@@ -29,19 +29,17 @@ if ($conn->connect_error) {
 
 
 if (!empty($_GET["action"])) {
-    echo '<script>console.log("Add to cart clicked");</script>';
-    echo "<script> console.log('Cart Items: " . json_encode($_SESSION["cart_item"]) . "');  </script>";
+
     switch ($_GET["action"]) {
         case "add":
-            echo '<script>console.log("Inner add accessed");</script>';
+
             $quantity = $_POST["quantity"];
 
             if (!empty($_POST["quantity"])) {
-                echo "<script> console.log('Qty not empty');  </script>";
+
                 $qty = $_POST["quantity"];
                 $id = $_GET["id"];
-                echo "<script> console.log('Product selected: " . $id . "');  </script>";
-                echo "<script> console.log('Quantity added: " . $qty . "');  </script>";
+
 
                 //now that i have product n qty --> i need to check if id matches any existing product
                 $cartItems = $_SESSION["cart_item"];
@@ -66,11 +64,7 @@ if (!empty($_GET["action"])) {
                         $price = $row["price"];
                         $image = $row["productImage"];
                         $bookAuthor = $row["bookAuthor"];
-                        echo '<script>console.log("Name: ' . $name . '");</script>';
-                        echo '<script>console.log("UEN: ' . $uen . '");</script>';
-                        echo '<script>console.log("price: ' . $price . '");</script>';
-                        echo '<script>console.log("image: ' . $image . '");</script>';
-                        echo '<script>console.log("author: ' . $bookAuthor . '");</script>';
+
                     }
                 } //end of result
 
@@ -79,31 +73,29 @@ if (!empty($_GET["action"])) {
                     $matchFound = false;
                     foreach ($_SESSION["cart_item"] as $key => $item) {
                         $bookUEN = $item["bookUEN"];
-                        echo '<script>console.log("bookUEN: ' . $bookUEN . '");</script>';
+
 
                         if ($uen == $bookUEN) {
-                            echo '<script>console.log("Match found");</script>';
+
                             $matchFound = true;
                             if (!empty($item["quantity"]) && $matchFound) {
                                 $_SESSION["cart_item"][$key]["quantity"] += $qty;
 
-                                echo '<script>console.log("New Quantity: ' . $item["quantity"] . '");</script>';
-                                echo '<script>console.log("Item qty updated inside");</script>';
-                                echo "<script> console.log('Cart Items: " . json_encode($cartItems) . "');  </script>";
+
                             }
                         }
                     }
 
                     if (!$matchFound) {
-                        echo '<script>console.log("Added new item to cart");</script>';
+
                         $_SESSION["cart_item"] = array_merge($_SESSION["cart_item"], $itemArray);
                     }
                 } else {
                     $_SESSION["cart_item"] = $itemArray;
-                    echo '<script>console.log("no items in session, so im assigning first item here");</script>';
+
                 }
             } else {
-                echo '<script>console.log("Quantity is empty");</script>';
+
             }
             $stmt->close();
     }
