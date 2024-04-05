@@ -4,6 +4,14 @@ session_start();
 include "./../inc/head.inc.php";
 include "./../inc/nav.inc.php";
 
+function sanitize_input($data)
+{
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
 // Database configuration
 $config_file = '/var/www/private/db-config.ini';
 if (file_exists($config_file)) {
@@ -41,13 +49,13 @@ if ($productID) {
 /// Check if form has been submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
     // Initialize variables to avoid undefined index warnings
-    $productName = isset($_POST['productName']) ? $conn->real_escape_string($_POST['productName']) : '';
-    $bookUEN = isset($_POST['bookUEN']) ? $conn->real_escape_string($_POST['bookUEN']) : '';
-    $productGenre = isset($_POST['productGenre']) ? $conn->real_escape_string($_POST['productGenre']) : '';
-    $arrivalDate = isset($_POST['arrivalDate']) ? $conn->real_escape_string($_POST['arrivalDate']) : '';
-    $price = isset($_POST['price']) ? $conn->real_escape_string($_POST['price']) : '';
-    $bookAuthor = isset($_POST['bookAuthor']) ? $conn->real_escape_string($_POST['bookAuthor']) : '';
-    $bookPublisher = isset($_POST['bookPublisher']) ? $conn->real_escape_string($_POST['bookPublisher']) : '';
+    $productName = isset($_POST['productName']) ? sanitize_input($_POST['productName']) : '';
+    $bookUEN = isset($_POST['bookUEN']) ? sanitize_input($_POST['bookUEN']) : '';
+    $productGenre = isset($_POST['productGenre']) ? sanitize_input($_POST['productGenre']) : '';
+    $arrivalDate = isset($_POST['arrivalDate']) ? sanitize_input($_POST['arrivalDate']) : '';
+    $price = isset($_POST['price']) ? sanitize_input($_POST['price']) : '';
+    $bookAuthor = isset($_POST['bookAuthor']) ? sanitize_input($_POST['bookAuthor']) : '';
+    $bookPublisher = isset($_POST['bookPublisher']) ? sanitize_input($_POST['bookPublisher']) : '';
     
     // Handling file upload
     $productImage = isset($product['productImage']) ? $product['productImage'] : ''; // Default to existing image if available

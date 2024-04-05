@@ -7,6 +7,14 @@ if (!isset($_SESSION['user_privilege']) || ($_SESSION['user_privilege'] !== 'adm
     exit;
 }
 
+function sanitize_input($data)
+{
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
 // Database configuration
 $config_file = '/var/www/private/db-config.ini';
 if (file_exists($config_file)) {
@@ -47,10 +55,10 @@ if ($userID) {
 // Check if form has been submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
     // Get form data
-    $fName = $conn->real_escape_string($_POST['fName']);
-    $lName = $conn->real_escape_string($_POST['lName']);
-    $email = $conn->real_escape_string($_POST['email']);
-    $userPrivilege = $conn->real_escape_string($_POST['userPrivilege']);
+    $fName = sanitize_input($_POST['fName']);
+    $lName = sanitize_input($_POST['lName']);
+    $email = sanitize_input($_POST['email']);
+    $userPrivilege = sanitize_input($_POST['userPrivilege']);
 
     // Update user data
     $updateSql = "UPDATE bookStore.userTable SET fName='$fName', lName='$lName', email='$email', userPrivilege='$userPrivilege' WHERE userID='$userID'";
@@ -65,17 +73,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
 $conn->close();
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit User</title>
-    <?php include "./../inc/head.inc.php"; ?>
-</head>
+<?php include "./../inc/head.inc.php"; ?>
 <body>
     <?php include "./../inc/nav.inc.php"; ?>
 
-    <main class="container">
+    <div class="container">
         <h1>Edit User</h1>
         <?php if ($user): ?>
             <form action="#" method="post">
@@ -95,13 +97,18 @@ $conn->close();
                     <label for="email" class="form-label">Email:</label>
                     <input type="email" id="email" name="email" class="form-control" value="<?php echo htmlspecialchars($user['email']); ?>" required>
                 </div>
-
                 <div class="mb-3">
                     <label for="userPrivilege" class="form-label">User Privilege:</label>
-                    <select id="userPrivilege" name="userPrivilege" class="form-select" required>
-                        <option value="user" <?php echo ($user['userPrivilege'] == 'user') ? 'selected' : ''; ?>>User</option>
-                        <option value="staff" <?php echo ($user['userPrivilege'] == 'staff') ? 'selected' : ''; ?>>Staff</option>
-                    </select>
+                    <?php if ($_SESSION['user_privilege'] == 'admin'): ?>
+                        <select id="userPrivilege" name="userPrivilege" class="form-select" required>
+                            <option value="user" <?php echo ($user['userPrivilege'] == 'user') ? 'selected' : ''; ?>>User</option>
+                            <option value="staff" <?php echo ($user['userPrivilege'] == 'staff') ? 'selected' : ''; ?>>Staff</option>
+                            <option value="admin" <?php echo ($user['userPrivilege'] == 'admin') ? 'selected' : ''; ?>>Admin</option>
+                        </select>
+                    <?php else: ?>
+                        <input type="text" class="form-control" value="<?php echo htmlspecialchars($user['userPrivilege']); ?>" disabled>
+                        <input type="hidden" name="userPrivilege" value="<?php echo htmlspecialchars($user['userPrivilege']); ?>">
+                    <?php endif; ?>
                 </div>
 
                 <button type="submit" name="update" class="btn btn-primary">Update User</button>
@@ -110,8 +117,6 @@ $conn->close();
         <?php else: ?>
             <p>No user found with the provided ID.</p>
         <?php endif; ?>
-    </main>
+    </div>
 
     <?php include "./../inc/footer.inc.php"; ?>
-</body>
-</html>
