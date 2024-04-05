@@ -3,7 +3,6 @@
     // Destroy all session data.
     //POST to cartTable the userID, productID, quantity, price
     $userID = $_SESSION["userID"];
-    echo "<script> console.log('UserID: " . $_SESSION["userID"] . "');  </script>";
     foreach ($_SESSION["cart_item"] as $key => $item) {
         //foreach item in the cart --> if it matches i want to update the quantity
         //if it does not match --> its creating
@@ -11,10 +10,6 @@
         $itemQuantity = $_SESSION["cart_item"][$key]["quantity"];
         $price = $_SESSION["cart_item"][$key]["price"];
         $totalItemPrice = $itemQuantity * $price;
-        
-        echo '<script>console.log("bookUEN: ' . $bookUEN . '");</script>';
-        echo '<script>console.log("Item Quantity: ' . $itemQuantity . '");</script>';
-        echo '<script>console.log("Total for item: ' . $totalItemPrice . '");</script>';
 
         $config_file = '/var/www/private/db-config.ini';
     if (file_exists($config_file)) {
@@ -52,7 +47,6 @@
                 $productID = $row["productID"];
             }
         }
-        echo '<script>console.log("Product ID: ' . $productID . '");</script>';
 
         $stmt2 = $conn->prepare("INSERT INTO cartTable (userID, productID, quantity, price) VALUES (?,?,?,?)");
         $stmt2->bind_param("ssss", $userID, $productID, $itemQuantity, $totalItemPrice);
