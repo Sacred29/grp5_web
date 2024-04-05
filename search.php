@@ -14,8 +14,6 @@
     #advanced-options-collapsible {
         margin-top: 2em;
     }
-
-    
 </style>
 <?php
 include "inc/head.inc.php";
@@ -36,13 +34,11 @@ $sortOrder = $_GET["sort-order"] ?? '';
     include "inc/nav.inc.php";
     ?>
     <main class="container">
-
         <section class="featured-places">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="section-heading">
-                            <!-- <span>Featured Products</span> -->
                             <h1>Search</h1>
                         </div>
                     </div>
@@ -69,17 +65,16 @@ $sortOrder = $_GET["sort-order"] ?? '';
                                 <label for="book-publisher" class="form-label">Publisher:</label>
                                 <input maxlength="45" value="<?php echo $bookPublisher ?: '' ?>" type="text" id="book-publisher" name="book-publisher" class="form-control" placeholder="Enter book publisher">
                             </div>
-
                         </div>
                         <div class="row">
                             <div class="col">
                                 <div class="dropdown">
                                     <label class="form-label">Genre</label>
                                     <br>
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonGenre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <?php echo $bookGenre ?: 'Select...' ?>
                                     </button>
-                                    <div class="dropdown-menu" id="genre-dropdown" aria-labelledby="dropdownMenuButton">
+                                    <div class="dropdown-menu" id="genre-dropdown" aria-labelledby="dropdownMenuButtonGenre">
                                         <a class="dropdown-item genre-item" data-value="Fiction" href="#">Fiction</a>
                                         <a class="dropdown-item genre-item" data-value="Non-Fiction" href="#">Non-Fiction</a>
                                         <a class="dropdown-item genre-item" data-value="Educational" href="#">Educational</a>
@@ -99,10 +94,10 @@ $sortOrder = $_GET["sort-order"] ?? '';
                                 <div class="dropdown">
                                     <label class="form-label">Order books by</label>
                                     <br>
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSortBy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <?php echo $sortBy ?: 'Select...' ?>
                                     </button>
-                                    <div class="dropdown-menu" id="orderby-dropdown" aria-labelledby="dropdownMenuButton">
+                                    <div class="dropdown-menu" id="orderby-dropdown" aria-labelledby="dropdownMenuButtonSortBy">
                                         <a class="dropdown-item orderby-item" data-value="Price" href="#">Price</a>
                                         <a class="dropdown-item orderby-item" data-value="Title" href="#">Title</a>
                                         <a class="dropdown-item orderby-item" data-value="Arrival date" href="#">Arrival date</a>
@@ -115,10 +110,10 @@ $sortOrder = $_GET["sort-order"] ?? '';
                                 <div class="dropdown">
                                     <label class="form-label">Sort order</label>
                                     <br>
-                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSortOrder" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <?php echo $sortOrder ?: 'Select...' ?>
                                     </button>
-                                    <div class="dropdown-menu" id="sort-order-dropdown" aria-labelledby="dropdownMenuButton">
+                                    <div class="dropdown-menu" id="sort-order-dropdown" aria-labelledby="dropdownMenuButtonSortOrder">
                                         <a class="dropdown-item sort-order-item" data-value="Ascending" href="#">Ascending</a>
                                         <a class="dropdown-item sort-order-item" data-value="Descending" href="#">Descending</a>
                                     </div>
@@ -237,7 +232,7 @@ $sortOrder = $_GET["sort-order"] ?? '';
     include "inc/footer.inc.php";
     ?>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>
         window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>');
     </script>
