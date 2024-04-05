@@ -261,29 +261,32 @@ $conn->close();
 
 
             <div class="container">
-                <h1 class="mt-5">Leave your review here!</h1>
-                <div class="card">
-                    <div class="card-body">
-                        <form action="process_productReview.php" method="POST">
-                            <div class="form-group">
-                                <label for="review">Your Review:</label>
-                                <textarea required class="form-control" id="userReview" name="userReview" placeholder="Enter your review here"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="userRating">Your Rating:</label>
-                                <select required class="form-control" id="userRating" name="userRating">
-                                    <option value="1">1 - Poor</option>
-                                    <option value="2">2 - Fair</option>
-                                    <option value="3">3 - Average</option>
-                                    <option value="4">4 - Good</option>
-                                    <option value="5">5 - Excellent</option>
-                                </select>
-                            </div>
-                            <input type="hidden" name="productID" value="<?= htmlspecialchars($book['productID']) ?>">
-                            <input type="submit" class="btn btn-primary" value="Submit Review" name="submitReview" id="submitReview">
-                        </form>
+                <?php if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] == 'user') { ?>
+                    <h1 class="mt-5">Leave your review here!</h1>
+                    <div class="card">
+                        <div class="card-body">
+                            <form action="process_productReview.php" method="POST">
+                                <div class="form-group">
+                                    <label for="review">Your Review:</label>
+                                    <textarea required class="form-control" id="userReview" name="userReview" placeholder="Enter your review here"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="userRating">Your Rating:</label>
+                                    <select required class="form-control" id="userRating" name="userRating">
+                                        <option value="1">1 - Poor</option>
+                                        <option value="2">2 - Fair</option>
+                                        <option value="3">3 - Average</option>
+                                        <option value="4">4 - Good</option>
+                                        <option value="5">5 - Excellent</option>
+                                    </select>
+                                </div>
+                                <input type="hidden" name="productID" value="<?= htmlspecialchars($book['productID']) ?>">
+                                <input type="submit" class="btn btn-primary" onclick="validateReview()" value="Submit Review" name="submitReview" id="submitReview">
+                            </form>
+                        </div>
                     </div>
-                </div>
+                <?php
+                        } ?>
 
 
                 <div class='reviews-section'>
