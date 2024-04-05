@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['recaptcha_response']
             $is_bot = false;
         } else {
             $errorMsg = "reCAPTCHA thinks you are a bot. Try again in a few minutes. <br />";
+            $success = false;
         }
     } else {
         $errorMsg .= "Oops! Something went wrong with reCAPTCHA verification. <br />";
