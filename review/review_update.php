@@ -69,7 +69,7 @@ $conn->close();
 
     <?php include "./../inc/head.inc.php"; // Include Bootstrap CSS and other head elements ?>
 
-<body>
+
     <?php include "./../inc/nav.inc.php"; // Navigation bar ?>
 
     <div class="container">
@@ -107,5 +107,5 @@ $conn->close();
     </div>
 
     <?php include "./../inc/footer.inc.php"; // Footer ?>
-</body>
+
 

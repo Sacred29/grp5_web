@@ -74,7 +74,6 @@ $conn->close();
 ?>
 
 <?php include "./../inc/head.inc.php"; ?>
-<body>
     <?php include "./../inc/nav.inc.php"; ?>
 
     <div class="container">
