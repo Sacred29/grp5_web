@@ -7,6 +7,7 @@ session_start();
 <?php
 include "./../inc/head.inc.php";
 ?>
+<script src="https://www.google.com/recaptcha/api.js?render=6Le0e7MZAAAAAJDAnFTrhlM8DJ1u-Fvi3N702bD7"></script>
 <script>
     grecaptcha.ready(() => {
         document.getElementById('register-form').addEventListener("submit", function(event) {
@@ -56,11 +57,11 @@ include "./../inc/head.inc.php";
                 <input required type="password" id="pwd_confirm" name="pwd_confirm" class="form-control" placeholder="Confirm password">
                 <!-- <input id="pwd_confirm" name="pwd_confirm"  class="form-control"placeholder="Confirm password"> -->
             </div>
-            <?php if (!isset($_SESSION["user_privilege"]) || $_SESSION["user_privilege"] == "user"): ?>
-            <div class="mb-3 form-check">
-                <input required type="checkbox" name="agree" class="form-check-input" id="agree">
-                <label class="form-check-label" for="agree">Agree to terms and conditions.</label>
-            </div>
+            <?php if (!isset($_SESSION["user_privilege"]) || $_SESSION["user_privilege"] == "user") : ?>
+                <div class="mb-3 form-check">
+                    <input required type="checkbox" name="agree" class="form-check-input" id="agree">
+                    <label class="form-check-label" for="agree">Agree to terms and conditions.</label>
+                </div>
             <?php endif; ?>
             <div type="hidden" class="mb-3 form-check">
                 <input type="hidden" name="prevpage" id="prevpage" value="register.php" />
