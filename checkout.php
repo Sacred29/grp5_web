@@ -11,7 +11,6 @@ if (!isset($_SESSION['userID'])) {
 
 <body>
     <?php
-    session_start();
     include "inc/nav.inc.php";
     ?>
     <main class="container">
