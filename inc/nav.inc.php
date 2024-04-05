@@ -1,8 +1,8 @@
-<nav class="navbar navbar-expand-md">
+<nav class="navbar navbar-expand-md" style="background-color: #D3D3D3;">
+    <button id="test" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
     <div class="container-fluid">
-        <button id="test" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" href="/index.php">Home</a>
@@ -10,9 +10,11 @@
             <li class="nav-item">
                 <a class="nav-link" href="/products.php">Products</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/cart.php">Shopping Cart</a>
-            </li>
+            <?php if (isset($_SESSION['email'])) : ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="/cart.php">Shopping Cart</a>
+                </li>
+            <?php endif ?>
             <li class="nav-item">
                 <a class="nav-link" href="/about.php">About us</a>
             </li>
@@ -55,13 +57,10 @@
     </div>
 </nav>
 <script>
-  
-  var navbar = document.querySelectorAll('.navbar-nav');
-  document.getElementById("test").addEventListener("click", function() {
-    navbar.forEach(function(navitem) {
-        navitem.classList.toggle("collapse");
-  });
-    
-  });
-  
+    var navbar = document.querySelectorAll('.navbar-nav');
+    document.getElementById("test").addEventListener("click", function() {
+        navbar.forEach(function(navitem) {
+            navitem.classList.toggle("collapse");
+        });
+    });
 </script>

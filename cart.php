@@ -3,6 +3,10 @@
 <?php
 include "inc/head.inc.php";
 session_start();
+if (!isset($_SESSION['userID'])) {
+    header("Location: /login/login.php");
+    exit();
+}
 ?>
 
 <?php
@@ -34,7 +38,7 @@ if ($conn->connect_error) {
                 //check if quantity added is empty
                 if (!empty($_POST["quantity"])) {
                     $uen = $_GET["uen"];
-                    
+
                     $stmt = $conn->prepare("SELECT * FROM bookStore.productTable WHERE bookUEN='$uen';");
                     $stmt->execute();
                     $result = $stmt->get_result();
@@ -66,7 +70,7 @@ if ($conn->connect_error) {
                     //if cart_item in session is not empty
                     //i need to check if the uen matches any of the ids in the cart_item session
                     if (!empty($_SESSION["cart_item"])) {
-                        
+
                         //established that my cart has an item inside here --> so i will start looping here
                         //for each item in cart, check if item is inside
                         $matchFound = false;
@@ -74,27 +78,24 @@ if ($conn->connect_error) {
                             //foreach item in the cart --> if it matches i want to update the quantity
                             //if it does not match --> its creating
                             $bookUEN = $item["bookUEN"];
-                            
+
 
                             if ($uen == $bookUEN) {
                                 echo '<script>console.log("Match found");</script>';
                                 $matchFound = true;
                                 if (!empty($item["quantity"]) && $matchFound) {
                                     $_SESSION["cart_item"][$key]["quantity"] += $quantity;
-
-                                    
                                 }
                             }
                         }
 
                         if (!$matchFound) {
-                            
+
                             $_SESSION["cart_item"] = array_merge($_SESSION["cart_item"], $itemArray);
                         }
                     }   //if session cart items is empty 
                     else {
                         $_SESSION["cart_item"] = $itemArray;
-                        
                     }
 
                     // Perform additional operations for each bookUEN value
@@ -104,7 +105,7 @@ if ($conn->connect_error) {
 
             case "remove":
                 if (!empty($_SESSION["cart_item"])) {
-                    
+
                     $uen = $_GET["uen"];
                     foreach ($_SESSION["cart_item"] as $key => $item) {
                         //foreach item in the cart --> if it matches i want to update the quantity 
@@ -114,12 +115,12 @@ if ($conn->connect_error) {
                         if (
                             $uen == $bookUEN
                         ) {
-                            
+
                             $matchFound = true;
                             if (!empty($item["quantity"]) && $matchFound) {
                                 unset($_SESSION["cart_item"][$key]);
                                 //echo "<script> console.log('Cart Items: " . json_encode($_SESSION["cart_item"]) . "');  </script>"; 
-                                
+
                             }
                         }
                     }
@@ -127,7 +128,7 @@ if ($conn->connect_error) {
                 break;
                 break;
             case "empty":
-                
+
                 unset($_SESSION["cart_item"]);
                 break;
         } //end of switch
@@ -142,14 +143,13 @@ $conn->close();
 <body>
     <?php
     include "inc/nav.inc.php";
-   
+
 
 
     ?>
 
     <?php //if statement for showing and hiding based on session 
     if (isset($_SESSION['user_privilege']) && $_SESSION['user_privilege'] == 'user') {
-        
     }
     ?>
 
@@ -161,15 +161,13 @@ $conn->close();
             $quantity = 1;
             if (!isset($_SESSION["cart_item"])) {
                 $_SESSION["cart_item"] = array();
-                
+
                 // $cartItems = $_SESSION["cart_item"];
                 // echo "<script> console.log('Cart Items: " . json_encode($cartItems) . "');  </script>";
             } else {
-                
             }
 
             if (empty($_SESSION["cart_item"])) {
-                
             }
 
 
@@ -177,7 +175,7 @@ $conn->close();
             if (isset($_SESSION["cart_item"]) && !(empty($_SESSION["cart_item"]))) {
                 $total_quantity = 0;
                 $total_price = 0;
-                
+
                 $cartItems = $_SESSION["cart_item"];
                 //echo "<script> console.log('Cart Items: " . json_encode($cartItems) . "');  </script>";
             ?> <!-- used to check if cart_item is established in session-->
@@ -196,12 +194,12 @@ $conn->close();
                         foreach ($_SESSION["cart_item"] as $item) {
                             $item_price = $item["quantity"] * $item["price"];
                             $cartItems = $_SESSION["cart_item"];
-                            
+
 
 
                         ?>
                             <tr>
-                                <td style="border-top: 1px solid black; border-bottom: 1px solid black;"><img src="<?php echo $item["productImage"]; ?>" class="cart-item-image" />&nbsp; <?php echo $item["productName"]; ?></td>
+                                <td style="border-top: 1px solid black; border-bottom: 1px solid black;"><img src="<?php echo $item["productImage"]; ?>" class="cart-item-image" alt="<?php echo $item["productName"]; ?>" />&nbsp; <?php echo $item["productName"]; ?></td>
                                 <td style="text-align:center; border-top: 1px solid black; border-bottom: 1px solid black;"><?php echo "$ " . $item["price"]; ?></td>
                                 <td style="text-align:center; border-top: 1px solid black; border-bottom: 1px solid black;"><?php echo $item["quantity"]; ?></td>
                                 <td style="text-align:center; border-top: 1px solid black; border-bottom: 1px solid black;"><?php echo "$ " . number_format($item_price, 2); ?></td>
@@ -233,7 +231,7 @@ $conn->close();
         </div> <!-- End of shopping-cart div-->
 
         <div class="container-fluid bg-3 text-center">
-            <h3 class="margin">Product Catalog</h3><br>
+            <h1 class="margin">Product Catalog</h1><br>
 
 
             <?php
@@ -283,6 +281,7 @@ $conn->close();
                         echo '<div class="product-author text-center" style="margin-bottom:5px;">"by" ' . $resultArray[$key]["bookAuthor"] . '</div>';
                         echo '<div class="product-details" style="display:flex; justify-content:space-between; align-items:center;">';
                         echo '<div class="product-price">$ ' . $resultArray[$key]["price"] . '</div>';
+                        echo '<label for="quantity">Quantity:</label>';
                         echo '<input type="number" step="1" min="1" max="10" value="1" name="quantity" id="quantity" class="quantity-field text-center w-25">';
                         echo '<input type="submit" value="Add to Cart" class="btnAddAction" />';
 

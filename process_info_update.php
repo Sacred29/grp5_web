@@ -24,40 +24,13 @@ include "inc/head.inc.php";
     $errorMsg = "";
     $success = true;
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['recaptcha_response'])) {
-        // Build POST request:
-        $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
-        $recaptcha_secret = '6Le0e7MZAAAAAI-pCmb3uScqvJUf5y6RN6bTqra4';
-        $recaptcha_response = $_POST['recaptcha_response']; // replace with getenv
-
-        // Make and decode POST request:
-        $recaptcha = file_get_contents($recaptcha_url . '?secret=' . $recaptcha_secret . '&response=' . $recaptcha_response);
-        $recaptcha = json_decode($recaptcha);
-
-        // check if recaptcha server-side validation is successful
-        if ($recaptcha->success || empty($_POST['recaptcha_response'])) {
-            // Take action based on the score returned:
-            if ($recaptcha->score >= 0.5) {
-                $is_bot = false;
-            } else {
-                $errorMsg = "reCAPTCHA thinks you are a bot. Try again in a few minutes.";
-            }
-        } else {
-            $errorMsg .= "Oops! Something went wrong with reCAPTCHA verification.";
-            $success = false;
-        }
-    } else {
-        $errorMsg .= "Oops! Something went wrong with reCAPTCHA verification.";
-        $success = false;
-    }
-
     // session userid not set means not logged in
     if (!isset($_SESSION["userID"])) {
         $errorMsg .= "Please log in!";
         $success = false;
     }
 
-    if ($success == true && $is_bot == false) {
+    if ($success) {
         foreach ($fields as $field => $fieldname) {
             if (empty($_POST[$field])) {
                 if ($singleError) {

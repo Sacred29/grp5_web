@@ -4,6 +4,11 @@
 include "./../inc/head.inc.php";
 echo '<link href="path_to_bootstrap_css/bootstrap.min.css" rel="stylesheet">';
 session_start();
+// if user not logged in, redirect to login page
+if (!isset($_SESSION["userID"])) {
+    header("location: /login/login.php");
+    exit();
+}
 include "./../inc/nav.inc.php"
 ?>
 
@@ -32,129 +37,127 @@ include "./../inc/nav.inc.php"
             <a class="nav-link" id="product-tab" data-bs-toggle="tab" href="#product" role="tab" aria-controls="product" aria-selected="false">Products Management</a>
         </li>
     </ul>
-    <div id= "display_content"></div>
-</div>
+    <div id="display_content"></div>
+    </div>
 
 
-<!-- Include Bootstrap Bundle with Popper -->
-<script src="./../js/vendor/bootstrap.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
+    <!-- Include Bootstrap Bundle with Popper -->
+    <script src="./../js/vendor/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // When the 'user management' tab is shown
+            $('a[data-bs-toggle="tab"][href="#user_management"]').on('shown.bs.tab', function(e) {
+                var targetElement = document.getElementById("display_content");
+                removeElement();
+                fetch('/admin/user_management.php')
+                    .then(response => response.text())
+                    .then(data => {
+                        if (targetElement) {
+                            targetElement.innerHTML = data;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching user_management.php:', error);
+                    });
+            });
 
-$(document).ready(function(){
-// When the 'user management' tab is shown
-$('a[data-bs-toggle="tab"][href="#user_management"]').on('shown.bs.tab', function (e) {
-        var targetElement = document.getElementById("display_content");
-        removeElement();
-        fetch('/admin/user_management.php')
-        .then(response => response.text())
-        .then(data => {
-            if (targetElement) {
-                targetElement.innerHTML = data;
+
+            // When the 'cart Management' tab is shown
+            $('a[data-bs-toggle="tab"][href="#cart"]').on('shown.bs.tab', function(e) {
+                var targetElement = document.getElementById("display_content");
+                removeElement();
+                // Fetch content from hello.php using AJAX
+                fetch('/admin/cart_management.php')
+                    .then(response => response.text())
+                    .then(data => {
+                        if (targetElement) {
+                            targetElement.innerHTML = data;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching cart_management.php:', error);
+                    });
+            });
+
+            // When the 'order Management' tab is shown
+            $('a[data-bs-toggle="tab"][href="#order"]').on('shown.bs.tab', function(e) {
+                var targetElement = document.getElementById("display_content");
+                removeElement();
+                // Fetch content from hello.php using AJAX
+                fetch('/admin/order_management.php')
+                    .then(response => response.text())
+                    .then(data => {
+                        if (targetElement) {
+                            targetElement.innerHTML = data;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching order_management.php:', error);
+                    });
+            });
+
+            $('a[data-bs-toggle="tab"][href="#review"]').on('shown.bs.tab', function(e) {
+                var targetElement = document.getElementById("display_content");
+                removeElement();
+
+                fetch('/admin/review_management.php')
+                    .then(response => response.text())
+                    .then(data => {
+                        if (targetElement) {
+                            targetElement.innerHTML = data;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching review_management.php:', error);
+                    });
+            });
+
+            $('a[data-bs-toggle="tab"][href="#product"]').on('shown.bs.tab', function(e) {
+                var targetElement = document.getElementById("display_content");
+                removeElement();
+
+                fetch('/admin/product_management.php')
+                    .then(response => response.text())
+                    .then(data => {
+                        if (targetElement) {
+                            targetElement.innerHTML = data;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching product_management.php:', error);
+                    });
+            });
+
+
+
+
+            //Function to remove html when switch tab
+            function removeElement() {
+                var element = document.getElementById("display_content");
+                if (element) {
+                    element.innerHTML = "";
+                }
             }
-        })
-        .catch(error => {
-            console.error('Error fetching user_management.php:', error);
         });
-    });
+    </script>
 
 
-    // When the 'cart Management' tab is shown
-    $('a[data-bs-toggle="tab"][href="#cart"]').on('shown.bs.tab', function (e) {
-        var targetElement = document.getElementById("display_content");
-        removeElement();
-         // Fetch content from hello.php using AJAX
-        fetch('/admin/cart_management.php')
-        .then(response => response.text())
-        .then(data => {
-            if (targetElement) {
-                targetElement.innerHTML = data;
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching cart_management.php:', error);
+
+    <script>
+        // on load
+        document.addEventListener("DOMContentLoaded", (event) => {
+            var targetElement = document.getElementById("display_content");
+            fetch('/admin/user_management.php')
+                .then(response => response.text())
+                .then(data => {
+                    if (targetElement) {
+                        targetElement.innerHTML = data;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching user_management.php:', error);
+                });
+
         });
-    });
-
-     // When the 'order Management' tab is shown
-     $('a[data-bs-toggle="tab"][href="#order"]').on('shown.bs.tab', function (e) {
-        var targetElement = document.getElementById("display_content");
-        removeElement();
-         // Fetch content from hello.php using AJAX
-        fetch('/admin/order_management.php')
-        .then(response => response.text())
-        .then(data => {
-            if (targetElement) {
-                targetElement.innerHTML = data;
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching order_management.php:', error);
-        });
-    });
-
-    $('a[data-bs-toggle="tab"][href="#review"]').on('shown.bs.tab', function (e) {
-        var targetElement = document.getElementById("display_content");
-        removeElement();
-        
-        fetch('/admin/review_management.php')
-        .then(response => response.text())
-        .then(data => {
-            if (targetElement) {
-                targetElement.innerHTML = data;
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching review_management.php:', error);
-        });
-    });
-
-    $('a[data-bs-toggle="tab"][href="#product"]').on('shown.bs.tab', function (e) {
-        var targetElement = document.getElementById("display_content");
-        removeElement();
-        
-        fetch('/admin/product_management.php')
-        .then(response => response.text())
-        .then(data => {
-            if (targetElement) {
-                targetElement.innerHTML = data;
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching product_management.php:', error);
-        });
-    });
-
-    
-    
-
-    //Function to remove html when switch tab
-    function removeElement() {
-            var element = document.getElementById("display_content");
-            if (element) {
-                element.innerHTML = "";
-            }
-        }
-});
-</script>
-
-
-
-<script>
-// on load
-document.addEventListener("DOMContentLoaded", (event) => {
-    var targetElement = document.getElementById("display_content");
-        fetch('/admin/user_management.php')
-        .then(response => response.text())
-        .then(data => {
-            if (targetElement) {
-                targetElement.innerHTML = data;
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching user_management.php:', error);
-        });
-   
-});
-</script>
-
+    </script>
