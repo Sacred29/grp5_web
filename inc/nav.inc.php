@@ -23,7 +23,7 @@
                     <span class="navbar-text mr-3">
                         <?php if ($_SESSION['user_privilege'] == 'admin') : ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="admin.php">Admin</a>
+                    <a class="nav-link" href="./admin/management.php">Admin</a>
                 </li>
             <?php elseif ($_SESSION['user_privilege'] == 'staff') : ?>
                 <li class="nav-item">

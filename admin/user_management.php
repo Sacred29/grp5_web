@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="en">
 <?php
 session_start();
 
@@ -68,7 +69,7 @@ $result = $conn->query($sql);
                             <td>
                                 <form action="/user/user_delete.php" method="post">
                                     <input type="hidden" name="userID" value="<?php echo $row["userID"]; ?>">
-                                    <input type="submit" value="Delete">
+                                    <input type="submit" value="Delete" onclick="return confirm('Are you sure you want to delete this user?');">
                                 </form>
                             </td>
                         </tr>

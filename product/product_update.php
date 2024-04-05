@@ -1,5 +1,9 @@
 <?php
 session_start();
+
+include "./../inc/head.inc.php";
+include "./../inc/nav.inc.php";
+
 // Database configuration
 $config_file = '/var/www/private/db-config.ini';
 if (file_exists($config_file)) {
@@ -34,41 +38,45 @@ if ($productID) {
     $product = $result->fetch_assoc();
 }
 
-// Check if form has been submitted
+/// Check if form has been submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
-    // Get form data
-    $productName = $conn->real_escape_string($_POST['productName']);
-    $bookUEN = $conn->real_escape_string($_POST['bookUEN']);
-    $productGenre = $conn->real_escape_string($_POST['productGenre']);
-    $arrivalDate = $conn->real_escape_string($_POST['arrivalDate']);
-    $price = $conn->real_escape_string($_POST['price']);
-    $bookAuthor = $conn->real_escape_string($_POST['bookAuthor']);
-    $bookPublisher = $conn->real_escape_string($_POST['bookPublisher']);
-    $productImage = $conn->real_escape_string($_POST['productImage']);
-
-    if (isset($_FILES)) {
-        $productImage = "/images/" . $_FILES["productImage1"]["name"];
-        $destination_dir = "./../images/";
-        $file_name = $_FILES["productImage1"]["name"];
-        $file_tmp = $_FILES["productImage1"]["tmp_name"];
-        if(move_uploaded_file($file_tmp, $destination_dir . $file_name)) {
-            echo "File uploaded successfully!";
-        } else {
+    // Initialize variables to avoid undefined index warnings
+    $productName = isset($_POST['productName']) ? $conn->real_escape_string($_POST['productName']) : '';
+    $bookUEN = isset($_POST['bookUEN']) ? $conn->real_escape_string($_POST['bookUEN']) : '';
+    $productGenre = isset($_POST['productGenre']) ? $conn->real_escape_string($_POST['productGenre']) : '';
+    $arrivalDate = isset($_POST['arrivalDate']) ? $conn->real_escape_string($_POST['arrivalDate']) : '';
+    $price = isset($_POST['price']) ? $conn->real_escape_string($_POST['price']) : '';
+    $bookAuthor = isset($_POST['bookAuthor']) ? $conn->real_escape_string($_POST['bookAuthor']) : '';
+    $bookPublisher = isset($_POST['bookPublisher']) ? $conn->real_escape_string($_POST['bookPublisher']) : '';
+    
+    // Handling file upload
+    $productImage = isset($product['productImage']) ? $product['productImage'] : ''; // Default to existing image if available
+    if (isset($_FILES['productImage1']) && $_FILES['productImage1']['error'] == 0) {
+        $productImage = "/images/" . basename($_FILES["productImage1"]["name"]);
+        $destination_dir = "./../images/" . basename($_FILES["productImage1"]["name"]);
+        if (!move_uploaded_file($_FILES["productImage1"]["tmp_name"], $destination_dir)) {
             echo "Error uploading file.";
         }
     }
     
 
-    // Update user data
-    $updateSql = "UPDATE bookStore.productTable SET productName='$productName', bookUEN='$bookUEN', productGenre='$productGenre', arrivalDate='$arrivalDate', price='$price', bookAuthor='$bookAuthor',bookPublisher='$bookPublisher', productImage='$productImage' WHERE productID='$productID'";
-
-    if ($conn->query($updateSql) === TRUE) {
-        header("Location: /admin/management.php");
-        exit;
-    } else {
-        echo "Error updating product: " . $conn->error;
-        header("Location: /admin/management.php");
-        exit;
+    if ($productID) {
+        $updateSql = "UPDATE bookStore.productTable SET productName=?, bookUEN=?, productGenre=?, arrivalDate=?, price=?, bookAuthor=?, bookPublisher=?, productImage=? WHERE productID=?";
+        
+        // Prepared statement to avoid SQL injection
+        if ($stmt = $conn->prepare($updateSql)) {
+            $stmt->bind_param("ssssdsssi", $productName, $bookUEN, $productGenre, $arrivalDate, $price, $bookAuthor, $bookPublisher, $productImage, $productID);
+            if ($stmt->execute()) {
+                $_SESSION['message'] = 'Product updated successfully.';
+                header("Location: ./../admin/management.php");
+                exit;
+            } else {
+                $_SESSION['error'] = "Error updating product: " . $conn->error;
+            }
+            $stmt->close();
+        } else {
+            $_SESSION['error'] = "Error updating product: " . $conn->error;
+        }
     }
 } else {
     // Display form
@@ -83,46 +91,69 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update'])) {
         </head>
 
         <body>
-            <h1>Edit User</h1>
-            <form action="" method="post" enctype="multipart/form-data" >
-                <input type="hidden" name="productID" value="<?php echo $product['productID']; ?>">
-                <div>
-                    <label>Product Name</label>
-                    <input type="text" name="productName" value="<?php echo $product['productName']; ?>">
-                </div>
-                <div>
-                    <label>UEN</label>
-                    <input type="number" name="bookUEN" value="<?php echo $product['bookUEN']; ?>">
-                </div>
-                <div>
-                    <label>Genre</label>
-                    <input type="text" name="productGenre" value="<?php echo $product['productGenre']; ?>">
-                </div>
-                <div>
-                    <label>Arrival Date</label>
-                    <input type="date" name="arrivalDate" value="<?php echo $product['arrivalDate']; ?>">
-                </div>
-                <div>
-                    <label>Price</label>
-                    <input type="number" step="any" name="price" value="<?php echo $product['price']; ?>">
-                </div>
-                <div>
-                    <label>Author</label>
-                    <input type="text" name="bookAuthor" value="<?php echo $product['bookAuthor']; ?>">
-                </div>
-                <div>
-                    <label>Publisher</label>
-                    <input type="text" name="bookPublisher" value="<?php echo $product['bookPublisher']; ?>">
-                </div>
-                <div>
-                    <label>Image</label>
-                    <input type="hidden" name="productImage" value="<?php echo $product['productImage']; ?>">
-                    <input type="file" id="productImage1" name="productImage1">
+            <main class="container">
+            <h1><?php echo isset($product) ? "Edit Product" : "Product Registration"; ?></h1>
+
+            <form action="<?php echo isset($product) ? '' : '/process_productRegister.php'; ?>" method="post" enctype="multipart/form-data">
+                <?php if (isset($product)): ?>
+                    <input type="hidden" name="productID" value="<?php echo htmlspecialchars($product['productID']); ?>">
+                <?php endif; ?>
+                
+                <div class="mb-3">
+                    <label for="productName" class="form-label">Product Name</label>
+                    <input maxlength="45" type="text" id="productName" name="productName" class="form-control" value="<?php echo isset($product) ? htmlspecialchars($product['productName']) : ''; ?>" placeholder="Input Product Name">
                 </div>
                 
-                <button type="submit" name="update">Update Product</button>
-                <button type="button" onclick="location.href='/admin/management.php'">Back</button>
+                <div class="mb-3">
+                    <label for="arrivalDate" class="form-label">Arrival Date</label>
+                    <input required type="date" id="arrivalDate" name="arrivalDate" class="form-control" value="<?php echo isset($product) ? htmlspecialchars($product['arrivalDate']) : ''; ?>" placeholder="Select Date">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="genre" class="form-label">Product Genre</label>
+                    <select name="genre" id="genre" class="form-control">
+                        <option value="Fiction" <?php echo isset($product) && $product['productGenre'] == 'Fiction' ? 'selected' : ''; ?>>Fiction</option>
+                        <option value="Non-Fiction" <?php echo isset($product) && $product['productGenre'] == 'Non-Fiction' ? 'selected' : ''; ?>>Non-Fiction</option>
+                        <option value="Educational" <?php echo isset($product) && $product['productGenre'] == 'Educational' ? 'selected' : ''; ?>>Educational</option>
+                        <option value="Self-Help" <?php echo isset($product) && $product['productGenre'] == 'Self-Help' ? 'selected' : ''; ?>>Self-Help</option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="bookUEN" class="form-label">Product UEN:</label>
+                    <input required type="text" id="bookUEN" name="bookUEN" class="form-control" value="<?php echo isset($product) ? htmlspecialchars($product['bookUEN']) : ''; ?>" placeholder="Input Book UEN">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price: </label>
+                    <input required type="text" id="price" name="price" class="form-control" value="<?php echo isset($product) ? htmlspecialchars($product['price']) : ''; ?>" placeholder="Input Price">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="bookAuthor" class="form-label">Product Author:</label>
+                    <input required type="text" id="bookAuthor" name="bookAuthor" class="form-control" value="<?php echo isset($product) ? htmlspecialchars($product['bookAuthor']) : ''; ?>" placeholder="Input Product Author">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="bookPublisher" class="form-label">Product Publisher:</label>
+                    <input required type="text" id="bookPublisher" name="bookPublisher" class="form-control" value="<?php echo isset($product) ? htmlspecialchars($product['bookPublisher']) : ''; ?>" placeholder="Input Product Publisher">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="productImage" class="form-label">Select Product Image:</label>
+                    <input type="file" id="productImage" name="productImage" class="form-control">
+                    <?php if (isset($product) && $product['productImage']): ?>
+                        <img src="<?php echo htmlspecialchars($product['productImage']); ?>" alt="Current Image" style="max-width: 200px; max-height: 200px;">
+                    <?php endif; ?>
+                </div>
+                
+                <div class="mb-3">
+                    <button type="submit" name="update" class="btn btn-primary"><?php echo isset($product) ? "Update Product" : "Submit"; ?></button>
+                    <a href="/admin/management.php" class="btn btn-secondary">Back</a>
+                </div>
             </form>
+    </main>
+
         </body>
 
         </html>
