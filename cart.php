@@ -201,7 +201,7 @@ $conn->close();
 
                         ?>
                             <tr>
-                                <td style="border-top: 1px solid black; border-bottom: 1px solid black;"><img src="<?php echo $item["productImage"]; ?>" class="cart-item-image" />&nbsp; <?php echo $item["productName"]; ?></td>
+                                <td style="border-top: 1px solid black; border-bottom: 1px solid black;"><img src="<?php echo $item["productImage"]; ?>" class="cart-item-image" alt="<?php echo $item["productName"];?>" />&nbsp; <?php echo $item["productName"]; ?></td>
                                 <td style="text-align:center; border-top: 1px solid black; border-bottom: 1px solid black;"><?php echo "$ " . $item["price"]; ?></td>
                                 <td style="text-align:center; border-top: 1px solid black; border-bottom: 1px solid black;"><?php echo $item["quantity"]; ?></td>
                                 <td style="text-align:center; border-top: 1px solid black; border-bottom: 1px solid black;"><?php echo "$ " . number_format($item_price, 2); ?></td>
@@ -233,7 +233,7 @@ $conn->close();
         </div> <!-- End of shopping-cart div-->
 
         <div class="container-fluid bg-3 text-center">
-            <h3 class="margin">Product Catalog</h3><br>
+            <h1 class="margin">Product Catalog</h1><br>
 
 
             <?php
@@ -283,6 +283,7 @@ $conn->close();
                         echo '<div class="product-author text-center" style="margin-bottom:5px;">"by" ' . $resultArray[$key]["bookAuthor"] . '</div>';
                         echo '<div class="product-details" style="display:flex; justify-content:space-between; align-items:center;">';
                         echo '<div class="product-price">$ ' . $resultArray[$key]["price"] . '</div>';
+                        echo '<label for="quantity">Quantity:</label>';
                         echo '<input type="number" step="1" min="1" max="10" value="1" name="quantity" id="quantity" class="quantity-field text-center w-25">';
                         echo '<input type="submit" value="Add to Cart" class="btnAddAction" />';
 
